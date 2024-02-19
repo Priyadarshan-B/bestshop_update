@@ -1,0 +1,380 @@
+.distributor_id_col {
+  font-size: 20px;
+}
+
+.input-container {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: space-between;
+}
+
+.choose_file_placeHolder {
+  color: #808080;
+}
+
+.input-container-sp {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.buttons-in-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.add_product_input {
+  width: 50%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  background-color: #e8e4fcc7;
+  width: 200px;
+  height: 40px;
+  font-size: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.generate_button {
+  background: green;
+  border: none;
+  outline: none;
+  margin: 15px 5px 0px 5px;
+  padding: 10px;
+  font-size: 17px;
+  border-radius: 5px;
+  color: white;
+  letter-spacing: 1.4px;
+  width: 112px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+
+}
+
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-inside-flex {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px;
+}
+
+.MuiDialogTitle-root+.css-ypiqx9-MuiDialogContent-root {
+  padding-bottom: 0px;
+}
+
+.input_box_select {
+  width: 290px;
+  padding: 7px;
+  border: none;
+  box-shadow: 0px 2px 7px;
+  border-radius: 5px;
+  font-size: large;
+  font-weight: 500;
+  color: rgb(86, 86, 86);
+
+}
+
+.input_box {
+  padding: 7px;
+  border: none;
+  box-shadow: 0px 2px 7px;
+  border-radius: 5px;
+  font-size: large;
+  font-weight: 500;
+  color: rgb(86, 86, 86);
+
+}
+
+.last {
+  display: flex;
+  margin-top: 20px;
+  flex: 13;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.count-size-quantity-box {
+  height: 260px;
+  width: 60%;
+  padding: 0px 20px 20px 20px;
+  overflow-y: scroll;
+  box-shadow: 0px 1px 3px;
+  border-radius: 7px;
+  border: 10px solid white;
+}
+
+.price-boxes {
+  height: 260px;
+  width: 60%;
+  padding: 0px 20px 20px 20px;
+  overflow-y: hidden;
+  box-shadow: 0px 1px 3px;
+  border-radius: 7px;
+  border: 10px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centering {
+  width: 99%;
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 10px;
+  /* Set the width of the scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e1e1e1;
+  /* Set the color of the thumb (the draggable part) */
+  border-radius: 6px;
+  /* Set the border radius of the thumb */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ffffff;
+  /* Set the color of the track (the non-draggable part) */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #efefef;
+  /* Set the color of the thumb on hover */
+}
+
+::-webkit-scrollbar-corner {
+  background-color: #f0f0f0;
+  /* Set the color of the scrollbar corner (where the horizontal and vertical scrollbars meet) */
+}
+
+
+.part_for_size {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.count-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.count_label {
+  margin-top: 10px;
+}
+
+.part_for_price {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.count_field {
+  width: 96%;
+  padding: 7px;
+  border: none;
+  box-shadow: 0px 2px 7px;
+  border-radius: 5px;
+  font-size: large;
+  font-weight: 500;
+  color: rgb(86, 86, 86);
+  margin-bottom: 20px;
+}
+
+.size-quantity-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.quantity_field {
+  width: 16%;
+  padding: 7px;
+  border: none;
+  box-shadow: 0px 2px 7px;
+  border-radius: 5px;
+  font-size: large;
+  font-weight: 500;
+  color: rgb(86, 86, 86);
+  margin: 5px;
+}
+
+.size_field {
+  width: 16%;
+  padding: 7px;
+  border: none;
+  box-shadow: 0px 2px 7px;
+  border-radius: 5px;
+  font-size: large;
+  font-weight: 500;
+  color: rgb(86, 86, 86);
+  margin: 5px;
+}
+
+@media (max-width:1400px) {
+  .input-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .price-boxes {
+    overflow-y: scroll;
+  }
+
+  .input_box {
+    width: 96%;
+  }
+
+  .centering {
+    margin-top: 60px;
+  }
+
+}
+
+@media (max-width:1320px) {
+  .last {
+    flex-direction: column;
+  }
+
+  .price-boxes {
+    height: auto;
+  }
+
+  .centering {
+    margin: -2px;
+  }
+
+  .price-boxes,
+  .count-size-quantity-box {
+    width: 50%;
+  }
+
+
+
+}
+
+@media (max-width:650px) {
+
+  .price-boxes,
+  .count-size-quantity-box {
+    width: 82%;
+  }
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-evenly;
+}
+
+.dialog-box {
+  flex: 1;
+  font-weight: 700;
+  min-width: 150px;
+  height: 50px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #3498db;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  /* text-overflow: ellipsis; */
+  flex-wrap: wrap;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.dist_input {
+  width: 100%;
+  padding: 7px;
+  margin-bottom: 10px;
+  border: none;
+  box-shadow: 0px 2px 7px;
+  border-radius: 5px;
+  font-size: large;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: rgb(86, 86, 86);
+}
+
+
+
+.dist_button {
+  background-color: #3dbbff;
+  color: white;
+  font-weight: 600;
+  font-size: 20px;
+  padding: 5px 35px 5px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.dist_buttton {
+  background-color: #3dbbff;
+  color: white;
+  font-weight: 600;
+  font-size: 20px;
+  padding: 5px 20px 5px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.dist_button:hover {
+  background-color: #60c7ff;
+}
+
+.pinned-items {
+  height: 100px;
+}
+
+.s-q-button{
+  border-radius: 50%;
+  width: max-content;
+}
+
+.sizeandquantity{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+}

@@ -1,0 +1,18 @@
+.input-box input{
+    outline: none;
+    /* padding: 10px 10px; */
+    border-radius: 4px;
+    /* border: 1px solid grey; */
+    /* box-shadow: 1px 1px 1px rgb(237, 234, 253); */
+    border: none;
+    min-width: 300px;
+    min-height: 40px;
+    font-size: 17px;
+    margin-top: 5px;
+    background-color: #ffffff;
+}
+
+.input-box label{
+    font-weight: 600;
+}
+

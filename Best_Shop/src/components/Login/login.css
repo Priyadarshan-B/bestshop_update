@@ -1,0 +1,80 @@
+
+/* Login.css */
+.login-container {
+  /* background-image: url('src/assets/img/login2.jpg'); */
+  background-image: url(D:\best_shop\bestshop\src\assets\img\login2.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  width: max-content;
+  padding: 90px 50px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.error-message {
+  color: red;
+}
+
+.password-visibility {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 17px;
+}
+
+.login-button {
+  background: rgb(0, 166, 0);
+  border: none;
+  outline: none;
+  /* margin-top: 20px; */
+  padding: 10px;
+  font-size: 17px;
+  border-radius: 8px;
+  color: white;
+  /* letter-spacing: 1.4; */
+  cursor: pointer;
+}
+/* .login_lable{
+  outline: none;
+  
+  border-radius: 4px;
+
+  border: none;
+  min-width: 300px;
+  min-height: 40px;
+  font-size: 17px;
+  margin-top: 5px;
+  background-color: #ffffff;
+}
+
+.login_lable{
+  font-weight: 600;
+} */
+
+.login_lable{
+  font-size: 22px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.login_input{
+  font-size: 20px;
+  /* padding-left: 7px; */
+  border-radius: 3px;
+  padding: 3px;
+  outline: none;
+  border: none;
+  margin-left: 10px;
+}

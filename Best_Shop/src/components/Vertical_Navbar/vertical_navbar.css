@@ -1,0 +1,171 @@
+.vertical-navbar {
+  width: 250px;
+  background-color: #ffffff;
+  box-shadow: 0 0 10px #0000001a;
+  border-right-width: 20px;
+  color: #060606;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  z-index: 2;
+  position: relative;
+  font-size: 20px;
+  text-align: center;
+
+  
+}
+
+.menu-icon {
+  cursor: pointer;
+  display: none;
+}
+
+
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.nav-links li {
+  display: flex; 
+  align-items: center; 
+  margin-bottom: 10px;
+  cursor: pointer;
+  text-decoration: none; 
+  color: #333;
+  padding: 15px;
+  border-radius: 5px;
+  text-align:center;
+  
+
+  
+
+
+  &:hover  {
+    background-color: #c9ecff; 
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+
+
+.nav-links li.selected {
+  /* Styles for the selected category */
+  background-color: #3498db; /* Change this to the desired background color */
+  color: #fff; /* Change this to the desired text color */
+}
+
+.nav-links.show {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-menu {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  font-size: 18px;
+  border-radius: 5px;
+  box-shadow: 1px 10px 10px gray;
+  border-top: #060606;
+  border-top-color: #060606;
+  background-color: white;
+  width: 150px;
+}
+
+.sub-navbar {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative; 
+}
+
+.master_link{
+  background-color: #3498db;
+  color: white;
+}
+
+.sub-navbar .sub-menu {
+  position: absolute;
+  top:20%;
+  left: 70%;
+
+  z-index: 1;
+}
+
+.sub-menu li {
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+.fa-angle-up,
+.fa-angle-down {
+  margin-left: 10px;
+  font-weight: 10px;
+  font-size: 15px;
+  
+}
+
+.sub-navbar.show-submenu .sub-menu {
+  display: block;
+}
+
+
+.sub-menu li:hover {
+  background-color:#c9ecff; 
+  text-align: right;
+}
+.sub-menu li.selected {
+  /* Styles for the selected submenu item */
+  background-color: #3498db; /* Change this to the desired background color */
+  color: #fff; /* Change this to the desired text color */
+}
+
+.sub-navbar,
+.sub-menu li {
+  /* margin-top: 10px; */
+
+}
+
+
+
+@media (max-width: 999px) {
+  .vertical-navbar {
+    display: none;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  
+}
+
+
+/* .vertical-navbar {
+  display: flex;
+  flex-direction: column;
+}
+
+.vertical-navbar a {
+  text-decoration: none;
+  color: black;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.vertical-navbar a:hover {
+  background-color: #f0f0f0;
+}
+
+.vertical-navbar a.active {
+  background-color: #e0e0e0;
+
+} */
