@@ -113,6 +113,7 @@ const ExportData = () => {
             <input
               className="dist_input_id"
               type="number"
+              min={0}
               value={exportValue}
               onChange={(e) => setExportValue(e.target.value)}
               placeholder="Distributor ID"

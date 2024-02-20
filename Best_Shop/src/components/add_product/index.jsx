@@ -31,17 +31,54 @@ function AddStocks() {
   const [isLoading, setIsLoading] = useState(false);
   const [price, setPrice] = useState(1);
   const [colour, setColour] = useState("");
+  const [addcolour, setAddcolour] = useState("");
+  const [inputValue, setInputValue] = useState("");
+
   const [model, setModel] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showQty, setShowQty] = useState(false);
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
+  const [colouropen, setColouropen] = useState(false);
   const navigate = useNavigate();
 
   // navigate
 
   const handleNavigate = (path) => {
     navigate(path);
+  };
+
+  // colour popup
+  const handlecoloropen = () => {
+    setColouropen(true);
+  };
+  const handlecolorclose = () => {
+    setColouropen(false);
+  };
+
+  const handleColourChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const submitColour = () => {
+    // Assuming you are using fetch for sending data to the backend
+    fetch(`${apiHost}/colour`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        colour: inputValue,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Handle response from the backend if necessary
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   // distributor TextBox
@@ -55,11 +92,9 @@ function AddStocks() {
   // validation of dist textbox
   const checkInput = () => {
     if (distValue.trim() === "") {
-      console.log("textbox is empty");
       notifyError("Failed to add Distributor");
     } else {
       notifySuccess("Distributor added successfully");
-      console.log("textbox filled");
       setIsContentVisible(false);
     }
   };
@@ -137,12 +172,10 @@ function AddStocks() {
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data);
         fetchCategoryData();
         notifySuccess("Category added successfully");
       })
       .catch((error) => {
-        console.error("Error:", error);
         notifyError("Failed to add Category");
       });
   };
@@ -153,11 +186,8 @@ function AddStocks() {
   const fetchCategoryData = async () => {
     try {
       const response = await requestApi("GET", "/categories", {});
-      console.log(response);
       setCategories(response.data || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    } catch (error) {}
   };
 
   // Detail Dialog Box
@@ -198,8 +228,6 @@ function AddStocks() {
       formData.append("image", selectedImage);
     }
 
-    console.log("Form Data:", formData);
-
     fetch(`${apiHost}/field-details`, {
       method: "POST",
       body: formData,
@@ -209,7 +237,6 @@ function AddStocks() {
         notifySuccess("Field detail added successfully");
       })
       .catch((error) => {
-        console.error("Error:", error);
         notifyError("Failed to add field details");
       });
   };
@@ -218,12 +245,9 @@ function AddStocks() {
     fetch(`${apiHost}/dropdown/category`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Category Data:", data);
         setCategoryOptions(["", ...data]);
       })
-      .catch((error) => {
-        console.error("Error fetching category data:", error);
-      });
+      .catch((error) => {});
   };
 
   const getFields = () => {
@@ -232,8 +256,6 @@ function AddStocks() {
     fetch(`${apiHost}/dropdown/category_fields/${selectedCategory}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Field Data:", data);
-
         const modifiedFieldOptions = data.map((field) => ({
           value: `${field.field_id},${field.field_name}`,
           label: field.field_name,
@@ -241,9 +263,7 @@ function AddStocks() {
 
         setFieldOptions(["", ...modifiedFieldOptions]);
       })
-      .catch((error) => {
-        console.error("Error fetching field data:", error);
-      });
+      .catch((error) => {});
   };
 
   React.useEffect(() => {
@@ -266,11 +286,8 @@ function AddStocks() {
   const fetchDetailData = async () => {
     try {
       const response = await requestApi("GET", "/categories/0/0", {});
-      console.log(response);
       setCategories(response.data || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    } catch (error) {}
   };
 
   //field dialog Box
@@ -288,9 +305,7 @@ function AddStocks() {
       .then((category) => {
         setCategory(category);
       })
-      .catch((error) => {
-        console.error("Error fetching categories:", error);
-      });
+      .catch((error) => {});
   };
 
   const handleInputChange = (e) => {
@@ -315,18 +330,14 @@ function AddStocks() {
         notifySuccess("Field added successfully");
       })
       .catch((error) => {
-        console.error("Error:", error);
         notifyError("Failed to add field");
       });
   };
   const fetchFieldData = async () => {
     try {
       const response = await requestApi("GET", "/categories/0", {});
-      console.log(response);
       setCategories(response.data || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    } catch (error) {}
   };
 
   const notifySuccess = (message) => {
@@ -336,10 +347,6 @@ function AddStocks() {
   const notifyError = (message) => {
     toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
   };
-
-  // const Transition = React.forwardRef(function Transition(props, ref) {
-  //   return <Slide direction="up" ref={ref} {...props} />;
-  // });
 
   const handleClickOpenDialog = () => {
     setOpen(true);
@@ -381,7 +388,6 @@ function AddStocks() {
 
   const fetchCategory = async () => {
     const res = await requestApi("GET", "/categories", {});
-    console.log(res);
     if (res.success) {
       setCategory(res.data);
     }
@@ -389,7 +395,6 @@ function AddStocks() {
 
   const fetchFields = async (id) => {
     const res = await requestApi("GET", "/categories/" + id);
-    console.log(res);
     if (res.success) {
       setFields(res.data);
       await fetchOptions(id, res.data[0].field_id);
@@ -403,7 +408,6 @@ function AddStocks() {
         field_id === 0 ? field[selectedIndex].field_id : field_id
       }`
     );
-    console.log(res);
     if (res.success) {
       setCategory(res.data);
     }
@@ -416,7 +420,6 @@ function AddStocks() {
     );
 
     // size n quantity value int
-    // const sizes = inputs.map((input) => parseInt(input.size, 10));
     const sizes = inputs.map((input) => input.size.toString());
 
     const quantities = inputs.map((input) => parseInt(input.quantity, 10));
@@ -431,16 +434,12 @@ function AddStocks() {
       purchasing_price: parseFloat(price),
       selling_price: parseFloat(selling_price),
       mrp: parseFloat(mrp),
-      colour: colour,
+      colour: selectedOption,
       sizes: sizes,
       quantities: quantities,
       model: model,
     };
-    // for (const key in requestData) {
-    //   console.log(`${key}: ${typeof requestData[key]}`);
-    // }
 
-    console.log(requestData);
     fetch(`${apiHost}/stocks`, {
       method: "POST",
       headers: {
@@ -451,10 +450,8 @@ function AddStocks() {
       .then((response) => response.json())
       .then((data) => {
         notifySuccess("Stock Added successfully");
-        console.log(data);
       })
       .catch((error) => {
-        console.error("Error sending data to the backend:", error);
         notifyError("Failed to Add Stocks");
       });
   };
@@ -473,28 +470,25 @@ function AddStocks() {
   };
 
   // colours
-  const options = [
-    { value: "red", label: "Red" },
-    { value: "blue", label: "Blue" },
-    { value: "green", label: "Green" },
-    { value: "tan", label: "Tan" },
-    { value: "black", label: "Black" },
-    { value: "mehendi", label: "Mehendi" },
-    { value: "brown", label: "Brown" },
-    { value: "pink", label: "Pink" },
-    { value: "yellow", label: "Yellow" },
-    { value: "orange", label: "Orange" },
+  const [options, setOptions] = useState([]);
 
-  ];
+  const [selectedOption, setSelectedOption] = useState("");
 
-  const handleColourChange = (selectedOption) => {
-    // setColour(selectedOption);
-    if (selectedOption) {
-      setColour(selectedOption.value); // Set only the value of the selected option
-    } else {
-      setColour(""); // Handle the case where no option is selected
-    }
+  useEffect(() => {
+    fetch(`${apiHost}/colour`)
+      .then((response) => response.json())
+      .then((data) => {
+        const newOptions = data.map((colour) => ({
+          value: colour.colours,
+          label: colour.colours,
+        }));
+        setOptions(newOptions);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
 
+  const handleChange = (selectedOption) => {
+    setSelectedOption(selectedOption.value);
   };
 
   //  refresh func..
@@ -505,6 +499,27 @@ function AddStocks() {
     setColour("");
     setInputs([]);
     setModel("");
+  };
+
+  // validation
+  const [errors, setErrors] = useState([]);
+
+  const validateInput = (index, field, value) => {
+    const newErrors = [...errors];
+    if (!value.trim()) {
+      // If value is empty, add error to errors array
+      if (!newErrors.includes(index)) {
+        newErrors.push(index);
+        setErrors(newErrors);
+      }
+    } else {
+      // If value is not empty, remove error from errors array
+      const errorIndex = newErrors.indexOf(index);
+      if (errorIndex !== -1) {
+        newErrors.splice(errorIndex, 1);
+        setErrors(newErrors);
+      }
+    }
   };
 
   // selling and purchasing price
@@ -695,35 +710,36 @@ function AddStocks() {
                             <label htmlFor="colour" className="count_label">
                               Colour
                             </label>
-                            {/* <Select
+
+                            <Select
                               id="colour"
                               name="colour"
-                              value={colour}
-                              onChange={handleColourChange}
+                              value={options.find(
+                                (option) => option.value === selectedOption
+                              )}
+                              onChange={handleChange}
                               options={options}
                               placeholder="Select Colour"
                               isSearchable
-                            /> */}
-                            <Select
-  id="colour"
-  name="colour"
-  value={options.find(option => option.value === colour)} // Find the corresponding option object
-  onChange={handleColourChange}
-  options={options}
-  placeholder="Select Colour"
-  isSearchable
-/>
+                            />
 
-                           
+                            <div className="add-colour">
+                              <label>Add Colour</label>
+                              <AddCircleIcon
+                                style={{
+                                  cursor: "pointer",
+                                }}
+                                onClick={handlecoloropen}
+                              />
+                            </div>
                           </div>
                           <div className="size-and-quantity">
-                            
                             <div>
                               <b>Size and Quantity</b>
                             </div>
 
                             {inputs.map((input, index) => (
-                              <div className="sizeandquantity"  key={index}  >
+                              <div className="sizeandquantity" key={index}>
                                 <label htmlFor={`size-${index}`}>Size:</label>
                                 <input
                                   className="size_field"
@@ -742,11 +758,44 @@ function AddStocks() {
                                 <label htmlFor={`quantity-${index}`}>
                                   Quantity:
                                 </label>
+
                                 <input
                                   className="quantity_field"
-                                  type="number"
+                                  type="text"
                                   id={`quantity-${index}`}
                                   value={input.quantity}
+                                  min={0}
+                                  required
+                                  onChange={(e) => {
+                                    const inputValue = e.target.value;
+                                    const regex = /^\d*\.?\d*$/; // Regular expression to match numbers and optional decimal point
+                                    if (
+                                      inputValue === "" ||
+                                      regex.test(inputValue)
+                                    ) {
+                                      handleInputValueChange(
+                                        index,
+                                        "quantity",
+                                        inputValue
+                                      );
+                                    }
+                                  }}
+                                />
+                                {errors.includes(index) && (
+                                  <p className="error-message">
+                                    Both fields are required
+                                  </p>
+                                )}
+
+                                {/* <input
+                                  className="quantity_field"
+                                  type="text"
+                                  pattern="[0-9]*\.?[0-9]*"
+                                  id={`quantity-${index}`}
+                                  value={input.quantity}
+                                  min={0}
+                                  title="Please enter a valid number"
+
                                   required
                                   onChange={(e) =>
                                     handleInputValueChange(
@@ -755,7 +804,7 @@ function AddStocks() {
                                       e.target.value
                                     )
                                   }
-                                />
+                                /> */}
 
                                 <RemoveCircleIcon
                                   style={{
@@ -1322,6 +1371,75 @@ function AddStocks() {
               color="primary"
             >
               Add Field Details
+            </Button>
+          </DialogActions>
+        </div>
+      </Dialog>
+
+      <Dialog
+        open={colouropen}
+        onClose={handlecolorclose}
+        PaperProps={{
+          style: {
+            // width: "500px",
+            // height: "390px",
+            padding: "10px",
+          },
+        }}
+      >
+        <div>
+          <DialogTitle
+            style={{
+              textAlign: "center",
+            }}
+          >
+            <h2>Add Colours</h2>
+          </DialogTitle>
+          <DialogContent
+            style={{
+              fontSize: 20,
+            }}
+          >
+            <label htmlFor="colour">Colour Name:</label>
+            <input
+              className="form-input-sp"
+              type="text"
+              value={inputValue}
+              onChange={handleColourChange}
+              placeholder="Enter colour"
+            />
+            {/* <label htmlFor="colourname">
+              <b className="field-title">Colour Name </b>
+            </label>
+            <input
+              className="form-input-sp"
+              placeholder="Enter Colour Name"
+              type="text"
+              id="colour"
+              name="colour"
+              value={colour}
+              required
+            /> */}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handlecolorclose}
+              style={{
+                fontWeight: 700,
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                submitColour();
+                handlecolorclose();
+              }}
+              style={{
+                fontWeight: 700,
+              }}
+            >
+              Add
             </Button>
           </DialogActions>
         </div>

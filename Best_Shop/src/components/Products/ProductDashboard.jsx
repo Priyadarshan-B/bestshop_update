@@ -35,7 +35,6 @@ const createRowFromApiData = (jsonData) => {
             quantity: item.quantity,
             size: item.size,
             model_name: item.model_name,
-            total_price: item.total_price,
           })),
         };
         rows.push(categoryRow);
@@ -97,9 +96,7 @@ function Row(props) {
                     <TableCell>
                       <h3>Quantity</h3>
                     </TableCell>
-                    <TableCell>
-                      <h3>Total Price</h3>
-                    </TableCell>
+                    
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -112,7 +109,6 @@ function Row(props) {
                       <TableCell>{product.model_name}</TableCell>
                       <TableCell>{product.size}</TableCell>
                       <TableCell>{product.quantity}</TableCell>
-                      <TableCell>{product.total_price}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -150,11 +146,10 @@ export default function CollapsibleTable() {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const jsonData = await response.json();
-        console.log("API Data:", jsonData); // Add this line for debugging
+        
         const formattedRows = createRowFromApiData(jsonData);
         setRows(formattedRows);
       } catch (error) {
-        console.error("Error fetching data:", error);
       } finally {
         setLoading(false); // After fetching data, set loading to false
       }

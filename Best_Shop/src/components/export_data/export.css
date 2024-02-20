@@ -15,7 +15,7 @@
 
 
 .dist_button {
-  background-color: #3dbbff;
+  background-color: #4A55A2;
   color: white;
   font-weight: 600;
   font-size: 20px;
@@ -29,23 +29,12 @@
   transition: all 0.3s;
 }
 
-.dist_buttton {
-  background-color: #3dbbff;
-  color: white;
-  font-weight: 600;
-  font-size: 20px;
-  padding: 5px 20px 5px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
-}
+
 
 .dist_button:hover {
-  background-color: #60c7ff;
+  background-color: #8a96ff;
+  transition: 0.6s;
+
 }
 
 .pinned-items {

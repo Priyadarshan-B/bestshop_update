@@ -57,7 +57,7 @@
 }
 
 .add-button {
-  background-color: #2fcc54;
+  background-color: #4A55A2;
   color: white;
   border: none;
   outline: none;
@@ -72,6 +72,11 @@
   border-radius: 6px;
   letter-spacing: 1.2;
   box-shadow: 0px 1px 3px gray;
+}
+
+.add-button:hover{
+  background-color: #8a96ff;
+  transition: 0.6s;
 }
 
 .data-grid-container {

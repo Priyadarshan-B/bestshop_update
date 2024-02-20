@@ -50,7 +50,6 @@ const FieldTable = () => {
         setCategory(categories);
       })
       .catch((error) => {
-        console.error("Error fetching categories:", error);
       });
   };
 
@@ -71,7 +70,6 @@ const FieldTable = () => {
   };
 
   const addCategoryField = () => {
-    console.log("FormData:", formData);
     fetch(`${API_BASE_URL}/category-fields`, {
       method: "POST",
       headers: {
@@ -82,12 +80,10 @@ const FieldTable = () => {
       .then((response) => response.json())
       .then((data) => {
         // alert(data.message);
-        console.log(data);
         handleCloseDialog();
         notifySuccess("Field added successfully");
       })
       .catch((error) => {
-        console.error("Error:", error);
         notifyError("Failed to add field");
       });
   };
@@ -95,10 +91,8 @@ const FieldTable = () => {
   const fetchData = async () => {
     try {
       const response = await requestApi("GET", "/categories/0", {});
-      console.log(response);
       setCategories(response.data || []);
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
@@ -148,13 +142,11 @@ const FieldTable = () => {
   }));
 
   const handleEdit = (id) => {
-    console.log(`Edit action clicked for id ${id}`);
   };
 
   // delete fields
   const deleteCategory = (field_id) => {
     const deleteUrl = `${apiHost}/category-fields/${field_id}`;
-    console.log("DELETE request URL:", deleteUrl);
     fetch(`${apiHost}/category-fields/${field_id}`, {
       method: "DELETE",
     })
@@ -165,12 +157,10 @@ const FieldTable = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Field deleted successfully:", data);
         fetchData(); // Update the category list after deletion
         notifySuccess("Field deleted successfully");
       })
       .catch((error) => {
-        console.error("Error deleting Field");
         notifyError("Failed to delete Field");
       });
   };
@@ -180,7 +170,6 @@ const FieldTable = () => {
       `Are you sure you want to delete the category "${field_name}"?`
     );
     if (isConfirmed) {
-      console.log(`Delete action clicked for category_id ${field_id}`);
       deleteCategory(field_id);
     }
   };

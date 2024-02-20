@@ -28,14 +28,12 @@ const CategoryTable = () => {
   };
 
   const handleEdit = (id) => {
-    console.log(`Edit action clicked for id ${id}`);
   };
 
   // delete category
 
   const deleteCategory = (category_id) => {
     const deleteUrl = `${apiHost}/categories/${category_id}`;
-    console.log("DELETE request URL:", deleteUrl);
     fetch(`${apiHost}/categories/${category_id}`, {
       method: "DELETE",
     })
@@ -46,12 +44,10 @@ const CategoryTable = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Category deleted successfully:", data);
         fetchData(); // Update the category list after deletion
         notifySuccess("Category deleted successfully");
       })
       .catch((error) => {
-        console.error("Error deleting category:", error);
         notifyError("Failed to delete category");
       });
   };
@@ -61,7 +57,6 @@ const CategoryTable = () => {
       `Are you sure you want to delete the category "${categoryName}"?`
     );
     if (isConfirmed) {
-      console.log(`Delete action clicked for category_id ${category_id}`);
       deleteCategory(category_id);
     }
   };
@@ -121,12 +116,10 @@ const CategoryTable = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data);
         fetchData();
         notifySuccess("Field added successfully");
       })
       .catch((error) => {
-        console.error("Error:", error);
         notifyError("Failed to add field");
       });
   };
@@ -145,10 +138,8 @@ const CategoryTable = () => {
   const fetchData = async () => {
     try {
       const response = await requestApi("GET", "/categories", {});
-      console.log(response);
       setCategories(response.data || []);
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 

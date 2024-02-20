@@ -11,19 +11,19 @@ from collections import defaultdict
 app = Flask(__name__)
 CORS(app)
 
-# db_config = {
-#     'host': '10.30.10.13',
-#     'user': 'bestshop',
-#     'password': 'bestshop',
-#     'database': 'best_shop',
-# }
-
 db_config = {
-    'host': '127.0.0.1',
-    'user': 'vishnu',
-    'password': 'vishnu',
+    'host': '10.30.10.13',
+    'user': 'bestshop',
+    'password': 'bestshop',
     'database': 'best_shop',
 }
+
+# db_config = {
+#     'host': '127.0.0.1',
+#     'user': 'vishnu',
+#     'password': 'vishnu',
+#     'database': 'best_shop',
+# }
 
 SECRET_KEY = 'haha_here_is_my_big_secret!!!'
 UPLOAD_FOLDER = 'uploads'
@@ -265,7 +265,7 @@ def manage_stocks():
             rows = cursor.fetchall()
 
             stocks_by_category = defaultdict(list)
-
+            print(stocks_by_category)
             for row in rows:
                 category_name = row['category_name']
 
@@ -278,7 +278,7 @@ def manage_stocks():
                     'quantity': row['quantity'],
                     'selling_price': row['selling_price'],
                     'size': row['size'],
-                    'total_price': row['quantity'] * row['selling_price']
+                    # 'total_price': row['quantity'] * row['selling_price']
                 }
 
                 stocks_by_category[category_name].append(formatted_stock)
@@ -308,7 +308,7 @@ def manage_stocks():
             model = data['model'].upper()
             mrp = data['mrp']
             name = data['name']
-            colour = data['colour']
+            colour = data['colour'].upper()
             purchasing_price = data['purchasing_price']
             quantity = data['quantities']
             selling_price = data['selling_price']
@@ -611,5 +611,35 @@ def sample_data():
         cursor.close()
         connection.close()
 
+@app.route('/colour', methods=['GET', 'POST'])
+def colour():
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    if request.method == 'GET':
+        try:
+            cursor.execute('SELECT colours FROM colour')
+            colour_data = cursor.fetchall()
+            return jsonify(colour_data)
+        except Exception as e:
+            app.logger.error(f"Error: {str(e)}")
+            return jsonify({'error': 'Internal Server Error'}), 500
+        finally:
+            cursor.close()
+            connection.close()
+    if request.method == 'POST':
+        try:
+            data = request.json
+            colour = data['colour'].upper()
+            cursor.execute("INSERT INTO colour(colours) VALUES (%s)", (colour,))
+            connection.commit() 
+            return jsonify({'message': 'Color added successfully'}), 200
+        except Exception as e:
+            app.logger.error(f"Error: {str(e)}")
+            return jsonify({'error': 'Internal Server Error'}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
 if __name__ == '__main__':
     app.run(debug=True, host = '0.0.0.0')
+

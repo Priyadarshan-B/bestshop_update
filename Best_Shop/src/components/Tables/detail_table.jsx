@@ -54,8 +54,7 @@ const DetailTable = () => {
       formData.append("image", selectedImage);
     }
 
-    console.log("Form Data:", formData);
-
+      
     fetch(`${API_BASE_URL}/field-details`, {
       method: "POST",
       body: formData,
@@ -65,7 +64,6 @@ const DetailTable = () => {
         notifySuccess("Field added successfully");
       })
       .catch((error) => {
-        console.error("Error:", error);
         notifyError("Failed to add field");
       });
   };
@@ -74,11 +72,9 @@ const DetailTable = () => {
     fetch(`${API_BASE_URL}/dropdown/category`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Category Data:", data);
         setCategoryOptions(["", ...data]);
       })
       .catch((error) => {
-        console.error("Error fetching category data:", error);
       });
   };
 
@@ -88,7 +84,6 @@ const DetailTable = () => {
     fetch(`${API_BASE_URL}/dropdown/category_fields/${selectedCategory}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Field Data:", data);
 
         const modifiedFieldOptions = data.map((field) => ({
           value: `${field.field_id},${field.field_name}`,
@@ -98,7 +93,6 @@ const DetailTable = () => {
         setFieldOptions(["", ...modifiedFieldOptions]);
       })
       .catch((error) => {
-        console.error("Error fetching field data:", error);
       });
   };
 
@@ -137,10 +131,8 @@ const DetailTable = () => {
   const fetchData = async () => {
     try {
       const response = await requestApi("GET", "/categories/0/0", {});
-      console.log(response);
       setCategories(response.data || []);
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
@@ -191,13 +183,11 @@ const DetailTable = () => {
   }));
 
   const handleEdit = (id) => {
-    console.log(`Edit action clicked for id ${id}`);
   };
 
   // delete detail_fields
   const deleteCategory = (detail_id) => {
     const deleteUrl = `${apiHost}/field-details/${detail_id}`;
-    console.log("DELETE request URL:", deleteUrl);
     fetch(`${apiHost}/field-details/${detail_id}`, {
       method: "DELETE",
     })
@@ -208,12 +198,10 @@ const DetailTable = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Detail Field deleted successfully:", data);
         fetchData(); // Update the category list after deletion
         notifySuccess("Detail Field deleted successfully");
       })
       .catch((error) => {
-        console.error("Error deleting Detail Field:", error);
         notifyError("Failed to delete Detail Field");
       });
   };
@@ -223,7 +211,6 @@ const DetailTable = () => {
       `Are you sure you want to delete the category "${details_name}"?`
     );
     if (isConfirmed) {
-      console.log(`Delete action clicked for detail_id ${detail_id}`);
       deleteCategory(detail_id);
     }
   };

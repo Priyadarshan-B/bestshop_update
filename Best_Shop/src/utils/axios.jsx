@@ -2,21 +2,7 @@ import axios from "axios"
 import apiHost from "./api"
 
 const requestApi = async (method, url, data) => {
-    // await axios({
-    //     url: apiHost + url,
-    //     data: data,
-    //     method: method,
-    // }).then((res) => {
-    //     return {
-    //         success: true,
-    //         data: res.data
-    //     };
-    // }).catch((err) => {
-    //     return {
-    //         success:false,
-    //         error:err
-    //     }
-    // })
+  
     try {
         if (method === "POST") {
             const res = await axios.post(apiHost + url, data)

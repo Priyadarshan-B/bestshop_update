@@ -1,14 +1,14 @@
-
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import './login.css';
-import apiHost from '../../utils/api';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "./login.css";
+import apiHost from "../../utils/api";
 // import { toast, ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
+import LoginImg from "../../assets/img/login2.jpg";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -24,9 +24,9 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await fetch(`${apiHost}/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
       });
@@ -35,20 +35,20 @@ const Login = () => {
         // notifySuccess('Login successfully');
         const { token } = await response.json();
 
-        localStorage.setItem('token', token);
+        localStorage.setItem("token", token);
         localStorage.setItem("isLogin", "true");
 
         setError(null);
-        console.log('Login successful');
-        navigate('/dashboard', { state: { successMessage: 'Login Successfully' } });
+        navigate("/dashboard", {
+          state: { successMessage: "Login Successfully" },
+        });
       } else {
         const { message } = await response.json();
         setError(message);
         // notifyError('Failed to login');
       }
     } catch (error) {
-      console.error('Error during login:', error);
-      setError('An unexpected error occurred.');
+      setError("An unexpected error occurred.");
       // notifyError('Failed to login');
     }
   };
@@ -58,7 +58,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
+    <div style={{ backgroundImage: { LoginImg } }} className="login-container">
       <div className="login-box">
         <center>
           <h1>Login</h1>
@@ -67,14 +67,19 @@ const Login = () => {
         {error && <p className="error-message">{error}</p>}
         <label className="login_lable">
           Username
-          <input className="login_input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <input
+            className="login_input"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
         </label>
         <br />
         <label className="login_lable">
           Password
           <input
             className="login_input"
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -87,19 +92,21 @@ const Login = () => {
             style={{ padding: 0, height: 20, width: 20 }}
             type="checkbox"
           />
-          <label htmlFor="show-pass">{showPassword ? 'Hide' : 'Show'} Password</label>
+          <label htmlFor="show-pass">
+            {showPassword ? "Hide" : "Show"} Password
+          </label>
         </div>
         <br />
         <button className="login-button" onClick={handleLogin}>
           Login
         </button>
-        <div style={{ marginTop: '10px' }}>
+        <div style={{ marginTop: "10px" }}>
           <Link
             to="/signup"
             style={{
-              textDecoration: 'none',
-              color: 'blue',
-              fontSize: '17px',
+              textDecoration: "none",
+              color: "blue",
+              fontSize: "17px",
             }}
           >
             Add New User

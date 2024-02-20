@@ -90,7 +90,6 @@ const Dashboard = () => {
           })),
         }));
       } catch (error) {
-        console.error("Error fetching or updating chart data:", error);
       }
     };
 

@@ -51,7 +51,7 @@ label {
 }
 
 .generate_button {
-  background: green;
+  background: #4A55A2;
   border: none;
   outline: none;
   margin: 15px 5px 0px 5px;
@@ -64,6 +64,12 @@ label {
   display: flex;
   justify-content: center;
   cursor: pointer;
+
+}
+
+.generate_button:hover{
+  background-color: #8a96ff;
+  transition: 0.6s;
 
 }
 
@@ -344,7 +350,7 @@ label {
 }
 
 .dist_buttton {
-  background-color: #3dbbff;
+  background-color: #4A55A2;
   color: white;
   font-weight: 600;
   font-size: 20px;
@@ -359,7 +365,7 @@ label {
 }
 
 .dist_button:hover {
-  background-color: #60c7ff;
+  background-color: #4A55A2;
 }
 
 .pinned-items {
@@ -377,4 +383,9 @@ label {
   flex-wrap: wrap;
   align-content: center;
   align-items: center;
+}
+
+.add-colour{
+  margin-top: 5px;
+  display: flex;
 }

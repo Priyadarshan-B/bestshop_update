@@ -48,10 +48,9 @@ const HorizontalNavbar = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("Token is missing");
         return;
       }
-  
+
       const response = await fetch(`${apiHost}/logout`, {
         method: "POST",
         headers: {
@@ -59,16 +58,15 @@ const HorizontalNavbar = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (response.status === 200) {
         localStorage.removeItem("token");
-        console.log("token removed");
-        navigate("/login", { state: { successMessage: "Logout successfully" } });
+        navigate("/login", {
+          state: { successMessage: "Logout successfully" },
+        });
       } else {
-        console.error("Logout failed");
       }
     } catch (error) {
-      console.error("Error during logout:", error);
     }
   };
 
@@ -163,7 +161,7 @@ const HorizontalNavbar = () => {
         <h2 className="website_name">Best Shop</h2>
       </div>
       <div className="icons">
-        <div
+        {/* <div
           className="icon"
           onClick={() => setNotifications(notifications + 1)}
         >
@@ -173,7 +171,7 @@ const HorizontalNavbar = () => {
         <div className="icon" onClick={() => setMessages(messages + 1)}>
           <FaEnvelope />
           {messages > 0 && <span className="badge">{messages}</span>}
-        </div>
+        </div> */}
         <Popup
           className="popup-container"
           trigger={

@@ -3,8 +3,7 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import apiHost from "../../utils/api";
 import "../Login/login.css";
-// import { toast, ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+
 
 const Signup = () => {
   const [username, setUsername] = useState("");
@@ -13,34 +12,10 @@ const Signup = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
-  // const notifySuccess = (message) => {
-  //   toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
-  // };
-
-  // const notifyError = (message) => {
-  //   toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
-  // };
+ 
 
   const handleSignup = async () => {
-    // try {
-    //   const response = await axios.post(`${apiHost}/add_users`, {
-    //     username: username,
-    //     password: password,
-    //     is_admin: isAdmin ? 1 : 0,
-    //   });
-    //   if (!username.trim() || !password.trim()) {
-    //     notifyError('Username and password cannot be empty.');
-    //     return;
-    //   }
-
-    //   console.log('Signup successful:', response.data.message);
-    //   navigate('/login', { state: { successMessage: 'Signup successfully' } });
-    //   notifySuccess('Signup successfully');
-
-    // } catch (error) {
-    //     notifyError('Failed to Signup');
-    //   console.error('Signup failed:', error.response.data.error);
-    // }
+    
 
     try {
       const response = await axios.post(`${apiHost}/add_users`, {
@@ -50,18 +25,12 @@ const Signup = () => {
       });
 
       if (response.data) {
-        console.log("Signup successful:", response.data.message);
-        // notifySuccess('Signup successfully');
         navigate("/login", {
           state: { successMessage: "Signup successfully" },
         });
       } else {
-        console.error("Signup failed: Unexpected response format", response);
-        // notifyError('Failed to Signup');
       }
     } catch (error) {
-      console.error("Signup failed:", error);
-      // notifyError('Failed to Signup');
     }
   };
   const togglePasswordVisibility = () => {
@@ -70,7 +39,6 @@ const Signup = () => {
 
   return (
     <div className="login-container">
-      {/* <ToastContainer/> */}
       <div className="login-box">
         <center>
           <h1>Signup</h1>
