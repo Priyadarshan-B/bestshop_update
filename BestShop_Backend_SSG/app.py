@@ -43,9 +43,9 @@ def generate_token(user_id):
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
-@app.route('/categories/<int:categoryID>/<int:fieldID>', methods=['GET'])
-@app.route('/categories/<int:categoryID>', methods=['GET', 'DELETE'])
-@app.route('/categories', methods=['GET', 'POST'])
+@app.route('/api/bestshop/categories/<int:categoryID>/<int:fieldID>', methods=['GET'])
+@app.route('/api/bestshop/categories/<int:categoryID>', methods=['GET', 'DELETE'])
+@app.route('/api/bestshop/categories', methods=['GET', 'POST'])
 def categories(categoryID=None, fieldID=None):
     try:
         connection = get_db_connection()
@@ -121,8 +121,8 @@ def categories(categoryID=None, fieldID=None):
         cursor.close()
         connection.close()
 
-@app.route('/category-fields', methods = ['GET', 'POST'])
-@app.route('/category-fields/<int:fieldID>', methods = ['DELETE'])
+@app.route('/api/bestshop/category-fields', methods = ['GET', 'POST'])
+@app.route('/api/bestshop/category-fields/<int:fieldID>', methods = ['DELETE'])
 def manage_fields(fieldID = None):
     if request.method == 'GET' and fieldID is None:
         try:
@@ -174,8 +174,8 @@ def manage_fields(fieldID = None):
                 return jsonify({'error': 'Failed to delete Field.. Field is not empty'}), 500 
 
 
-@app.route('/field-details', methods=['GET', 'POST'])
-@app.route('/field-details/<int:fieldDetailsID>', methods = ['DELETE'])
+@app.route('/api/bestshop/field-details', methods=['GET', 'POST'])
+@app.route('/api/bestshop/field-details/<int:fieldDetailsID>', methods = ['DELETE'])
 def manage_field_details(fieldDetailsID = None):
     try:
         connection = get_db_connection()
@@ -233,7 +233,7 @@ def manage_field_details(fieldDetailsID = None):
         connection.close()
 
 
-@app.route('/stocks', methods=['GET', 'POST'])
+@app.route('/api/bestshop/stocks', methods=['GET', 'POST'])
 def manage_stocks():
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
@@ -343,7 +343,7 @@ def manage_stocks():
             connection.close()
 
         
-# @app.route('/dashboard-data', methods=['GET'])
+# @app.route('/api/bestshop/dashboard-data', methods=['GET'])
 # def get_dashboard_data():
 #     cursor = None 
 #     try:
@@ -384,7 +384,7 @@ def manage_stocks():
 #         if cursor is not None:
 #             cursor.close()
 
-@app.route('/dashboard-data', methods=['GET'])
+@app.route('/api/bestshop/dashboard-data', methods=['GET'])
 def get_dashboard_data():
     cursor = None 
     try:
@@ -432,7 +432,7 @@ def get_dashboard_data():
         if cursor is not None:
             cursor.close()
             
-@app.route('/generate-excel', methods=['POST'])
+@app.route('/api/bestshop/generate-excel', methods=['POST'])
 def generate_excel():
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
@@ -493,7 +493,7 @@ def generate_excel():
         cursor.close()
         connection.close()
 
-@app.route('/dropdown/<path:text>', methods=['GET'])
+@app.route('/api/bestshop/dropdown/<path:text>', methods=['GET'])
 def get_dropdown_options(text):
     try:
         connection = get_db_connection()
@@ -521,11 +521,11 @@ def get_dropdown_options(text):
         cursor.close()
         connection.close()
         
-@app.route('/uploads/<path:filename>', methods=['GET'])
+@app.route('/api/bestshop/uploads/<path:filename>', methods=['GET'])
 def uploaded_file(filename):
     return send_from_directory('uploads', filename)
 
-@app.route('/add_users', methods=['POST'])
+@app.route('/api/bestshop/add_users', methods=['POST'])
 def register_user():
     try:
         connection = get_db_connection()
@@ -555,7 +555,7 @@ def register_user():
         cursor.close()
         connection.close()
 
-@app.route('/login', methods=['POST'])
+@app.route('/api/bestshop/login', methods=['POST'])
 def login_user():
     try:
         connection = get_db_connection()
@@ -581,7 +581,7 @@ def login_user():
         cursor.close()
         connection.close()
 
-@app.route('/logout', methods=['POST'])
+@app.route('/api/bestshop/logout', methods=['POST'])
 def logout_user():
     try:
         token = request.headers.get('Authorization')
@@ -592,7 +592,7 @@ def logout_user():
         app.logger.error(f"Error: {str(e)}")
         return jsonify({'error': 'Internal Server Error'}), 500
 
-@app.route('/sample', methods = ['GET'])
+@app.route('/api/bestshop/sample', methods = ['GET'])
 def sample_data():
     try:
         connection = get_db_connection()
@@ -611,7 +611,7 @@ def sample_data():
         cursor.close()
         connection.close()
 
-@app.route('/colour', methods=['GET', 'POST'])
+@app.route('/api/bestshop/colour', methods=['GET', 'POST'])
 def colour():
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)

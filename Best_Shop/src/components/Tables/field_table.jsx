@@ -80,6 +80,7 @@ const FieldTable = () => {
       .then((response) => response.json())
       .then((data) => {
         // alert(data.message);
+        populateCategoriesDropdown();
         handleCloseDialog();
         notifySuccess("Field added successfully");
       })

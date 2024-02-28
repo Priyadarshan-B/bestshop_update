@@ -31,7 +31,7 @@ function AddStocks() {
   const [isLoading, setIsLoading] = useState(false);
   const [price, setPrice] = useState(1);
   const [colour, setColour] = useState("");
-  const [addcolour, setAddcolour] = useState("");
+  // const [addcolour, setAddcolour] = useState("");
   const [inputValue, setInputValue] = useState("");
 
   const [model, setModel] = useState("");
@@ -61,7 +61,6 @@ function AddStocks() {
   };
 
   const submitColour = () => {
-    // Assuming you are using fetch for sending data to the backend
     fetch(`${apiHost}/colour`, {
       method: "POST",
       headers: {
@@ -74,13 +73,14 @@ function AddStocks() {
       .then((response) => response.json())
       .then((data) => {
         // Handle response from the backend if necessary
-        console.log(data);
+        notifySuccess("Colour Added Successfully");
+        // Trigger useEffect by updating the state variable
+        setUpdateColors((prevState) => !prevState);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        notifyError("Failed to Add Colour");
       });
   };
-
   // distributor TextBox
 
   const [distValue, setDistValue] = useState("");
@@ -327,6 +327,7 @@ function AddStocks() {
       .then((response) => response.json())
       .then((data) => {
         handleCloseDialog();
+        populateCategoriesDropdown();
         notifySuccess("Field added successfully");
       })
       .catch((error) => {
@@ -471,6 +472,7 @@ function AddStocks() {
 
   // colours
   const [options, setOptions] = useState([]);
+  const [updateColors, setUpdateColors] = useState(false); // New state variable
 
   const [selectedOption, setSelectedOption] = useState("");
 
@@ -485,7 +487,7 @@ function AddStocks() {
         setOptions(newOptions);
       })
       .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+  }, [updateColors]); // useEffect depends on updateColors
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption.value);
