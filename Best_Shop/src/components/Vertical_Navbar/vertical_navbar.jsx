@@ -114,6 +114,10 @@ const VerticalNavbar = () => {
                   <InfoIcon style={{ marginRight: '10px', fontSize: '18px' }} />
                   <b>Field Details</b>
                 </li>
+                <li className={selectedField === 'colourtable' ? 'selected' : ''} onClick={() => handleNavigate('/colourtable')}>
+                  <InfoIcon style={{ marginRight: '10px', fontSize: '18px' }} />
+                  <b>Colour</b>
+                </li>
               </ul>
             )}
           </li>

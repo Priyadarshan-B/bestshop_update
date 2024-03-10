@@ -9,12 +9,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color:#C5DFF8;
+  background-color:#013a6e;
 }
 
 .login-box {
   width: max-content;
-  background-color: #A0BFE0;
+  background-color: #ffffff;
   padding: 90px 50px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
@@ -59,10 +59,21 @@
   font-size: 22px;
   display: flex;
   flex-wrap: wrap;
+  align-content: space-between;
+  justify-content: space-around;
+  align-items: center;
+}
+.login_lable_1{
+  gap: 5px;
+  font-size: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  align-items: center;
 }
 .login_input{
   font-size: 20px;
-  background-color: #ffffff;
+  background-color: #d4ecff;
   border-radius: 3px;
   padding: 3px;
   outline: none;

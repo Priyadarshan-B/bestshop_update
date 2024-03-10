@@ -2,54 +2,44 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./login.css";
 import apiHost from "../../utils/api";
-// import { toast, ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-import LoginImg from "../../assets/img/login2.jpg";
+import Cookies from "js-cookie";
+
+// import LoginImg from "../../assets/img/login2.jpg";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // const notifySuccess = (message) => {
-  //   toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
-  // };
-
-  // const notifyError = (message) => {
-  //   toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
-  // };
-
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      const response = await fetch(`${apiHost}/login`, {
+      const response = await fetch(`${apiHost}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ name, password }),
       });
 
       if (response.ok) {
-        // notifySuccess('Login successfully');
         const { token } = await response.json();
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("isLogin", "true");
+        // Store token in cookie
+        Cookies.set("token", token);
 
         setError(null);
-        navigate("/dashboard", {
+        navigate("/addStocks", {
           state: { successMessage: "Login Successfully" },
         });
       } else {
         const { message } = await response.json();
         setError(message);
-        // notifyError('Failed to login');
       }
     } catch (error) {
       setError("An unexpected error occurred.");
-      // notifyError('Failed to login');
     }
   };
 
@@ -58,62 +48,75 @@ const Login = () => {
   };
 
   return (
-    <div style={{ backgroundImage: { LoginImg } }} className="login-container">
-      <div className="login-box">
-        <center>
-          <h1>Login</h1>
-        </center>
-        <br />
-        {error && <p className="error-message">{error}</p>}
-        <label className="login_lable">
-          Username
-          <input
-            className="login_input"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
-        <br />
-        <label className="login_lable">
-          Password
-          <input
-            className="login_input"
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </label>
-
-        <div className="password-visibility">
-          <input
-            id="show-pass"
-            onChange={togglePasswordVisibility}
-            style={{ padding: 0, height: 20, width: 20 }}
-            type="checkbox"
-          />
-          <label htmlFor="show-pass">
-            {showPassword ? "Hide" : "Show"} Password
-          </label>
-        </div>
-        <br />
-        <button className="login-button" onClick={handleLogin}>
-          Login
-        </button>
-        <div style={{ marginTop: "10px" }}>
-          <Link
-            to="/signup"
+    <div
+      //   style={{ backgroundImage: `url(${LoginImg})` }}
+      className="login-container"
+    >
+      <form onSubmit={handleLogin}>
+        <div className="login-box">
+          <center>
+            <h1>Login</h1>
+          </center>
+          <br />
+          {error && <p className="error-message">{error}</p>}
+          <div
+            className="user-pass"
             style={{
-              textDecoration: "none",
-              color: "blue",
-              fontSize: "17px",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            Add New User
-          </Link>
+            <label className="login_lable">
+              Username
+              <input
+                className="login_input"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </label>
+            <br />
+            <label className="login_lable">
+              Password
+              <input
+                className="login_input"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div className="password-visibility">
+            <input
+              id="show-pass"
+              onChange={togglePasswordVisibility}
+              style={{ padding: 0, height: 20, width: 20 }}
+              type="checkbox"
+            />
+            <label htmlFor="show-pass">
+              {showPassword ? "Hide" : "Show"} Password
+            </label>
+          </div>
+          <br />
+          <button className="login-button" type="submit">
+            Login
+          </button>
+          <div style={{ marginTop: "10px" }}>
+            <Link
+              to="/signup"
+              style={{
+                textDecoration: "none",
+                color: "blue",
+                fontSize: "17px",
+              }}
+            >
+              Add New User
+            </Link>
+          </div>
         </div>
-      </div>
-      {/* <ToastContainer /> */}
+      </form>
     </div>
   );
 };

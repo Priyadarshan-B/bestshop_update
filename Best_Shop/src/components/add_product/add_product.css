@@ -379,13 +379,80 @@ label {
 
 .sizeandquantity{
   display: flex;
-  flex-direction: row;
+  gap: 10px;
   flex-wrap: wrap;
   align-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .add-colour{
   margin-top: 5px;
   display: flex;
+}
+
+.form-select-1{
+  width: 289px;
+
+  padding: 5px;
+  border: none;
+  box-shadow: 0px 2px 7px rgb(86, 86, 86);
+  border-radius: 5px;
+  font-size: large;
+  font-weight: 500;
+  color: rgb(118, 118, 118);
+
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    display: flex;
+    cursor: pointer;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.item-card,
+.sub-category-card,
+.brand-card {
+  margin: 10px 0;
+  min-width: 200px;
+    min-height: 80px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f3f3f3;
+  cursor: pointer;
+  display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.item-card img,
+.brand-card img {
+  width: 50px; /* Adjust image size as needed */
+  height: 50px; /* Adjust image size as needed */
+  margin-left: 10px;
+}
+
+.input_box-1{
+  padding: 5px;
+    font-size: 17px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow:0px 4px 6px rgba(0, 0, 0, 0.1) ;
+
 }

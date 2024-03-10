@@ -4,7 +4,6 @@ import { useNavigate, Link } from "react-router-dom";
 import apiHost from "../../utils/api";
 import "../Login/login.css";
 
-
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -12,16 +11,12 @@ const Signup = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
- 
-
   const handleSignup = async () => {
-    
-
     try {
-      const response = await axios.post(`${apiHost}/add_users`, {
-        username: username,
+      const response = await axios.post(`${apiHost}/auth/signup`, {
+        name: username,
         password: password,
-        is_admin: isAdmin ? 1 : 0,
+        role: isAdmin ? 1 : 0,
       });
 
       if (response.data) {
@@ -30,8 +25,7 @@ const Signup = () => {
         });
       } else {
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -78,8 +72,8 @@ const Signup = () => {
           </label>
         </div>
         <br />
-        <label className="login_lable">
-          Admin:
+        <label className="login_lable_1">
+          Admin
           <input
             type="checkbox"
             style={{ padding: 0, height: 20, width: 20 }}

@@ -54,7 +54,6 @@ const DetailTable = () => {
       formData.append("image", selectedImage);
     }
 
-      
     fetch(`${API_BASE_URL}/field-details`, {
       method: "POST",
       body: formData,
@@ -74,8 +73,7 @@ const DetailTable = () => {
       .then((data) => {
         setCategoryOptions(["", ...data]);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const getFields = () => {
@@ -84,7 +82,6 @@ const DetailTable = () => {
     fetch(`${API_BASE_URL}/dropdown/category_fields/${selectedCategory}`)
       .then((response) => response.json())
       .then((data) => {
-
         const modifiedFieldOptions = data.map((field) => ({
           value: `${field.field_id},${field.field_name}`,
           label: field.field_name,
@@ -92,8 +89,7 @@ const DetailTable = () => {
 
         setFieldOptions(["", ...modifiedFieldOptions]);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   React.useEffect(() => {
@@ -132,13 +128,16 @@ const DetailTable = () => {
     try {
       const response = await requestApi("GET", "/categories/0/0", {});
       setCategories(response.data || []);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const columns = [
     { field: "id", headerName: <b>S.No</b>, width: 100 },
-    { field: "category_name", headerName: <b>Category Name</b>, width: 190 },
+    {
+      field: "category_name",
+      headerName: <b>Category Name</b>,
+      width: 190,
+    },
     { field: "field_name", headerName: <b>Field Name</b>, width: 190 },
     { field: "details_name", headerName: <b>Details Name</b>, width: 190 },
     {
@@ -182,8 +181,7 @@ const DetailTable = () => {
     details_name: category.details_name,
   }));
 
-  const handleEdit = (id) => {
-  };
+  const handleEdit = (id) => {};
 
   // delete detail_fields
   const deleteCategory = (detail_id) => {
@@ -215,24 +213,7 @@ const DetailTable = () => {
     }
   };
 
-  // const styles = {
-  //   backgroundColor: "white",
-  //   marginTop: "20px",
-  //   height: "560px",
-  //   width: "100%",
-  //   borderRadius: "10px",
-  //   padding: "35px",
-  //   boxShadow: "0 0 14px rgba(0, 0, 0, 0.1)",
-  //   fontSize: "15px",
-  // };
-
-  // const smallScreenStyles = {
-  //   ...styles,
-  //   height: "400px",
-  //   width: "50%",
-  // };
-  // const dynamicStyles = window.innerWidth <= 800 ? smallScreenStyles : styles;
-
+  
   return (
     <div className="dashboard-container">
       <HorizontalNavbar />
@@ -241,23 +222,22 @@ const DetailTable = () => {
         <ToastContainer />
         <div className="dashboard-body">
           <div className="box-for-tables">
-          {categories && categories.length > 0 ? (
+            {categories && categories.length > 0 ? (
               <>
-            <div className="category-header-container">
-              <h2>Category with Detail Table</h2>
-              <button
-                className="add-button"
-                type="button"
-                onClick={handleOpenDialog}
-              >
-                <b>ADD </b>
-                <div>
-                  <LibraryAddIcon />
+                <div className="category-header-container">
+                  <h2>Category with Detail Table</h2>
+                  <button
+                    className="add-button"
+                    type="button"
+                    onClick={handleOpenDialog}
+                  >
+                    <b>ADD </b>
+                    <div>
+                      <LibraryAddIcon />
+                    </div>
+                  </button>
                 </div>
-              </button>
-            </div>
 
-            
                 <div className="detail-table-grid">
                   <DataGrid
                     rows={rows}
@@ -336,7 +316,7 @@ const DetailTable = () => {
                       </div>
                       <div>
                         <select
-                          className="form-select-none"
+                          className="form-select-1"
                           id="field_name"
                           name="field_name"
                         >
