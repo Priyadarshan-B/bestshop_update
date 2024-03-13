@@ -12,6 +12,8 @@ import InfoIcon from "@mui/icons-material/Info";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
+import Cookies from "js-cookie";
+
 
 const HorizontalNavbar = () => {
   const [notifications, setNotifications] = useState(0);
@@ -33,40 +35,48 @@ const HorizontalNavbar = () => {
     toggleMasterSubMenu();
   };
 
-  // const handleMenuItemClick = (menuItem) => {
-  //   setSelectedMenuItem(menuItem);
-  //   setShowMenu(false);
-  //   // Add logic to handle the click for each menu item if needed
-  // };
-
+ 
   const handleNavigate = (path) => {
     navigate(path);
     setSelectedField(null);
   };
 
+  // const handleLogout = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       return;
+  //     }
+
+  //     const response = await fetch(`${apiHost}/logout`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+
+  //     if (response.status === 200) {
+  //       localStorage.removeItem("token");
+  //       navigate("/login", {
+  //         state: { successMessage: "Logout successfully" },
+  //       });
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //   }
+  // };
   const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        return;
-      }
+      Cookies.remove("token");
 
-      const response = await fetch(`${apiHost}/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+      navigate("/login", {
+        state: { successMessage: "Logout successfully" },
+        
       });
-
-      if (response.status === 200) {
-        localStorage.removeItem("token");
-        navigate("/login", {
-          state: { successMessage: "Logout successfully" },
-        });
-      } else {
-      }
+      console.log("Logout Successfull")
     } catch (error) {
+      console.error("Error logging out:", error);
     }
   };
 
@@ -85,18 +95,6 @@ const HorizontalNavbar = () => {
                 <SpaceDashboardIcon style={{ marginRight: "10px" }} />
                 <b>Dashboard </b>
               </li>
-              {/* inventory_nav */}
-              {/* <li className={selectedField === 'inventory' ? 'selected' : ''}
-                onClick={() => handleNavigate('/inventory')}>
-                <InventoryIcon style={{ marginRight: '10px' }} />
-                <b>Inventory</b>
-              </li> */}
-              {/* enquiries_nav */}
-              {/* <li className={selectedField === 'enquiries' ? 'selected' : ''} onClick={() => handleNavigate('/enquiries')}>
-                <QueryStatsIcon style={{ marginRight: '10px' }} />
-                <b>Enquiries</b>
-              </li> */}
-              {/* addStock_nav */}
               <li
                 className={selectedField === "addStock" ? "selected" : ""}
                 onClick={() => handleNavigate("/addStock")}

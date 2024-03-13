@@ -8,8 +8,15 @@ import Select from "react-select";
 import "./add_product.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import InputBox from "../InputBox/inputbox";
+import CategoryDialog from "../CustomDialog/customdialog";
+import CustomDialog from "../CustomDialog/customdialog";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
+import Button from "@mui/material/Button";
 
 function AddStocks({ text }) {
   const [categories, setCategories] = useState([]);
@@ -32,10 +39,217 @@ function AddStocks({ text }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sellingprice, setSellingPrice] = useState("");
   const [mrp, setMrp] = useState("");
-  const [purchaseprice, setPurchasePrice] = useState("");
+  const [purchaseprice, setPurchasePrice] = useState(1);
   const [errors, setErrors] = useState([]);
+  const [bill, setBill] = useState("");
   const navigate = useNavigate();
+  // value
+  const [categoryvalue, setCategoryValue] = useState("");
+  const [categoryimage, setCategoryImage] = useState(null);
+  const [itemvalue, setItemValue] = useState("");
+  const [itemimage, setItemImage] = useState(null);
+  const [subvalue, setSubValue] = useState("");
+  const [subimage, setSubImage] = useState(null);
+  const [brandvalue, setBrandValue] = useState("");
+  const [brandimage, setBrandImage] = useState(null);
 
+  // dialogs
+  const [categoryopen, setCategoryOpen] = useState(false);
+  const [itemopen, setItemOpen] = useState(false);
+  const [subopen, setSubOpen] = useState(false);
+  const [brandopen, setBrandOpen] = useState(false);
+
+  // category dialog
+  const handleCategoryOpen = () => {
+    setCategoryOpen(true);
+  };
+  const handleCategoryClose = () => {
+    setCategoryOpen(false);
+  };
+
+  const handleCategoryImage = (event) => {
+    setCategoryImage(event.target.files[0]);
+  };
+
+  const handleCategorySubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", categoryvalue);
+    formData.append("image", categoryimage);
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/structure/category",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("Success:", data);
+      fetchCategories();
+      setCategoryOpen(false);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  // item dialog
+  const handleItemOpen = () => {
+    setItemOpen(true);
+  };
+  const handleItemClose = () => {
+    setItemOpen(false);
+  };
+  const handleItemChange = (event) => {
+    setItemValue(event.target.value);
+  };
+  const handleItemImage = (event) => {
+    const file = event.target.files[0];
+    setItemImage(file);
+  };
+  const handleItemSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("category", selectedCategory.id);
+      formData.append("name", itemvalue);
+      if (itemimage) {
+        formData.append("image", itemimage);
+      }
+      // Log the FormData object to see its contents
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await requestApi(
+        "POST",
+        "/api/structure/item-name",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.success) {
+        console.log("Item added successfully");
+        fetchItemNames(selectedCategory.id);
+      } else {
+        console.error("Error adding item:", response.error);
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
+    setItemOpen(false); // Close the dialog after submission
+  };
+  // sub dialog
+  const handleSubOpen = () => {
+    setSubOpen(true);
+  };
+  const handleSubClose = () => {
+    setSubOpen(false);
+  };
+  const handleSubChange = (event) => {
+    setSubValue(event.target.value);
+  };
+
+  const handleSubImage = (event) => {
+    const file = event.target.files[0];
+    setSubImage(file);
+  };
+  const handleSubSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("item_name", selectedItemName.id);
+      formData.append("name", subvalue);
+      if (subimage) {
+        formData.append("image", subimage);
+      }
+      // Log the FormData object to see its contents
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await requestApi(
+        "POST",
+        "/api/structure/sub-category",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.success) {
+        console.log("SubCategory added successfully");
+        fetchSubCategories(selectedItemName.id);
+      } else {
+        console.error("Error adding Sub:", response.error);
+      }
+    } catch (error) {
+      console.error("Error adding Sub:", error);
+    }
+    setSubOpen(false); // Close the dialog after submission
+  };
+
+  // brand dialog
+  const handleBrandOpen = () => {
+    setBrandOpen(true);
+  };
+  const handleBrandClose = () => {
+    setBrandOpen(false);
+  };
+  const handleBrandChange = (event) => {
+    setBrandValue(event.target.value);
+  };
+
+  const handleBrandImage = (event) => {
+    const file = event.target.files[0];
+    setBrandImage(file);
+  };
+  const handleBrandSubmit = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("sub_category", selectedSubCategory.id);
+      formData.append("name", brandvalue);
+      if (brandimage) {
+        formData.append("image_path", brandimage);
+      }
+      // Log the FormData object to see its contents
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await requestApi(
+        "POST",
+        "/api/structure/brand",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.success) {
+        console.log("Brand added successfully");
+        fetchBrands(selectedSubCategory.id);
+      } else {
+        console.error("Error adding Brand:", response.error);
+      }
+    } catch (error) {
+      console.error("Error adding Brand:", error);
+    }
+    setBrandOpen(false); // Close the dialog after submission
+  };
   // navigate
   const handleNavigate = (path) => {
     navigate(path);
@@ -142,30 +356,54 @@ function AddStocks({ text }) {
     setMrp(value);
   };
 
-  // size and quantity
-  const [inputs, setInputs] = useState([]);
-
-  const handleAddField = () => {
-    setInputs([...inputs, { size: "", quantity: "" }]);
-  };
-
-  const handleRemoveField = (index) => {
-    const newInputs = [...inputs];
-    newInputs.splice(index, 1);
-    setInputs(newInputs);
-  };
-
-  const handleInputValueChange = (index, key, value) => {
-    const newInputs = [...inputs];
-    newInputs[index][key] = value;
-    setInputs(newInputs);
-  };
   // refresh data.
   const handleRefresh = () => {
     setSellingPrice("");
     setMrp("");
-    setInputs([]);
     setModels([]);
+  };
+
+  const handleGenerate = async () => {
+    const sizeIds = Object.keys(sizeQuantities).map((sizeId) =>
+      parseInt(sizeId)
+    );
+    const quantities = Object.values(sizeQuantities).map((quantity) =>
+      parseInt(quantity)
+    );
+
+    const data = {
+      bill_number: parseInt(bill),
+      category: selectedCategory.id,
+      item_name: selectedItemName.id,
+      sub_category: selectedSubCategory.id,
+      brand: selectedBrand.id,
+      model: selectedModel.value,
+      color: selectedColor.value,
+      selling_price: parseInt(sellingprice),
+      purchasing_price: parseInt(purchaseprice),
+      mrp: parseInt(mrp),
+      size: sizeIds,
+      quantity: quantities,
+
+      name: [
+        selectedCategory.name,
+        selectedItemName.name,
+        selectedSubCategory.name,
+        selectedBrand.name,
+      ].join("-"),
+    };
+    console.log(data);
+
+    try {
+      const response = await requestApi("POST", "/api/stock/stock", data, {});
+      if (response.success) {
+        console.log("Stock Added Successfully:", response.data);
+      } else {
+        console.error("Error Adding Stocks:", response.error);
+      }
+    } catch (error) {
+      console.log("Error adding stocks:", error);
+    }
   };
 
   // Function to handle search input change
@@ -177,7 +415,8 @@ function AddStocks({ text }) {
     try {
       const response = await requestApi(
         "GET",
-        `/api/structure/item-name?category=${categoryId}`
+        `/api/structure/item-name?category=${categoryId}`,
+        {}
       );
       if (response.success) {
         setItemNames(response.data);
@@ -191,7 +430,8 @@ function AddStocks({ text }) {
     try {
       const response = await requestApi(
         "GET",
-        `/api/structure/sub-category?item_name=${itemNameId}`
+        `/api/structure/sub-category?item_name=${itemNameId}`,
+        {}
       );
       if (response.success) {
         setSubCategories(response.data);
@@ -205,7 +445,8 @@ function AddStocks({ text }) {
     try {
       const response = await requestApi(
         "GET",
-        `/api/structure/brand?sub_category=${subCategoryId}`
+        `/api/structure/brand?sub_category=${subCategoryId}`,
+        {}
       );
       if (response.success) {
         setBrands(response.data);
@@ -219,7 +460,8 @@ function AddStocks({ text }) {
     try {
       const response = await requestApi(
         "GET",
-        `/api/structure/model?brand=${brandId}`
+        `/api/structure/model?brand=${brandId}`,
+        {}
       );
       if (response.success) {
         setModels(response.data);
@@ -234,7 +476,8 @@ function AddStocks({ text }) {
     try {
       const response = await requestApi(
         "GET",
-        `/api/structure/color?model=${modelId}` // Updated to use modelId
+        `/api/structure/color?model=${modelId}`,
+        {}
       );
       if (response.success) {
         setColors(response.data);
@@ -248,7 +491,8 @@ function AddStocks({ text }) {
     try {
       const response = await requestApi(
         "GET",
-        `/api/structure/size?color=${colorId}`
+        `/api/structure/size?color=${colorId}`,
+        {}
       );
       if (response.success) {
         setSizes(response.data);
@@ -266,10 +510,10 @@ function AddStocks({ text }) {
   const sizeInputs = () => {
     return sizes.map((size) => (
       <div className="sizeandquantity" key={size.id}>
-        <label>{size.name}</label>
+        <label>{size.name} :</label>
         <input
           className="input_box-1"
-          type="text"
+          type="number"
           value={sizeQuantities[size.id]}
           onChange={(e) => handleSizeQuantity(size.id, e.target.value)}
         />
@@ -286,49 +530,50 @@ function AddStocks({ text }) {
         <div className="dashboard-body">
           <div className="category-page">
             <div className="select-category-card">
-              <h2>Select a Category</h2>
+              {selectedCategory ? null : <h2>Select a Category</h2>}
               <div className="selected-info">
-                {selectedBrand && (
-                  <>
+                {selectedBrand &&
+                  (selectedBrand.image_path !== "" ? (
                     <img
-                      src={apiHost + selectedBrand.image_path}
+                      src={`${apiHost}/` + selectedBrand.image_path}
                       alt={selectedBrand.name}
                     />
+                  ) : (
                     <p>{selectedBrand.name}</p>
-                  </>
-                )}
-                {selectedSubCategory && (
-                  <>
+                  ))}
+                {selectedSubCategory &&
+                  (selectedSubCategory.image_path !== "" ? (
                     <img
-                      src={apiHost + selectedSubCategory.image_path}
+                      src={`${apiHost}/` + selectedSubCategory.image_path}
                       alt={selectedSubCategory.name}
                     />
+                  ) : (
                     <p>{selectedSubCategory.name}</p>
-                  </>
-                )}
-                {selectedItemName && (
-                  <>
+                  ))}
+                {selectedItemName &&
+                  (selectedItemName.image_path !== "" ? (
                     <img
-                      src={apiHost + selectedItemName.image_path}
+                      src={`${apiHost}/` + selectedItemName.image_path}
                       alt={selectedItemName.name}
                     />
+                  ) : (
                     <p>{selectedItemName.name}</p>
-                  </>
-                )}
-                {selectedCategory && (
-                  <>
+                  ))}
+                {selectedCategory &&
+                  (selectedCategory.image_path !== "" ? (
                     <img
-                      src={apiHost + selectedCategory.image_path}
+                      src={`${apiHost}/` + selectedCategory.image_path}
                       alt={selectedCategory.name}
                     />
+                  ) : (
                     <p>{selectedCategory.name}</p>
-                  </>
-                )}
+                  ))}
               </div>
             </div>
 
             <div className="search-and-product-type-grid">
               <div className="search-container">
+                <h3 className="search-label">Search:</h3>
                 <input
                   className="input_box"
                   type="text"
@@ -342,81 +587,154 @@ function AddStocks({ text }) {
                 <div className="card-container">
                   {/* Categories */}
                   {selectedCategory === null && (
-                    <div className="card">
-                      <h2>Select a Category</h2>
-                      {filterData(categories).map((category) => (
-                        <div
-                          key={category.id}
-                          className="item-card"
-                          onClick={() => handleSelectCategory(category)}
-                        >
-                          {category.name}
-                          {category.image_path && (
-                            <img
-                              src={category.image_path}
-                              alt={category.name}
-                            />
-                          )}
+                    <div className="card1">
+                      <div className="name-and-icon">
+                        <h2>Select a Category</h2>
+                        <AddCircleOutlinedIcon onClick={handleCategoryOpen} />
+                      </div>
+                      <div className="card">
+                        <div className="flex-container">
+                          {filterData(categories).map((category) => (
+                            <div
+                              key={category.id}
+                              className="item-card"
+                              onClick={() => handleSelectCategory(category)}
+                            >
+                              <div className="category-info">
+                                {category.name}
+                                {category.image_path && (
+                                  <img
+                                    src={`${apiHost}/` + category.image_path}
+                                    alt={category.name}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      </div>
                     </div>
                   )}
 
                   {/* Item Names */}
                   {selectedCategory && selectedItemName === null && (
-                    <div className="card">
-                      <h2>Select an Item Name</h2>
-                      {filterData(itemNames).map((itemName) => (
-                        <div
-                          key={itemName.id}
-                          onClick={() => handleSelectItemName(itemName)}
-                          className="item-card"
-                        >
-                          {itemName.name}
-                          {itemName.image_path && (
-                            <img
-                              src={itemName.image_path}
-                              alt={itemName.name}
-                            />
-                          )}
-                        </div>
-                      ))}
+                    <div className="card1">
+                      <div className="name-and-icon">
+                        <h2>
+                          <center>Item Name</center>
+                        </h2>
+                        <AddCircleOutlinedIcon onClick={handleItemOpen} />
+                        <CustomDialog
+                          open={itemopen}
+                          handleClose={handleItemClose}
+                          handleSubmit={handleItemSubmit}
+                          label="Add Item"
+                          title="Add Item"
+                          type="text"
+                          onChange={handleItemChange}
+                          value={itemvalue}
+                          id="new_item"
+                          size="small"
+                          handleImageUpload={handleItemImage}
+                          image={itemimage}
+                        />
+                      </div>
+
+                      <div className="card">
+                        {filterData(itemNames).map((itemName) => (
+                          <div
+                            key={itemName.id}
+                            onClick={() => handleSelectItemName(itemName)}
+                            className="item-card"
+                          >
+                            {itemName.name}
+                            {itemName.image_path && (
+                              <img
+                                src={itemName.image_path}
+                                alt={itemName.name}
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
 
                   {/* Sub Categories */}
                   {selectedItemName && selectedSubCategory === null && (
-                    <div className="card">
-                      <h2>Select a Sub-Category</h2>
-                      {filterData(subCategories).map((subCategory) => (
-                        <div
-                          key={subCategory.id}
-                          onClick={() => handleSelectSubCategory(subCategory)}
-                          className="sub-category-card"
-                        >
-                          {subCategory.name}
-                          <img src={subCategory.image_path} />
-                        </div>
-                      ))}
+                    <div className="card1">
+                      <div className="name-and-icon">
+                        <h2>
+                          <center>Select a Sub-Category</center>
+                        </h2>
+                        <AddCircleOutlinedIcon onClick={handleSubOpen} />
+                        <CustomDialog
+                          open={subopen}
+                          handleClose={handleSubClose}
+                          handleSubmit={handleSubSubmit}
+                          label="Add Sub-Category"
+                          title="Add Sub-Category"
+                          type="text"
+                          onChange={handleSubChange}
+                          value={subvalue}
+                          id="new_sub"
+                          size="small"
+                          handleImageUpload={handleSubImage}
+                          image={subimage}
+                        />
+                      </div>
+                      <div className="card">
+                        {filterData(subCategories).map((subCategory) => (
+                          <div
+                            key={subCategory.id}
+                            onClick={() => handleSelectSubCategory(subCategory)}
+                            className="sub-category-card"
+                          >
+                            {subCategory.name}
+                            <img src={subCategory.image_path} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
 
                   {/* Brands */}
                   {selectedSubCategory && selectedBrand === null && (
                     <div className="card">
-                      <h2>Select a Brand</h2>
-                      {filterData(brands).map((brand) => (
-                        <div
-                          key={brand.id}
-                          onClick={() => handleSelectBrand(brand)}
-                          className="brand-card"
-                        >
-                          {brand.name}
-                          {brand.image_path && (
-                            <img src={brand.image_path} alt={brand.name} />
-                          )}
-                        </div>
-                      ))}
+                      <div className="name-and-icon">
+                        <h2>
+                          <center>Select a Brand</center>
+                        </h2>
+                        <AddCircleOutlinedIcon onClick={handleBrandOpen} />
+                        <CustomDialog
+                          open={brandopen}
+                          handleClose={handleBrandClose}
+                          handleSubmit={handleBrandSubmit}
+                          label="Add Brand"
+                          title="Add Brand"
+                          type="text"
+                          onChange={handleBrandChange}
+                          value={brandvalue}
+                          id="new_brand"
+                          size="small"
+                          handleImageUpload={handleBrandImage}
+                          image={brandimage}
+                        />
+                      </div>
+                      <div className="card">
+                        {filterData(brands).map((brand) => (
+                          <div
+                            key={brand.id}
+                            onClick={() => handleSelectBrand(brand)}
+                            className="brand-card"
+                          >
+                            {brand.name}
+                            {brand.image_path && (
+                              <img src={brand.image_path} alt={brand.name} />
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                   {selectedBrand && (
@@ -429,12 +747,10 @@ function AddStocks({ text }) {
                               <b>Select a Model</b>
                               <Select
                                 options={modelOptions}
-                                onChange={
-                                  (selectedOption) => {
-                                    setSelectedModel(selectedOption);
-                                    handleSelectedModel(selectedOption);
-                                  } // Corrected here
-                                }
+                                onChange={(selectedOption) => {
+                                  setSelectedModel(selectedOption);
+                                  handleSelectedModel(selectedOption);
+                                }}
                                 value={selectedModel}
                               />
                             </div>
@@ -465,6 +781,18 @@ function AddStocks({ text }) {
                       <div className="part_for_price">
                         <div className="price-boxes">
                           <div className="centering">
+                            <div className="input-container">
+                              <label htmlFor="selling_price">Bill:</label>
+                              <input
+                                placeholder="Enter Bill No.."
+                                className="input_box"
+                                type="number"
+                                id="bill"
+                                value={bill}
+                                onChange={(e) => setBill(e.target.value)}
+                                required
+                              />
+                            </div>
                             <div className="input-container">
                               <label htmlFor="selling_price">
                                 Selling Price:
@@ -509,7 +837,7 @@ function AddStocks({ text }) {
                               <button
                                 className="generate_button"
                                 onClick={() => {
-                                  // handleGenerate();
+                                  handleGenerate();
                                   handleNavigate("/productdashboard");
                                 }}
                               >
@@ -518,7 +846,7 @@ function AddStocks({ text }) {
                               <button
                                 className="generate_button"
                                 onClick={() => {
-                                  // handleGenerate();
+                                  handleGenerate();
                                   handleRefresh();
                                 }}
                               >
@@ -535,6 +863,79 @@ function AddStocks({ text }) {
             </div>
           </div>
         </div>
+      </div>
+      {/* category dialog */}
+      <div>
+        <Dialog
+          open={categoryopen}
+          onClose={handleCategoryClose}
+          PaperProps={{
+            style: {
+              padding: "10px",
+            },
+          }}
+        >
+          <form onSubmit={handleCategorySubmit}>
+            <div>
+              <DialogTitle
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <h2>Add Category</h2>
+              </DialogTitle>
+              <DialogContent
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                <br />
+                <InputBox
+                  type="text"
+                  label="Add Category"
+                  id="categoryvalue"
+                  name="category_name"
+                  value={categoryvalue}
+                  onChange={(e) => setCategoryValue(e.target.value)}
+                  required
+                  size="small"
+                />
+                <br />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleCategoryImage}
+                />
+                <br />
+                <button>Add</button>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={handleCategoryClose}
+                  style={{
+                    fontWeight: 700,
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  onClick={() => {
+                    handleCategorySubmit();
+                    handleCategoryClose();
+                  }}
+                  style={{
+                    fontWeight: 700,
+                  }}
+                >
+                  Submit
+                </Button>
+              </DialogActions>
+            </div>
+          </form>
+        </Dialog>
       </div>
     </div>
   );

@@ -108,34 +108,31 @@ label {
   border-radius: 5px;
   font-size: large;
   font-weight: 500;
-  color: rgb(86, 86, 86);
-
+  /* color: rgb(86, 86, 86); */
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .last {
   display: flex;
-  margin-top: 20px;
   flex: 13;
   flex-wrap: wrap;
   gap: 15px;
 }
 
 .count-size-quantity-box {
-  height: 260px;
   width: 60%;
   padding: 0px 20px 20px 20px;
   overflow-y: scroll;
-  box-shadow: 0px 1px 3px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 7px;
   border: 10px solid white;
 }
 
 .price-boxes {
-  height: 260px;
   width: 60%;
   padding: 0px 20px 20px 20px;
   overflow-y: hidden;
-  box-shadow: 0px 1px 3px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   border-radius: 7px;
   border: 10px solid white;
   display: flex;
@@ -144,7 +141,7 @@ label {
 }
 
 .centering {
-  width: 99%;
+  padding-top: 10px;
 }
 
 /* For WebKit browsers (Chrome, Safari) */
@@ -252,13 +249,6 @@ label {
     overflow-y: scroll;
   }
 
-  .input_box {
-    width: 96%;
-  }
-
-  .centering {
-    margin-top: 60px;
-  }
 
 }
 
@@ -272,7 +262,9 @@ label {
   }
 
   .centering {
-    margin: -2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .price-boxes,
@@ -404,47 +396,62 @@ label {
 
 }
 
+.search-label{
+  margin: 10px;
+}
+
+.search-container{
+  margin: 20px;
+  display: flex;
+  align-items: center;
+}
+
 .card-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .card {
   background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin: 10px;
     display: flex;
-    cursor: pointer;
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
+    
+    
 }
 
 .item-card,
 .sub-category-card,
 .brand-card {
   margin: 10px 0;
-  min-width: 200px;
-    min-height: 80px;
+  min-width: 250px;
+    min-height: 100px;
   padding: 10px;
   border-radius: 8px;
-  background-color: #f3f3f3;
+  background-color: #ffffff;
   cursor: pointer;
   display: flex;
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
+.selected-info{
+  display: flex;
+}
 .item-card img,
 .brand-card img {
-  width: 50px; /* Adjust image size as needed */
-  height: 50px; /* Adjust image size as needed */
+  width: 100px;
+  height: 90px;
   margin-left: 10px;
+  border-radius: 5px;
 }
 
 .input_box-1{
@@ -455,4 +462,30 @@ label {
     border-radius: 5px;
     box-shadow:0px 4px 6px rgba(0, 0, 0, 0.1) ;
 
+}
+
+.category-info{
+  display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.selected-info{
+  padding: 10px;
+  width: 100px;
+  height: 103px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+.selected-info p{
+  padding: 20px;
+}
+
+.name-and-icon{
+  display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px ;
 }

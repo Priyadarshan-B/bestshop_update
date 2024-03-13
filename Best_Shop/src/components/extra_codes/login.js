@@ -6,7 +6,7 @@ import apiHost from '../../utils/api';
 // import { toast, ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 
-const Login = () => {
+const Login1 = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -109,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login1;

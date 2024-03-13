@@ -1,8 +1,13 @@
-website_name {
+.website_name {
   width: 195px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.z-index {
+  z-index: 10;
+  position: absolute;
 }
 
 .navbar {
@@ -61,6 +66,8 @@ website_name {
 
 
 .navbar-dropdown {
+  height: 89vh;
+  width: 250px;
   position: absolute;
   z-index: 2;
   background-color: white;
@@ -70,6 +77,12 @@ website_name {
   border-radius: 5px;
   left: 1px;
   top: 55px;
+}
+
+@media (max-width: 750px) {
+  .navbar-dropdown {
+    height: 91vh;
+  }
 }
 
 .popup-container {

@@ -43,14 +43,15 @@
 
 .export-container-card {
   display: flex;
+  gap: 20px;
   flex-wrap: wrap;
   background-color: white;
-  box-shadow: 0px 1px 3px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   padding: 5px;
   flex-direction: column;
-  width: 50%;
-  border-radius: 7px;
-  overflow-y: scroll;
+  border-radius: 5px;
+  padding: 40px 20px;
+  width: 400px;
 }
 
 .container-except-di {
@@ -96,14 +97,16 @@
 
 @media (max-width:650px) {
   .container-except-di {
-      flex-direction: column-reverse;
+    flex-direction: column-reverse;
 
   }
 
   .export-container-card {
-      width: 80%;
+    width: 80%;
   }
 
+}
 
-
+.dropdown-ex {
+  z-index: 2;
 }

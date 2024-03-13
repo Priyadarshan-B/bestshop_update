@@ -6,99 +6,97 @@ import "../add_product/add_product.css";
 import "./export.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import * as XLSX from "xlsx";
 import apiHost from "../../utils/api";
+import requestApi from "../../utils/axios";
+import Select from "react-select";
 import DownloadIcon from "@mui/icons-material/Download";
-// import hintImage from "../../assets/img/hint.jpg";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import InputBox from "../InputBox/inputbox";
 
 const ExportData = () => {
-  const [exportValue, setExportValue] = useState("");
-  // const [itemValue, setItemValue] = useState("2");
-  // const [mcategoryValue, setMcategoryValue] = useState("1");
-  // const [scategoryValue, setscategoryValue] = useState("3");
-  // const [brandValue, setBrandValue] = useState("4");
-  // const [colourValue, setColourValue] = useState("5");
-  const [sampleFormat, setSampleFormat] = useState("");
-
-  // curreny-format
+  const [bill, setBill] = useState("");
+  const [location, setLocation] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+  const [isLoading, setIsLoading] = useState(false);
+  const [csvData, setCsvData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const response = await fetch(`${apiHost}/sample`);
-        if (response.ok) {
-          const data = await response.json();
-          setSampleFormat(data[0][0]);
-        } else {
-          console.error(
-            "Failed to fetch data:",
-            response.status,
-            response.statusText
-          );
-        }
-      } catch (error) {
-        console.error("Error during fetch:", error);
+      const { success, data } = await requestApi(
+        "GET",
+        "/api/master/shop-location"
+      );
+      if (success) {
+        const formattedOptions = data.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+        setLocation(formattedOptions);
+      } else {
+        console.error("Error fetching data");
       }
     };
 
     fetchData();
   }, []);
 
-  // toast-message
-  const notifySuccess = (message) => {
-    toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
+  const handleDateChange = (newValue) => {
+    setSelectedDate(newValue);
   };
 
-  const notifyError = (message) => {
-    toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
+  const handleChange = (selectedLocation) => {
+    setSelectedLocation(selectedLocation);
   };
 
-  const downloadExcel = () => {
-    const inputData = {
-      dist_id: parseInt(exportValue),
-      // item_name: parseInt(itemValue),
-      // main_category: parseInt(mcategoryValue),
-      // sub_category: parseInt(scategoryValue),
-      // brand: parseInt(brandValue),
-      // colour: parseInt(colourValue),
-    };
+  const handleDownload = async () => {
+    setIsLoading(true);
 
-    fetch(`${apiHost}/generate-excel`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputData),
-    })
-      .then((response) => response.json())
-      .then((jsonData) => {
-        console.log("Data posted successfully:", jsonData);
-
-        const excelData = jsonData.stocks.map((stock) => ({
-          ItemName: stock.ItemName,
-          QTY: stock.QTY,
-          PurchasePrice: stock.PurchasePrice,
-          SellingPrice: stock.SellingPrice,
-          MRP: stock.MRP,
-          "MAIN CATEGORY": stock["MAIN CATEGORY"],
-          "SUB CATEGORY": stock["SUB CATEGORY"],
-          BRAND: stock.BRAND,
-          SIZES: stock.SIZES,
-          "STYLE MODE": stock["STYLE MODE"],
-          COLOUR: stock.COLOUR || "",
-        }));
-
-        const worksheet = XLSX.utils.json_to_sheet(excelData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-        XLSX.writeFile(workbook, "DataSheet.xlsx");
-        notifySuccess("Downloaded Successfully");
-      })
-      .catch((error) => {
-        console.error("Error posting data:", error);
-        notifyError("Failed to Post Data");
+    try {
+      const queryParams = new URLSearchParams({
+        date: selectedDate.format("YYYY-MM-DD"),
+        shop_location: selectedLocation.value,
       });
+
+      if (bill) {
+        queryParams.append("bill_number", bill);
+      }
+
+      const url = `${apiHost}/api/stock/export-csv?${queryParams}`;
+      console.log(url);
+
+      // Fetch data using requestApi
+      const { success, data, error } = await requestApi("GET", url, {});
+      console.log(data)
+      if (!csvData) return;
+
+      const headers = Object.keys(csvData[0]).join(',');
+      const rows = csvData.map(obj => Object.values(obj).join(',')).join('\n');
+      const csvContent = `${headers}\n${rows}`;
+
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const urlPath = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = urlPath;
+      link.setAttribute('download', 'exported_data.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+
+
+    } catch (error) {
+      console.error("Error occurred while exporting data:", error);
+    }
+
+    setIsLoading(false);
   };
+
+  // Function to convert JSON to CSV
 
   return (
     <div className="dashboard-container">
@@ -109,80 +107,43 @@ const ExportData = () => {
 
         <div className="dashboard-body">
           <div className="export-container-card">
-            <label>Distributor ID:</label>
-            <input
-              className="dist_input_id"
-              type="number"
-              min={0}
-              value={exportValue}
-              onChange={(e) => setExportValue(e.target.value)}
-              placeholder="Distributor ID"
-            />
-            {/* <div className="container-except-di">
-              <div className="item-info-box">
-                <label>Item Name:</label>
-                <input
-                  className="dist_input"
-                  type="number"
-                  value={itemValue}
-                  onChange={(e) => setItemValue(e.target.value)}
-                  placeholder="Enter Item Name ID"
-                />
-                <label>Main Category:</label>
-                <input
-                  className="dist_input"
-                  type="number"
-                  value={mcategoryValue}
-                  onChange={(e) => setMcategoryValue(e.target.value)}
-                  placeholder="Enter Main Category ID"
-                />
-                <label>Sub Category:</label>
-                <input
-                  className="dist_input"
-                  type="number"
-                  value={scategoryValue}
-                  onChange={(e) => setscategoryValue(e.target.value)}
-                  placeholder="Enter Sub Category ID"
-                />
-                <label>Brand:</label>
-                <input
-                  className="dist_input"
-                  type="number"
-                  value={brandValue}
-                  onChange={(e) => setBrandValue(e.target.value)}
-                  placeholder="Enter Brand ID"
-                />
-                <label>Colour:</label>
-                <input
-                  className="dist_input"
-                  type="number"
-                  value={colourValue}
-                  onChange={(e) => setColourValue(e.target.value)}
-                  placeholder="Enter Colour ID"
-                />
-              </div>
-
-              <div className="current-format-box">
-                <br />
-                <div className="current-format-box">
-                  <h4>Hint:</h4>
-
-                  <img
-                    src={hintImage}
-                    alt="Description of the image"
-                    style={{
-                      width: "100%",
-                    }}
+            <div className="dropdown-ex">
+              <Select
+                value={selectedLocation}
+                onChange={handleChange}
+                options={location}
+              />
+            </div>
+            <div>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker", "DatePicker"]}>
+                  <DatePicker
+                    sx={{ width: "100%" }}
+                    label="Select Date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    size="small"
                   />
-                </div>
-                <label>Current Format</label>
-                
-                <p>{sampleFormat}</p>
-              </div>
-            </div> */}
-            <button onClick={downloadExcel} className="dist_button">
+                </DemoContainer>
+              </LocalizationProvider>
+            </div>
+
+            <InputBox
+              label="Bill No"
+              value={bill}
+              onChange={(e) => setBill(e.target.value)}
+              min={0}
+              size="small"
+              
+            />
+
+            <button
+              className="dist_button"
+              onClick={handleDownload}
+              disabled={isLoading}
+            >
               <DownloadIcon style={{ marginRight: "10px" }} />
-              Download As Excel
+              Download As CSV
             </button>
           </div>
         </div>
