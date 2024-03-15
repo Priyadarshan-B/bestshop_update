@@ -10,57 +10,33 @@ import Cookies from "js-cookie";
 import apiHost from "../../utils/api";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import {
-  DataGrid,
-  GridToolbar,
-  GridToolbarContainer,
-  GridToolbarExport,
-} from "@mui/x-data-grid";
-import {
-  GridActionsCellItem,
-  GridRowEditStopReasons,
-  GridRowModes,
-} from "@mui/x-data-grid";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import InputBox from "../InputBox/inputbox";
 import "../Tables/table.css";
+import "./ProductDashboard.css";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 
 const CategoryTable = () => {
-  const [stocks, setStocks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [rows, setRows] = useState([]);
-  const [rowModesModel, setRowModesModel] = useState({});
+  const [data, setData] = useState([]);
+  const [datalist, setDataList] = useState([]);
+  const [editingItem, setEditingItem] = useState(null);
+  const [editopen, setEditOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
+  const handleEditOpen = () => {
+    setEditOpen(true);
+  };
+  const handleEditClose = () => {};
   const handleDateChange = async (newValue) => {
     setSelectedDate(newValue);
     console.log("Fetching data for date:", newValue.format("YYYY-MM-DD"));
-    await fetchData(newValue);
-  };
-
-  useEffect(() => {
-    fetchData(selectedDate);
-  }, []);
-
-
-
-  const fetchData = async (date) => {
-    try {
-      const queryParams = new URLSearchParams({
-        date: date.format("YYYY-MM-DD"),
-      });
-      const response = await requestApi(
-        "GET",
-        `/api/stock/stock?${queryParams}`
-      );
-      console.log(response);
-      setStocks(response.data || []);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
   };
 
   const notifySuccess = (message) => {
@@ -71,60 +47,33 @@ const CategoryTable = () => {
     toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
   };
 
-  function CustomToolbar() {
-    return (
-      <GridToolbarContainer>
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    );
-  }
-  const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-  const handleSaveClick = (id) => async () => {
+  useEffect(() => {
+    fetchData(selectedDate);
+  }, [selectedDate]); // Added selectedDate to the dependency array
+
+  const fetchData = async (date) => {
     try {
-      const token = Cookies.get("token");
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      };
-
-      // Find the row with the given ID
-      const editedRow = rows.find((row) => row.id === id);
-
-      if (!editedRow) {
-        console.error("Row not found for ID:", id);
-        return;
-      }
-
-      // Prepare the data object with updated values
-      const data = {
-        id: editedRow.id,
-        quantity: editedRow.quantity,
-        selling_price: editedRow.mrp,
-      };
-      console.log(data);
-      // Send PUT request to update the row
-      const response = await axios.put(`${apiHost}/api/stock/stock`, data, {
-        headers,
+      const queryParams = new URLSearchParams({
+        date: date.format("YYYY-MM-DD"),
       });
-
-      if (response.status === 200) {
-        console.log("Row updated successfully");
-
-        // Update the rows state with the updated row
-        setRows((prevRows) =>
-          prevRows.map((row) => (row.id === editedRow.id ? editedRow : row))
-        );
-
-        await fetchData(selectedDate);
-      }
+      const response = await requestApi(
+        "GET",
+        `/api/stock/stock?${queryParams}`
+      );
+      setData(response.data); // Directly use the response data
+      console.log(response);
     } catch (error) {
-      console.error("Error updating row:", error);
-      console.log("Failed to update row");
+      console.error("Error fetching data:", error);
     }
   };
-  const handleDeleteClick = (id) => async () => {
+
+  const handleEdit = (item) => {
+    setEditingItem(item);
+    // setEditOpen(true);
+    handleEditOpen();
+  };
+
+  const handleDelete = async (id) => {
     try {
       const token = Cookies.get("token");
       const headers = {
@@ -139,119 +88,66 @@ const CategoryTable = () => {
       });
 
       if (response.status === 200) {
-        setRows(rows.filter((row) => row.id !== id));
         console.log("Row deleted successfully");
-        notifySuccess("Stock Deleted Successfully")
-        await fetchData(selectedDate);
+        notifySuccess("Stock Deleted Successfully");
+        setData(data.filter((item) => item.id !== id));
       }
     } catch (error) {
       console.error("Error deleting row:", error);
-      notifyError("Failed to Delete Stock")
       console.log("Failed to delete row");
-    }
-  };
-  const handleCancelClick = (id) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
+      notifyError("Failed to Delete Stock");
     }
   };
 
-  const processRowUpdate = (newRow) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
-  };
+  const handleSave = async () => {
+    try {
+      const token = Cookies.get("token");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
 
-  const handleRowEditStop = (params, event) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
-  };
+      const requestBody = {
+        id: editingItem.id,
+        selling_price: editingItem.mrp,
+        mrp: editingItem.mrp,
+        quantity: parseInt(editingItem.quantity),
+      };
 
-  const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel);
-  };
-
-  const columns = [
-    { field: "id", headerName: "S.No", width: 70, editable: false },
-    { field: "shop", headerName: "Shop", width: 100, editable: false },
-    { field: "date", headerName: "Date", width: 200, editable: false },
-    { field: "time", headerName: "Time", width: 100, editable: false },
-    { field: "name", headerName: "Name", width: 400, editable: false },
-    { field: "model_name", headerName: "Modal", width: 100, editable: false },
-    { field: "color_name", headerName: "Color", width: 100, editable: false },
-    { field: "size_name", headerName: "Size", width: 100, editable: false },
-    { field: "quantity", headerName: "Quantity", width: 100, editable: true },
-    // { field: "selling_price", headerName: "Selling Price", width: 100, editable: true },
-    { field: "mrp", headerName: "MRP", width: 100, editable: true },
-    { field: "total_price", headerName: "Total", width: 100, editable: false },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 200,
-      renderCell: (params) => {
-        const id = params.row.id;
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-        if (isInEditMode) {
-          return (
-            <>
-              <GridActionsCellItem
-                icon={<SaveIcon />}
-                label="Save"
-                sx={{
-                  color: "primary.main",
-                }}
-                onClick={() => handleSaveClick(id)()}
-              />
-              <GridActionsCellItem
-                icon={<CancelIcon />}
-                label="Cancel"
-                onClick={handleCancelClick(id)}
-                color="inherit"
-              />
-            </>
-          );
+      const response = await axios.put(
+        `${apiHost}/api/stock/stock`,
+        requestBody,
+        {
+          headers,
         }
-        return (
-          <>
-            <GridActionsCellItem
-              icon={<EditIcon />}
-              label="Edit"
-              onClick={handleEditClick(id)}
-              color="inherit"
-            />
-            <GridActionsCellItem
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={handleDeleteClick(id)}
-              color="inherit"
-            />
-          </>
-        );
-      },
-    },
-  ];
+      );
 
-  const row = stocks.map((stock, index) => ({
-    id: stock.id || index + 1,
-    shop: stock.shop,
-    date: stock.date,
-    time: stock.time,
-    name: stock.name,
-    model_name: stock.model_name,
-    color_name: stock.color_name,
-    size_name: stock.size_name,
-    quantity: stock.quantity,
-    mrp: stock.mrp,
-    total_price: stock.total_price,
-  }));
+      if (response.status === 200) {
+        console.log("Item updated successfully");
+        notifySuccess("Stock Edited Successfull");
+        setData(
+          data.map((item) => (item.id === editingItem.id ? editingItem : item))
+        );
+        setEditOpen(false);
+      }
+    } catch (error) {
+      console.error("Error updating item:", error);
+      console.log("Failed to update item");
+      notifyError("Failed to Edit Stock");
+    }
+  };
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const stocklist = data.filter(
+    (item) =>
+      item.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.shop.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.color_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.model_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="dashboard-container">
@@ -260,58 +156,164 @@ const CategoryTable = () => {
         <VerticalNavbar />
         <ToastContainer />
         <div className="dashboard-body">
-          <div className="box-for-table">
-            <>
-              <div>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={["DatePicker", "DatePicker"]}>
-                    <DatePicker
-                      // sx={{ width: "100%" }}
-                      label="Select Date"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      size="small"
-                    />
-                  </DemoContainer>
-                </LocalizationProvider>
-              </div>
-              <div
-                className="category-header-container"
-                style={{ height: 400, width: "100%" }}
-              >
-                <DataGrid
-                  rows={row}
-                  columns={columns}
-                  initialState={{
-                    pagination: {
-                      paginationModel: { page: 0, pageSize: 5 },
-                    },
-                  }}
-                  slots={{
-                    toolbar: CustomToolbar,
-                  }}
-                  slotProps={{
-                    toolbar: { setRows, setRowModesModel },
-                  }}
-                  pageSizeOptions={[5, 10, 20, 50, 100]}
-                  style={{
-                    backgroundColor: "white",
-                    marginTop: "20px",
-                    padding: "20px",
-                    height: "550px",
-                    width: "1200px",
-                    borderRadius: "5px",
-                    boxShadow: "0 0 14px rgba(0, 0, 0, 0.1)",
-                    fontSize: "15px",
-                  }}
-                  editMode="rows"
-                  rowModesModel={rowModesModel}
-                  onRowModesModelChange={handleRowModesModelChange}
-                  onRowEditStop={handleRowEditStop}
-                  processRowUpdate={processRowUpdate}
+          <div className="total-table-container">
+            <div className="date-picker-division">
+              <div className="search-box-products">
+                <InputBox
+                  label={
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <SearchSharpIcon sx={{ marginRight: 1 }} />
+                      Search
+                    </div>
+                  }
+                  type="text"
+                  placeholder="Faculty Name/ID/Sub.."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  size="small"
                 />
               </div>
-            </>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={["DatePicker", "DatePicker"]}>
+                  <DatePicker
+                    label="Select Date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    size="small"
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
+            </div>
+            <div className="container-for-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>S.No</th>
+                    <th>Shop</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Name</th>
+                    <th>Model</th>
+                    <th>Color</th>
+                    <th>Size</th>
+                    <th>Quantity</th>
+                    <th>MRP</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stocklist.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>{item.shop}</td>
+                      <td>{item.date}</td>
+                      <td>{item.time}</td>
+                      <td>{item.name}</td>
+                      <td>{item.model_name}</td>
+                      <td>{item.color_name}</td>
+                      <td>{item.size_name}</td>
+                      <td>{item.quantity}</td>
+                      <td>{item.mrp}</td>
+                      <td>{item.total_price}</td>
+                      <td>
+                        <EditIcon
+                          onClick={() => handleEdit(item)}
+                          sx={{
+                            marginRight: 2,
+                            color: "green",
+                            cursor: "pointer",
+                          }}
+                        />
+                        <DeleteIcon
+                          onClick={() => handleDelete(item.id)}
+                          sx={{ color: "red", cursor: "pointer" }}
+                        />
+                        {/* <button onClick={() => handleEdit(item)}>Edit</button>
+                        <button onClick={() => handleDelete(item.id)}>
+                          Delete
+                        </button> */}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {editopen && editingItem && (
+              <Dialog
+                fullWidth
+                open={editopen}
+                onClose={handleEditClose}
+                PaperProps={{
+                  style: {
+                    padding: "20px",
+                  },
+                }}
+              >
+                <form
+                  className="form-dialog"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSave();
+                  }}
+                >
+                  <div className="dialog-content">
+                    <DialogTitle
+                      style={{
+                        textAlign: "center",
+                      }}
+                    >
+                      <h2>Edit</h2>
+                    </DialogTitle>
+                    <DialogContent
+                      style={{
+                        fontSize: 10,
+                      }}
+                    >
+                      <br />
+                      <InputBox
+                        label="MRP"
+                        type="text"
+                        value={editingItem.mrp}
+                        onChange={(e) =>
+                          setEditingItem({
+                            ...editingItem,
+                            mrp: e.target.value,
+                          })
+                        }
+                        size="small"
+                      />
+                      <br />
+                      <InputBox
+                        label="Quantity"
+                        type="number"
+                        value={editingItem.quantity}
+                        onChange={(e) =>
+                          setEditingItem({
+                            ...editingItem,
+                            quantity: e.target.value,
+                          })
+                        }
+                        size="small"
+                      />
+                      <br />
+
+                      <div className="float-right">
+                        <button
+                          className="add-button-dialog"
+                          onClick={() => setEditOpen(false)}
+                        >
+                          CANCEL
+                        </button>
+                        <button className="add-button-dialog" type="submit">
+                          ADD
+                        </button>
+                      </div>
+                    </DialogContent>
+                  </div>
+                </form>
+              </Dialog>
+            )}
           </div>
         </div>
       </div>

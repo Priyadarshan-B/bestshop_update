@@ -12,6 +12,7 @@ import FieldTable from "./components/Tables/field_table";
 import DetailTable from "./components/Tables/detail_table";
 import ExportData from "./components/export_data/Export";
 import DataConverter from "./components/export_data/export1";
+import DataTable from "./components/Tables/datatable";
 
 function Protected({ children }) {
   const navigate = useNavigate();
@@ -49,6 +50,8 @@ const routes = () => (
       <Route path= "/fieldtable" element={<Protected><FieldTable /></Protected>} />
       <Route path= "/export" element={<Protected><ExportData /></Protected>} />
       <Route path= "/export1" element={<Protected><DataConverter /></Protected>} />
+      <Route path= "/table" element={<Protected><DataTable /></Protected>} />
+
 
       <Route path= "*" element={<h1>404</h1>} />
 

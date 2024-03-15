@@ -20,8 +20,8 @@ const requestApi = async (method, url, data) => {
       response = await axios.get(apiHost + url, { headers });
     }
     else if (method === "DELETE") {
-      const queryParams = new URLSearchParams({ id: data.id });
-      response = await axios.delete(`${apiHost}${url}?${queryParams}`, { headers });
+      // const queryParams = new URLSearchParams({ id: data.id });
+      response = await axios.delete(apiHost + url , data, { headers });
     }
     else if (method === "PUT"){
       response = await axios.put(apiHost + url, data, { headers });
