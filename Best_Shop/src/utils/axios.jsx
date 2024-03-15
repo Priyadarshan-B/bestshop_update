@@ -19,6 +19,13 @@ const requestApi = async (method, url, data) => {
     } else if (method === "GET") {
       response = await axios.get(apiHost + url, { headers });
     }
+    else if (method === "DELETE") {
+      const queryParams = new URLSearchParams({ id: data.id });
+      response = await axios.delete(`${apiHost}${url}?${queryParams}`, { headers });
+    }
+    else if (method === "PUT"){
+      response = await axios.put(apiHost + url, data, { headers });
+    }
 
     return { success: true, data: response.data };
   } catch (error) {

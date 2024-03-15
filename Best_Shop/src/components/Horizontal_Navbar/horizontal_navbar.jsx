@@ -14,7 +14,6 @@ import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 import Cookies from "js-cookie";
 
-
 const HorizontalNavbar = () => {
   const [notifications, setNotifications] = useState(0);
   const [messages, setMessages] = useState(0);
@@ -35,7 +34,6 @@ const HorizontalNavbar = () => {
     toggleMasterSubMenu();
   };
 
- 
   const handleNavigate = (path) => {
     navigate(path);
     setSelectedField(null);
@@ -72,9 +70,8 @@ const HorizontalNavbar = () => {
 
       navigate("/login", {
         state: { successMessage: "Logout successfully" },
-        
       });
-      console.log("Logout Successfull")
+      console.log("Logout Successfull");
     } catch (error) {
       console.error("Error logging out:", error);
     }
@@ -114,7 +111,7 @@ const HorizontalNavbar = () => {
               </li>
               {/* master */}
 
-              <div className="sub-navbar">
+              {/* <div className="sub-navbar">
                 <li
                   className={
                     selectedField === "categorytable" ? "selected" : ""
@@ -142,7 +139,7 @@ const HorizontalNavbar = () => {
                   <InfoIcon style={{ marginRight: "10px", fontSize: "18px" }} />
                   <b>Field Details table</b>
                 </li>
-              </div>
+              </div> */}
               {/* export_nav */}
               <li
                 className={selectedField === "export" ? "selected" : ""}
@@ -156,20 +153,9 @@ const HorizontalNavbar = () => {
         )}
       </div>
       <div className="logo">
-        <h2 className="website_name">Best Shop</h2>
+        <h1 className="website_name">Best Shop</h1>
       </div>
       <div className="icons">
-        {/* <div
-          className="icon"
-          onClick={() => setNotifications(notifications + 1)}
-        >
-          <FaBell />
-          {notifications > 0 && <span className="badge">{notifications}</span>}
-        </div>
-        <div className="icon" onClick={() => setMessages(messages + 1)}>
-          <FaEnvelope />
-          {messages > 0 && <span className="badge">{messages}</span>}
-        </div> */}
         <Popup
           className="popup-container"
           trigger={

@@ -8,8 +8,7 @@
   
   padding: 20px;
   /* box-shadow: 0 0 17px rgba(0, 0, 0, 0.3); */
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
-  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;  border-radius: 5px;
   background-color: rgb(255, 255, 255);
   width: 90%;
   height: 85%;

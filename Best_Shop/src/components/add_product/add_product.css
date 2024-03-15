@@ -76,7 +76,9 @@ label {
 
 .flex-container {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 .field-inside-flex {
@@ -108,7 +110,6 @@ label {
   border-radius: 5px;
   font-size: large;
   font-weight: 500;
-  /* color: rgb(86, 86, 86); */
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -121,25 +122,29 @@ label {
 
 .count-size-quantity-box {
   width: 60%;
+  height: 84%;
   padding: 0px 20px 20px 20px;
-  overflow-y: scroll;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  border-radius: 7px;
+  overflow-y: hidden;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 7px;
   border: 10px solid white;
 }
 
 .price-boxes {
   width: 60%;
-  padding: 0px 20px 20px 20px;
+  height: 84%;
   overflow-y: hidden;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  border-radius: 7px;
+  padding: 0px 20px 20px 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;    border-radius: 7px;
   border: 10px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.size-and-quantity{
+  height: 25vh;
+  overflow-y: scroll;
+}
 .centering {
   padding-top: 10px;
 }
@@ -441,6 +446,8 @@ label {
     align-content: center;
     justify-content: center;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    align-items: center;
+
 }
 
 .selected-info{
@@ -473,13 +480,19 @@ label {
 
 .selected-info{
   padding: 10px;
-  width: 100px;
-  height: 103px;
+  align-items: center;
   margin-left: 10px;
   border-radius: 5px;
+  display: flex;
+  gap: 20px;
 }
 .selected-info p{
   padding: 20px;
+}
+.selected-info img{
+  border-radius: 5px;
+  max-width: 120px;
+  max-height: 100px;
 }
 
 .name-and-icon{
@@ -488,4 +501,61 @@ label {
     justify-content: center;
     align-items: center;
     gap: 5px ;
+}
+.add-icon{
+  cursor: pointer;
+}
+
+
+.add-button-dialog{
+  border: none;
+  padding: 3px 10px;
+  background-color: rgba(255, 255, 255, 0.267);
+  color: rgb(36, 88, 202);
+  font-weight: 500;
+  border-radius: 3px;
+  font-size: 18px;
+  margin: 5px;
+  transition: all 0.4s;
+}
+
+.add-button-dialog:hover{
+  background-color: #45b5ed59;
+}
+
+.float-right{
+  float: right;
+}
+
+
+input {
+  margin: 5px;
+}
+
+input::file-selector-button {
+  font-weight: bold;
+  color: white;
+  padding: 7px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4A55A2;
+}
+
+input::file-selector-button:hover{
+ background-color: #4a54a2dc;
+}
+
+.form-dialog{
+  display: flex;
+  justify-content: space-around;
+}
+
+.dialog-content{
+  width: 80%;
+}
+
+@media (max-width: 650px){
+  .dialog-content{
+    width: 100%;
+  }
 }

@@ -41,6 +41,7 @@ const InputBox = ({ label, onChange, type, min, value, id, size }) => {
         onChange={onChange}
         id={id}
         size={size}
+        sx={{ width: "100%" }}
       />
     </Box>
   );

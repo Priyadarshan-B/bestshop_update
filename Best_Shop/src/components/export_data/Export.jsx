@@ -25,6 +25,7 @@ const ExportData = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [csvData, setCsvData] = useState(null);
 
+
   useEffect(() => {
     const fetchData = async () => {
       const { success, data } = await requestApi(
@@ -55,48 +56,69 @@ const ExportData = () => {
 
   const handleDownload = async () => {
     setIsLoading(true);
-
+   
     try {
-      const queryParams = new URLSearchParams({
-        date: selectedDate.format("YYYY-MM-DD"),
-        shop_location: selectedLocation.value,
-      });
-
+       const queryParams = new URLSearchParams({
+         date: selectedDate.format("YYYY-MM-DD"),
+         shop_location: selectedLocation.value,
+       });
+   
+       if (bill) {
+         queryParams.append("bill_number", bill);
+       }
+   
+       const url = `${apiHost}/api/stock/export-csv?${queryParams}`;
+       console.log("Request URL:", url);
+   
+       // Log the request details before making the call
+       console.log("Making request with method: GET, URL:", url);
+   
+       // Fetch data using requestApi
+       const { success, data, error } = await requestApi("GET", `/api/stock/export-csv?${queryParams}`, {});
+       console.log("Response success:", success);
+       console.log("Raw response data:", data);
+       console.log("Error from requestApi:", error);
+   
+       if (success && data) {
+         setCsvData(data);
+   
+         // Proceed with the download
+         const headers = Object.keys(data[0]).join(',');
+         const rows = data.map(obj => Object.values(obj).join(',')).join('\n');
+         const csvContent = `${headers}\n${rows}`;
+   
+         const blob = new Blob([csvContent], { type: 'text/csv' });
+         const urlPath = window.URL.createObjectURL(blob);
+         const link = document.createElement('a');
+         link.href = urlPath;
+         let fileName = `${selectedDate.format("YYYY-MM-DD")}`;
       if (bill) {
-        queryParams.append("bill_number", bill);
+        fileName += `_${bill}`;
       }
-
-      const url = `${apiHost}/api/stock/export-csv?${queryParams}`;
-      console.log(url);
-
-      // Fetch data using requestApi
-      const { success, data, error } = await requestApi("GET", url, {});
-      console.log(data)
-      if (!csvData) return;
-
-      const headers = Object.keys(csvData[0]).join(',');
-      const rows = csvData.map(obj => Object.values(obj).join(',')).join('\n');
-      const csvContent = `${headers}\n${rows}`;
-
-      const blob = new Blob([csvContent], { type: 'text/csv' });
-      const urlPath = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = urlPath;
-      link.setAttribute('download', 'exported_data.csv');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-
-
+      fileName += ".csv";
+         link.setAttribute('download', fileName);
+         document.body.appendChild(link);
+         link.click();
+         document.body.removeChild(link);
+       } else {
+         console.error("Data fetching was not successful or data is undefined.");
+         if (error) {
+           console.error("Error from requestApi:", error);
+         }
+       }
     } catch (error) {
-      console.error("Error occurred while exporting data:", error);
+       console.error("Error occurred while exporting data:", error);
     }
-
+   
     setIsLoading(false);
-  };
+   };
 
   // Function to convert JSON to CSV
+  const convertJSONToCSV = (jsonData) => {
+    const header = Object.keys(jsonData[0]).join(",");
+    const rows = jsonData.map((row) => Object.values(row).join(","));
+    return `${header}\n${rows.join("\n")}`;
+  };
 
   return (
     <div className="dashboard-container">

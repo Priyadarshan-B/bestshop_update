@@ -27,16 +27,17 @@
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+  /* font-size: 1.5rem; */
+  /* font-weight: bold;  */
   /* background-image: url("../../assets/img/bestshop.jpg"); */
+  /* background-image: url("../../../public/bestshop_logo.jpg"); */
   width: 150px;
   height: 40px;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat;
   background-position: center;
-  /* background-size: cover;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
+  background-size: contain; */
+  /* border-radius: 10px; */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
 }
 
 .icons {
@@ -73,8 +74,8 @@
   background-color: white;
   padding: 10px;
   padding-right: 10px;
-  box-shadow: 1px 10px 10px gray;
-  border-radius: 5px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 5px;
   left: 1px;
   top: 55px;
 }
@@ -132,6 +133,7 @@
 .menu-dropdown {
   position: absolute;
 }
+
 
 @media (max-width: 999px) {
   .vertical-navbar {

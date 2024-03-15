@@ -152,6 +152,19 @@ form {
   margin-left: 35px;
 }
 
+.select-in-signup{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-left: 7px;
+}
+
+.select-input{
+  width: 200px;
+}
+.error-message{
+  color: red;
+}
 
 
 

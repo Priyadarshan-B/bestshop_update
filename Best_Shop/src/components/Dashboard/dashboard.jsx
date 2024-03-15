@@ -3,6 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import HorizontalNavbar from "../Horizontal_Navbar/horizontal_navbar";
 import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
 import "../Dashboard/dashboard.css";
+import requestApi from "../../utils/axios";
 
 import apiHost from "../../utils/api";
 
@@ -25,7 +26,6 @@ const Dashboard = () => {
       plotOptions: {
         bar: {
           horizontal: false,
-          // borderRadius: '5px 5px 0px 0px',
           columnWidth: "55%",
           endingShape: "rounded",
           borderRadius: "2",
@@ -44,9 +44,9 @@ const Dashboard = () => {
       },
       xaxis: {
         categories: [
-          "Product Count",
-          "Price of the Product",
-          "Rate of the Product",
+          "Less Than 30 Days",
+          "Between 30 to 180 days",
+          "Between 180 to 365 days",
         ],
         labels: {
           formatter: function (val) {
@@ -67,7 +67,6 @@ const Dashboard = () => {
       },
       title: {
         text: "Dashboard",
-
         style: {
           color: "#444",
         },
@@ -78,18 +77,39 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${apiHost}/dashboard-data`);
-        const apiData = await response.json();
+        const response = await requestApi("GET", `/api/stock/dashboard-data`);
+        console.log("Response:", response);
+
+        if (!response || !response.success) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const apiData = response.data;
+
+        const seriesData = {
+          total_quantity: [],
+          total_price: [],
+          rate_of_product: [],
+        };
+
+        apiData.forEach((item) => {
+          seriesData.total_quantity.push(parseFloat(item.total_quantity));
+          seriesData.total_price.push(parseFloat(item.total_price));
+          seriesData.rate_of_product.push(parseFloat(item.rate_of_product));
+        });
+
+        const updatedSeries = [
+          { name: "Total Quantity", data: seriesData.total_quantity },
+          { name: "Total Price", data: seriesData.total_price },
+          { name: "Rate of Product", data: seriesData.rate_of_product },
+        ];
 
         setChartData((prevChartData) => ({
           ...prevChartData,
-          series: apiData.series.map((apiSeries, index) => ({
-            name: apiSeries.name,
-            data: apiSeries.data.map((value) => parseFloat(value)),
-            yaxis: index,
-          })),
+          series: updatedSeries,
         }));
       } catch (error) {
+        console.error("Error fetching data:", error);
       }
     };
 

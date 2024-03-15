@@ -4,20 +4,25 @@ import "./login.css";
 import apiHost from "../../utils/api";
 import Cookies from "js-cookie";
 import inventoryImage from "../../assets/img/inventoryImage.png";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import Passwordbox from "../InputBox/passwordbox";
-
-
-
-// import LoginImg from "../../assets/img/login2.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  // const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  
+  const notifySuccess = (message) => {
+    toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -40,24 +45,29 @@ const Login = () => {
         navigate("/addStock", {
           state: { successMessage: "Login Successfully" },
         });
+        notifySuccess("Login Successfull")
       } else {
-        const { message } = await response.json();
-        setError(message);
+        setError("Incorrect Username or Password");
+        notifyError("Login Failed")
       }
     } catch (error) {
       setError("An unexpected error occurred.");
+      notifyError("Login Failed")
     }
   };
 
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword((prevShowPassword) => !prevShowPassword);
-  // };
-
   return (
+    
     <div className="total-login-page">
+        <ToastContainer/>
+
       <div className="total-login-card">
         <div className="image-flex">
-          <img className="image" src={inventoryImage} alt="Description of the image" />
+          <img
+            className="image"
+            src={inventoryImage}
+            alt="Description of the image"
+          />
         </div>
         <div className="login-form-flex">
           <div className="card-to-arrange">
@@ -66,8 +76,15 @@ const Login = () => {
               {error && <p className="error-message">{error}</p>}
               <div className="user-pass">
                 <div className="username-container">
-                  <TextField fullWidth id="outlined-basic" label="Username" variant="outlined" size="small" onChange={(e) => setName(e.target.value)} />
-
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Username"
+                    variant="outlined"
+                    size="small"
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="password-container">
                   {/* <Passwordbox sx={{ m: 1, width: '100%' }} /> */}
@@ -76,26 +93,15 @@ const Login = () => {
                     label="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
               </div>
-              
+
               <div className="login-button-container">
                 <button className="login-button" type="submit">
                   Login
                 </button>
-                <div style={{ marginTop: "10px" }}>
-                  <Link
-                    to="/signup"
-                    style={{
-                      textDecoration: "none",
-                      color: "blue",
-                      fontSize: "17px",
-                    }}
-                  >
-                    Add New User
-                  </Link>
-                </div>
               </div>
               <div></div>
             </form>
@@ -103,16 +109,6 @@ const Login = () => {
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-    
   );
 };
 

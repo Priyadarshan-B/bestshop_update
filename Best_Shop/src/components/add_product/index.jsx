@@ -9,14 +9,10 @@ import "./add_product.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import InputBox from "../InputBox/inputbox";
-import CategoryDialog from "../CustomDialog/customdialog";
-import CustomDialog from "../CustomDialog/customdialog";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
-import Button from "@mui/material/Button";
 
 function AddStocks({ text }) {
   const [categories, setCategories] = useState([]);
@@ -35,6 +31,14 @@ function AddStocks({ text }) {
   const [sizes, setSizes] = useState([]);
   const [sizeQuantities, setSizeQuantities] = useState({});
 
+  const notifySuccess = (message) => {
+    toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
+  };
+
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sellingprice, setSellingPrice] = useState("");
@@ -52,13 +56,18 @@ function AddStocks({ text }) {
   const [subimage, setSubImage] = useState(null);
   const [brandvalue, setBrandValue] = useState("");
   const [brandimage, setBrandImage] = useState(null);
+  const [modelvalue, setModelValue] = useState("");
+  const [colorvalue, setColorValue] = useState("");
+  const [sizevalue, setSizeValue] = useState("");
 
   // dialogs
   const [categoryopen, setCategoryOpen] = useState(false);
   const [itemopen, setItemOpen] = useState(false);
   const [subopen, setSubOpen] = useState(false);
   const [brandopen, setBrandOpen] = useState(false);
-
+  const [modelopen, setModelOpen] = useState(false);
+  const [coloropen, setColorOpen] = useState(false);
+  const [sizeopen, setSizeOpen] = useState(false);
   // category dialog
   const handleCategoryOpen = () => {
     setCategoryOpen(true);
@@ -79,13 +88,10 @@ function AddStocks({ text }) {
     formData.append("image", categoryimage);
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/structure/category",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${apiHost}/api/structure/category`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -93,10 +99,12 @@ function AddStocks({ text }) {
 
       const data = await response.json();
       console.log("Success:", data);
+      notifySuccess("Category Added Successfull");
       fetchCategories();
       setCategoryOpen(false);
     } catch (error) {
       console.error("Error:", error);
+      notifyError("Category Failed Added");
     }
   };
 
@@ -107,48 +115,38 @@ function AddStocks({ text }) {
   const handleItemClose = () => {
     setItemOpen(false);
   };
-  const handleItemChange = (event) => {
-    setItemValue(event.target.value);
-  };
+
   const handleItemImage = (event) => {
-    const file = event.target.files[0];
-    setItemImage(file);
+    setItemImage(event.target.files[0]);
   };
-  const handleItemSubmit = async () => {
+  const handleItemSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("category", selectedCategory.id);
+    formData.append("name", itemvalue);
+    formData.append("image", itemimage);
+
     try {
-      const formData = new FormData();
-      formData.append("category", selectedCategory.id);
-      formData.append("name", itemvalue);
-      if (itemimage) {
-        formData.append("image", itemimage);
+      const response = await fetch(`${apiHost}/api/structure/item-name`, {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-      // Log the FormData object to see its contents
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-
-      const response = await requestApi(
-        "POST",
-        "/api/structure/item-name",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.success) {
-        console.log("Item added successfully");
-        fetchItemNames(selectedCategory.id);
-      } else {
-        console.error("Error adding item:", response.error);
-      }
+      const data = await response.json();
+      console.log("Success:", data);
+      fetchItemNames(selectedCategory.id);
+      notifySuccess("Item-Name Added Successfull");
+      setItemOpen(false);
     } catch (error) {
-      console.error("Error adding item:", error);
+      console.error("Error:", error);
+      notifyError("Item-Name Failed to Add");
     }
-    setItemOpen(false); // Close the dialog after submission
+    setItemOpen(false);
   };
+
   // sub dialog
   const handleSubOpen = () => {
     setSubOpen(true);
@@ -156,48 +154,37 @@ function AddStocks({ text }) {
   const handleSubClose = () => {
     setSubOpen(false);
   };
-  const handleSubChange = (event) => {
-    setSubValue(event.target.value);
-  };
 
   const handleSubImage = (event) => {
-    const file = event.target.files[0];
-    setSubImage(file);
+    setSubImage(event.target.files[0]);
   };
-  const handleSubSubmit = async () => {
+  const handleSubSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("item_name", selectedItemName.id);
+    formData.append("name", subvalue);
+    formData.append("image", subimage);
+
     try {
-      const formData = new FormData();
-      formData.append("item_name", selectedItemName.id);
-      formData.append("name", subvalue);
-      if (subimage) {
-        formData.append("image", subimage);
-      }
-      // Log the FormData object to see its contents
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
+      const response = await fetch(`${apiHost}/api/structure/sub-category`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
 
-      const response = await requestApi(
-        "POST",
-        "/api/structure/sub-category",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.success) {
-        console.log("SubCategory added successfully");
-        fetchSubCategories(selectedItemName.id);
-      } else {
-        console.error("Error adding Sub:", response.error);
-      }
+      const data = await response.json();
+      console.log("Success:", data);
+      fetchSubCategories(selectedItemName.id);
+      notifySuccess("Sub-Category Addded Successfull");
+      setSubOpen(false);
     } catch (error) {
-      console.error("Error adding Sub:", error);
+      console.error("Error:", error);
+      notifyError("Sub-Category Failed to Add");
     }
-    setSubOpen(false); // Close the dialog after submission
   };
 
   // brand dialog
@@ -207,30 +194,57 @@ function AddStocks({ text }) {
   const handleBrandClose = () => {
     setBrandOpen(false);
   };
-  const handleBrandChange = (event) => {
-    setBrandValue(event.target.value);
-  };
 
   const handleBrandImage = (event) => {
-    const file = event.target.files[0];
-    setBrandImage(file);
+    setBrandImage(event.target.files[0]);
   };
-  const handleBrandSubmit = async () => {
+  const handleBrandSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("sub_category", selectedSubCategory.id);
+    formData.append("name", brandvalue);
+    formData.append("image", brandimage);
+
+    try {
+      const response = await fetch(`${apiHost}/api/structure/brand`, {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("Success:", data);
+      fetchBrands(selectedSubCategory.id);
+      notifySuccess("Brand Added Successfull");
+      setBrandOpen(false);
+    } catch (error) {
+      console.error("Error:", error);
+      notifyError("Brand Failed to Add");
+    }
+    setBrandOpen(false);
+  };
+
+  const handleModelOpen = () => {
+    setModelOpen(true);
+  };
+  const handleModelClose = () => {
+    setModelOpen(false);
+  };
+
+  const handleModelSubmit = async (event) => {
+    event.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("sub_category", selectedSubCategory.id);
-      formData.append("name", brandvalue);
-      if (brandimage) {
-        formData.append("image_path", brandimage);
-      }
-      // Log the FormData object to see its contents
+      formData.append("brand", selectedBrand.id);
+      formData.append("name", modelvalue);
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
       }
 
       const response = await requestApi(
         "POST",
-        "/api/structure/brand",
+        "/api/structure/model",
         formData,
         {
           headers: {
@@ -240,15 +254,106 @@ function AddStocks({ text }) {
       );
 
       if (response.success) {
-        console.log("Brand added successfully");
-        fetchBrands(selectedSubCategory.id);
+        console.log("Model added successfully");
+        fetchModels(selectedBrand.id);
+        notifySuccess("Model Added Successfull");
       } else {
-        console.error("Error adding Brand:", response.error);
+        console.error("Error adding Model:", response.error);
+        notifyError("Model Failed to Add");
       }
     } catch (error) {
-      console.error("Error adding Brand:", error);
+      console.error("Error adding Model:", error);
+      notifyError("Model Failed to Add");
     }
-    setBrandOpen(false); // Close the dialog after submission
+    setModelOpen(false); // Close the dialog after submission
+  };
+
+  const handleColorOpen = () => {
+    setColorOpen(true);
+  };
+  const handleColorClose = () => {
+    setColorOpen(false);
+  };
+
+  const handleColorSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("model", selectedModel.value);
+      console.log(selectedModel.id);
+      formData.append("name", colorvalue);
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await requestApi(
+        "POST",
+        "/api/structure/color",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.success) {
+        console.log("Color added successfully");
+        fetchColors(selectedModel.value);
+        notifySuccess("Color Added Successfull");
+      } else {
+        console.error("Error adding Color:", response.error);
+        notifyError("Color Failed to Add");
+      }
+    } catch (error) {
+      console.error("Error adding Color:", error);
+      notifyError("Color Failed to Add");
+    }
+    setColorOpen(false); // Close the dialog after submission
+  };
+
+  const handleSizeOpen = () => {
+    setSizeOpen(true);
+  };
+  const handleSizeClose = () => {
+    setSizeOpen(false);
+  };
+
+  const handleSizeSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("color", selectedColor.value);
+      formData.append("name", sizevalue);
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await requestApi(
+        "POST",
+        "/api/structure/size",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.success) {
+        console.log("Size added successfully");
+        fetchSizes(selectedColor.value);
+        notifySuccess("Size Added Successfull");
+        setSizeOpen(false);
+      } else {
+        notifyError("Size Failed to Add");
+        console.error("Error adding Size:", response.error);
+      }
+    } catch (error) {
+      console.error("Error adding Size:", error);
+      notifyError("Size Failed to Add");
+    }
+    setSizeOpen(false); // Close the dialog after submission
   };
   // navigate
   const handleNavigate = (path) => {
@@ -301,15 +406,14 @@ function AddStocks({ text }) {
 
   const handleSelectedModel = (model) => {
     setSelectedModel(model);
-    setSelectedColor(null); // Reset selected color when model changes
-    fetchColors(model.value); // Fetch colors for the selected model
+    setSelectedColor(null);
+    fetchColors(model.value);
   };
 
   const handleSelectedColor = (color) => {
     setSelectedColor(color);
     fetchSizes(color.value);
   };
-
   // model data
   const modelOptions = models.map((model) => ({
     value: model.id,
@@ -355,12 +459,22 @@ function AddStocks({ text }) {
     const value = e.target.value;
     setMrp(value);
   };
-
+  // reset size
+  const resetSizeQuantities = () => {
+    const initialQuantity = {};
+    sizes.forEach((size) => {
+       initialQuantity[size.id] = ""; 
+    });
+    setSizeQuantities(initialQuantity);
+   };
   // refresh data.
   const handleRefresh = () => {
     setSellingPrice("");
     setMrp("");
-    setModels([]);
+    setBill("");
+    resetSizeQuantities(); 
+    setSelectedModel(null);
+    setSelectedColor(null);
   };
 
   const handleGenerate = async () => {
@@ -398,11 +512,14 @@ function AddStocks({ text }) {
       const response = await requestApi("POST", "/api/stock/stock", data, {});
       if (response.success) {
         console.log("Stock Added Successfully:", response.data);
+        notifySuccess("Stock Added Successfull");
       } else {
         console.error("Error Adding Stocks:", response.error);
+        notifyError("Stock Failed to Add");
       }
     } catch (error) {
       console.log("Error adding stocks:", error);
+      notifyError("Stock Failed to Add");
     }
   };
 
@@ -532,23 +649,14 @@ function AddStocks({ text }) {
             <div className="select-category-card">
               {selectedCategory ? null : <h2>Select a Category</h2>}
               <div className="selected-info">
-                {selectedBrand &&
-                  (selectedBrand.image_path !== "" ? (
+                {selectedCategory &&
+                  (selectedCategory.image_path !== "" ? (
                     <img
-                      src={`${apiHost}/` + selectedBrand.image_path}
-                      alt={selectedBrand.name}
+                      src={`${apiHost}/` + selectedCategory.image_path}
+                      alt={selectedCategory.name}
                     />
                   ) : (
-                    <p>{selectedBrand.name}</p>
-                  ))}
-                {selectedSubCategory &&
-                  (selectedSubCategory.image_path !== "" ? (
-                    <img
-                      src={`${apiHost}/` + selectedSubCategory.image_path}
-                      alt={selectedSubCategory.name}
-                    />
-                  ) : (
-                    <p>{selectedSubCategory.name}</p>
+                    <p>{selectedCategory.name}</p>
                   ))}
                 {selectedItemName &&
                   (selectedItemName.image_path !== "" ? (
@@ -559,14 +667,23 @@ function AddStocks({ text }) {
                   ) : (
                     <p>{selectedItemName.name}</p>
                   ))}
-                {selectedCategory &&
-                  (selectedCategory.image_path !== "" ? (
+                {selectedSubCategory &&
+                  (selectedSubCategory.image_path !== "" ? (
                     <img
-                      src={`${apiHost}/` + selectedCategory.image_path}
-                      alt={selectedCategory.name}
+                      src={`${apiHost}/` + selectedSubCategory.image_path}
+                      alt={selectedSubCategory.name}
                     />
                   ) : (
-                    <p>{selectedCategory.name}</p>
+                    <p>{selectedSubCategory.name}</p>
+                  ))}
+                {selectedBrand &&
+                  (selectedBrand.image_path !== "" ? (
+                    <img
+                      src={`${apiHost}/` + selectedBrand.image_path}
+                      alt={selectedBrand.name}
+                    />
+                  ) : (
+                    <p>{selectedBrand.name}</p>
                   ))}
               </div>
             </div>
@@ -590,7 +707,10 @@ function AddStocks({ text }) {
                     <div className="card1">
                       <div className="name-and-icon">
                         <h2>Select a Category</h2>
-                        <AddCircleOutlinedIcon onClick={handleCategoryOpen} />
+                        <AddCircleOutlinedIcon
+                          className="add-icon"
+                          onClick={handleCategoryOpen}
+                        />
                       </div>
                       <div className="card">
                         <div className="flex-container">
@@ -623,20 +743,9 @@ function AddStocks({ text }) {
                         <h2>
                           <center>Item Name</center>
                         </h2>
-                        <AddCircleOutlinedIcon onClick={handleItemOpen} />
-                        <CustomDialog
-                          open={itemopen}
-                          handleClose={handleItemClose}
-                          handleSubmit={handleItemSubmit}
-                          label="Add Item"
-                          title="Add Item"
-                          type="text"
-                          onChange={handleItemChange}
-                          value={itemvalue}
-                          id="new_item"
-                          size="small"
-                          handleImageUpload={handleItemImage}
-                          image={itemimage}
+                        <AddCircleOutlinedIcon
+                          className="add-icon"
+                          onClick={handleItemOpen}
                         />
                       </div>
 
@@ -650,7 +759,7 @@ function AddStocks({ text }) {
                             {itemName.name}
                             {itemName.image_path && (
                               <img
-                                src={itemName.image_path}
+                                src={`${apiHost}/` + itemName.image_path}
                                 alt={itemName.name}
                               />
                             )}
@@ -667,20 +776,9 @@ function AddStocks({ text }) {
                         <h2>
                           <center>Select a Sub-Category</center>
                         </h2>
-                        <AddCircleOutlinedIcon onClick={handleSubOpen} />
-                        <CustomDialog
-                          open={subopen}
-                          handleClose={handleSubClose}
-                          handleSubmit={handleSubSubmit}
-                          label="Add Sub-Category"
-                          title="Add Sub-Category"
-                          type="text"
-                          onChange={handleSubChange}
-                          value={subvalue}
-                          id="new_sub"
-                          size="small"
-                          handleImageUpload={handleSubImage}
-                          image={subimage}
+                        <AddCircleOutlinedIcon
+                          className="add-icon"
+                          onClick={handleSubOpen}
                         />
                       </div>
                       <div className="card">
@@ -688,10 +786,13 @@ function AddStocks({ text }) {
                           <div
                             key={subCategory.id}
                             onClick={() => handleSelectSubCategory(subCategory)}
-                            className="sub-category-card"
+                            className="item-card"
                           >
                             {subCategory.name}
-                            <img src={subCategory.image_path} />
+                            <img
+                              src={`${apiHost}/` + subCategory.image_path}
+                              alt={subCategory.name}
+                            />
                           </div>
                         ))}
                       </div>
@@ -700,25 +801,14 @@ function AddStocks({ text }) {
 
                   {/* Brands */}
                   {selectedSubCategory && selectedBrand === null && (
-                    <div className="card">
+                    <div className="card1">
                       <div className="name-and-icon">
                         <h2>
                           <center>Select a Brand</center>
                         </h2>
-                        <AddCircleOutlinedIcon onClick={handleBrandOpen} />
-                        <CustomDialog
-                          open={brandopen}
-                          handleClose={handleBrandClose}
-                          handleSubmit={handleBrandSubmit}
-                          label="Add Brand"
-                          title="Add Brand"
-                          type="text"
-                          onChange={handleBrandChange}
-                          value={brandvalue}
-                          id="new_brand"
-                          size="small"
-                          handleImageUpload={handleBrandImage}
-                          image={brandimage}
+                        <AddCircleOutlinedIcon
+                          className="add-icon"
+                          onClick={handleBrandOpen}
                         />
                       </div>
                       <div className="card">
@@ -730,7 +820,10 @@ function AddStocks({ text }) {
                           >
                             {brand.name}
                             {brand.image_path && (
-                              <img src={brand.image_path} alt={brand.name} />
+                              <img
+                                src={`${apiHost}/` + brand.image_path}
+                                alt={brand.name}
+                              />
                             )}
                           </div>
                         ))}
@@ -744,7 +837,12 @@ function AddStocks({ text }) {
                         <div className="count-size-quantity-box">
                           <div className="count-div">
                             <div className="count_lable">
-                              <b>Select a Model</b>
+                              <div className="name-and-icon">
+                                <b>Select a Model</b>
+                                <AddCircleOutlinedIcon
+                                  onClick={handleModelOpen}
+                                />
+                              </div>
                               <Select
                                 options={modelOptions}
                                 onChange={(selectedOption) => {
@@ -756,7 +854,12 @@ function AddStocks({ text }) {
                             </div>
 
                             <div className="count_lable">
-                              <b>Select a Color</b>
+                              <div className="name-and-icon">
+                                <b>Select a Color</b>
+                                <AddCircleOutlinedIcon
+                                  onClick={handleColorOpen}
+                                />
+                              </div>
                               <Select
                                 options={colorOptions}
                                 onChange={(selectedColorOp) => {
@@ -769,8 +872,9 @@ function AddStocks({ text }) {
                           </div>
 
                           <div className="size-and-quantity">
-                            <div>
+                            <div className="name-and-icon">
                               <b>Size and Quantity</b>
+                              <AddCircleOutlinedIcon onClick={handleSizeOpen} />
                             </div>
 
                             {sizeInputs()}
@@ -867,16 +971,17 @@ function AddStocks({ text }) {
       {/* category dialog */}
       <div>
         <Dialog
+          fullWidth
           open={categoryopen}
           onClose={handleCategoryClose}
           PaperProps={{
             style: {
-              padding: "10px",
+              padding: "20px",
             },
           }}
         >
-          <form onSubmit={handleCategorySubmit}>
-            <div>
+          <form className="form-dialog" onSubmit={handleCategorySubmit}>
+            <div className="dialog-content">
               <DialogTitle
                 style={{
                   textAlign: "center",
@@ -886,7 +991,7 @@ function AddStocks({ text }) {
               </DialogTitle>
               <DialogContent
                 style={{
-                  fontSize: 20,
+                  fontSize: 10,
                 }}
               >
                 <br />
@@ -909,30 +1014,364 @@ function AddStocks({ text }) {
                   onChange={handleCategoryImage}
                 />
                 <br />
-                <button>Add</button>
+
+                <div className="float-right">
+                  <button
+                    className="add-button-dialog"
+                    onClick={handleCategoryClose}
+                  >
+                    CANCEL
+                  </button>
+                  <button className="add-button-dialog" type="submit">
+                    ADD
+                  </button>
+                </div>
               </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={handleCategoryClose}
-                  style={{
-                    fontWeight: 700,
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  onClick={() => {
-                    handleCategorySubmit();
-                    handleCategoryClose();
-                  }}
-                  style={{
-                    fontWeight: 700,
-                  }}
-                >
-                  Submit
-                </Button>
-              </DialogActions>
+            </div>
+          </form>
+        </Dialog>
+      </div>
+      {/* item-name dialog */}
+      <div>
+        <Dialog
+          fullWidth
+          open={itemopen}
+          onClose={handleItemClose}
+          PaperProps={{
+            style: {
+              padding: "10px",
+            },
+          }}
+        >
+          <form onSubmit={handleItemSubmit}>
+            <div>
+              <DialogTitle
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <h2>Add Item</h2>
+              </DialogTitle>
+              <DialogContent
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                <br />
+                <InputBox
+                  type="text"
+                  label="Add Item"
+                  id="itemvalue"
+                  name="item_name"
+                  value={itemvalue}
+                  onChange={(e) => setItemValue(e.target.value)}
+                  required
+                  size="small"
+                />
+                <br />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleItemImage}
+                />
+                <br />
+                <div className="float-right">
+                  <button
+                    className="add-button-dialog"
+                    onClick={handleItemClose}
+                  >
+                    CANCEL
+                  </button>
+                  <button className="add-button-dialog" type="submit">
+                    ADD
+                  </button>
+                </div>
+              </DialogContent>
+            </div>
+          </form>
+        </Dialog>
+      </div>
+      {/* sub-category dialog */}
+      <div>
+        <Dialog
+          fullWidth
+          open={subopen}
+          onClose={handleSubClose}
+          PaperProps={{
+            style: {
+              padding: "10px",
+            },
+          }}
+        >
+          <form onSubmit={handleSubSubmit}>
+            <div>
+              <DialogTitle
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <h2>Add Sub-Category</h2>
+              </DialogTitle>
+              <DialogContent
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                <br />
+                <InputBox
+                  type="text"
+                  label="Add Sub-Category"
+                  id="subvalue"
+                  name="item_name"
+                  value={subvalue}
+                  onChange={(e) => setSubValue(e.target.value)}
+                  required
+                  size="small"
+                />
+                <br />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleSubImage}
+                />
+                <br />
+                <div className="float-right">
+                  <button
+                    className="add-button-dialog"
+                    onClick={handleSubClose}
+                  >
+                    CANCEL
+                  </button>
+                  <button className="add-button-dialog" type="submit">
+                    ADD
+                  </button>
+                </div>
+              </DialogContent>
+            </div>
+          </form>
+        </Dialog>
+      </div>
+      {/* brand dialog */}
+      <div>
+        <Dialog
+          fullWidth
+          open={brandopen}
+          onClose={handleBrandClose}
+          PaperProps={{
+            style: {
+              padding: "10px",
+            },
+          }}
+        >
+          <form onSubmit={handleBrandSubmit}>
+            <div>
+              <DialogTitle
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <h2>Add Brand</h2>
+              </DialogTitle>
+              <DialogContent
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                <br />
+                <InputBox
+                  type="text"
+                  label="Add Brand"
+                  id="brandvalue"
+                  name="item_name"
+                  value={brandvalue}
+                  onChange={(e) => setBrandValue(e.target.value)}
+                  required
+                  size="small"
+                />
+                <br />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleBrandImage}
+                />
+                <br />
+                <div className="float-right">
+                  <button
+                    className="add-button-dialog"
+                    onClick={handleBrandClose}
+                  >
+                    CANCEL
+                  </button>
+                  <button className="add-button-dialog" type="submit">
+                    ADD
+                  </button>
+                </div>
+              </DialogContent>
+            </div>
+          </form>
+        </Dialog>
+      </div>
+      <div>
+        {/* model dialog */}
+        <Dialog
+          fullWidth
+          open={modelopen}
+          onClose={handleModelClose}
+          PaperProps={{
+            style: {
+              padding: "10px",
+            },
+          }}
+        >
+          <form onSubmit={handleModelSubmit}>
+            <div>
+              <DialogTitle
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <h2>Add Model</h2>
+              </DialogTitle>
+              <DialogContent
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                <br />
+                <InputBox
+                  type="text"
+                  label="Add Model"
+                  id="modelvalue"
+                  name="model_name"
+                  value={modelvalue}
+                  onChange={(e) => setModelValue(e.target.value)}
+                  required
+                  size="small"
+                />
+                <div className="float-right">
+                  <button
+                    className="add-button-dialog"
+                    onClick={handleModelClose}
+                  >
+                    CANCEL
+                  </button>
+                  <button className="add-button-dialog" type="submit">
+                    ADD
+                  </button>
+                </div>
+              </DialogContent>
+            </div>
+          </form>
+        </Dialog>
+      </div>
+      <div>
+        {/* color dialog */}
+        <Dialog
+          fullWidth
+          open={coloropen}
+          onClose={handleColorClose}
+          PaperProps={{
+            style: {
+              padding: "10px",
+            },
+          }}
+        >
+          <form onSubmit={handleColorSubmit}>
+            <div>
+              <DialogTitle
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <h2>Add Color</h2>
+              </DialogTitle>
+              <DialogContent
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                <br />
+                <InputBox
+                  type="text"
+                  label="Add Color"
+                  id="colorvalue"
+                  name="color_name"
+                  value={colorvalue}
+                  onChange={(e) => setColorValue(e.target.value)}
+                  required
+                  size="small"
+                />
+                <div className="float-right">
+                  <button
+                    className="add-button-dialog"
+                    onClick={handleColorClose}
+                  >
+                    CANCEL
+                  </button>
+                  <button type="submit" className="add-button-dialog">
+                    ADD
+                  </button>
+                </div>
+              </DialogContent>
+            </div>
+          </form>
+        </Dialog>
+      </div>
+      {/* size dialog */}
+      <div>
+        <Dialog
+          fullWidth
+          open={sizeopen}
+          onClose={handleColorClose}
+          PaperProps={{
+            style: {
+              padding: "10px",
+            },
+          }}
+        >
+          <form onSubmit={handleSizeSubmit}>
+            <div>
+              <DialogTitle
+                style={{
+                  textAlign: "center",
+                }}
+              >
+                <h2>Add Size</h2>
+              </DialogTitle>
+              <DialogContent
+                style={{
+                  fontSize: 20,
+                }}
+              >
+                <br />
+                <InputBox
+                  type="text"
+                  label="Add Size"
+                  id="sizevalue"
+                  name="size_name"
+                  value={sizevalue}
+                  onChange={(e) => setSizeValue(e.target.value)}
+                  required
+                  size="small"
+                />
+                <div className="float-right">
+                  <button
+                    className="add-button-dialog"
+                    onClick={handleSizeClose}
+                  >
+                    CANCEL
+                  </button>
+                  <button type="submit" className="add-button-dialog">
+                    ADD
+                  </button>
+                </div>
+              </DialogContent>
             </div>
           </form>
         </Dialog>

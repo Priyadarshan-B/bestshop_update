@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { FaBars, FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import {  useLocation, useNavigate } from 'react-router-dom';
-import './vertical_navbar.css';
-import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import CategoryIcon from '@mui/icons-material/Category';
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import TableChartIcon from '@mui/icons-material/TableChart';
-import InfoIcon from '@mui/icons-material/Info';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import AddchartIcon from '@mui/icons-material/Addchart';
-import DatasetOutlinedIcon from '@mui/icons-material/DatasetOutlined';
+import React, { useState, useEffect } from "react";
+import { FaBars, FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./vertical_navbar.css";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import CategoryIcon from "@mui/icons-material/Category";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import TableChartIcon from "@mui/icons-material/TableChart";
+import InfoIcon from "@mui/icons-material/Info";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AddchartIcon from "@mui/icons-material/Addchart";
+import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 
 const VerticalNavbar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -42,9 +42,8 @@ const VerticalNavbar = () => {
   };
 
   useEffect(() => {
-   
-    const currentPath = location.pathname.substring(1); 
-    setSelectedField(currentPath || 'dashboard');
+    const currentPath = location.pathname.substring(1);
+    setSelectedField(currentPath || "dashboard");
   }, [location.pathname]);
 
   return (
@@ -52,47 +51,38 @@ const VerticalNavbar = () => {
       <div className="menu-icon" onClick={toggleMenu}>
         <FaBars />
       </div>
-      <ul className={showMenu ? 'nav-links show' : 'nav-links'}>
-{/* dashboard_nav */}
+      <ul className={showMenu ? "nav-links show" : "nav-links"}>
+        {/* dashboard_nav */}
 
-        <li className={selectedField === 'dashboard' ? 'selected' : ''} 
-        onClick={() => handleNavigate('/dashboard')}>
-          <SpaceDashboardIcon style={{ marginRight: '10px' }} />
+        <li
+          className={selectedField === "dashboard" ? "selected" : ""}
+          onClick={() => handleNavigate("/dashboard")}
+        >
+          <SpaceDashboardIcon style={{ marginRight: "10px" }} />
           <b>Dashboard </b>
         </li>
 
-        {/* inventory_nav */}
-{/* 
-        <li className={selectedField === 'inventory' ? 'selected' : ''}
-        onClick={() => handleNavigate('/inventory')}>
-          <InventoryIcon style={{ marginRight: '10px' }} />
-          <b>Inventory</b>
-        </li> */}
-
-        {/* enquiries_nav */}
-
-        {/* <li className={selectedField === 'enquiries' ? 'selected' : ''} onClick={() => handleNavigate('/enquiries')}>
-          <QueryStatsIcon style={{ marginRight: '10px' }} />
-          <b>Enquiries</b>
-        </li> */}
-
-        {/* addStock_nav */}
-
-        <li className={selectedField === 'addStock' ? 'selected' : ''} onClick={() => handleNavigate('/addStock')}>
-          <AddchartIcon style={{ marginRight: '10px' }} />
+        <li
+          className={selectedField === "addStock" ? "selected" : ""}
+          onClick={() => handleNavigate("/addStock")}
+        >
+          <AddchartIcon style={{ marginRight: "10px" }} />
           <b>Add Stock</b>
         </li>
 
         {/* product_nav */}
 
-        <li className={selectedField === 'productdashboard' ? 'selected' : ''} onClick={() => handleNavigate('/productdashboard')}>
-          <ShoppingCartIcon style={{ marginRight: '10px' }} />
+        <li
+          className={selectedField === "productdashboard" ? "selected" : ""}
+          onClick={() => handleNavigate("/productdashboard")}
+        >
+          <ShoppingCartIcon style={{ marginRight: "10px" }} />
           <b>Products</b>
         </li>
 
         {/* master */}
 
-
+        {/* 
         <div className="sub-navbar">
           <li className={selectedField === 'master' ? 'selected' : ''} onClick={handleMasterClick}>
           
@@ -121,12 +111,15 @@ const VerticalNavbar = () => {
               </ul>
             )}
           </li>
-        </div>
+        </div> */}
 
         {/* export_nav */}
 
-        <li className={selectedField === 'export' ? 'selected' : ''} onClick={() => handleNavigate('/export')}>
-        <DatasetOutlinedIcon style={{ marginRight: '10px' }} />
+        <li
+          className={selectedField === "export" ? "selected" : ""}
+          onClick={() => handleNavigate("/export")}
+        >
+          <DatasetOutlinedIcon style={{ marginRight: "10px" }} />
           <b>Export</b>
         </li>
       </ul>
