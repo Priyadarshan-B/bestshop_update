@@ -25,7 +25,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
-
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../Tables/table.css";
@@ -46,6 +45,8 @@ const CategoryTable = () => {
     fetchData(selectedDate);
   }, []);
 
+
+
   const fetchData = async (date) => {
     try {
       const queryParams = new URLSearchParams({
@@ -61,6 +62,15 @@ const CategoryTable = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  const notifySuccess = (message) => {
+    toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
+  };
+
+  const notifyError = (message) => {
+    toast.error(message, { position: toast.POSITION.BOTTOM_LEFT });
+  };
+
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -131,10 +141,12 @@ const CategoryTable = () => {
       if (response.status === 200) {
         setRows(rows.filter((row) => row.id !== id));
         console.log("Row deleted successfully");
+        notifySuccess("Stock Deleted Successfully")
         await fetchData(selectedDate);
       }
     } catch (error) {
       console.error("Error deleting row:", error);
+      notifyError("Failed to Delete Stock")
       console.log("Failed to delete row");
     }
   };
