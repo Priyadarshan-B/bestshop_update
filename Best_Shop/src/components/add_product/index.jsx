@@ -633,6 +633,8 @@ function AddStocks({ text }) {
           type="number"
           value={sizeQuantities[size.id]}
           onChange={(e) => handleSizeQuantity(size.id, e.target.value)}
+          size="small"
+          
         />
       </div>
     ));
@@ -886,52 +888,56 @@ function AddStocks({ text }) {
                         <div className="price-boxes">
                           <div className="centering">
                             <div className="input-container">
-                              <label htmlFor="selling_price">Bill:</label>
-                              <input
+                              {/* <label htmlFor="selling_price">Bill:</label> */}
+                              <InputBox
                                 placeholder="Enter Bill No.."
+                                label="Bill"
                                 className="input_box"
                                 type="number"
                                 id="bill"
                                 value={bill}
+                                size="small"
                                 onChange={(e) => setBill(e.target.value)}
-                                required
+                              
                               />
                             </div>
                             <div className="input-container">
-                              <label htmlFor="selling_price">
-                                Selling Price:
-                              </label>
-                              <input
-                                placeholder="Enter Selling Price"
+                             
+                              <InputBox
+                                label="Selling Price"
                                 className="input_box"
-                                type="text"
+                                type="number"
                                 id="sellingprice"
+                                size="small"
                                 value={sellingprice}
                                 onChange={handleSellingPriceChange}
                                 required
                               />
                             </div>
                             <div className="input-container">
-                              <label htmlFor="mrp">MRP:</label>
-                              <input
-                                placeholder="Enter MRP"
+                              {/* <label htmlFor="mrp">MRP:</label> */}
+                              <InputBox
+                                // placeholder="Enter MRP"
+                                label="MRP"
                                 className="input_box"
-                                type="text"
+                                type="number"
                                 id="mrp"
                                 value={mrp}
                                 required
                                 onChange={handleMrpPriceChange}
+                                size="small"
                               />
                             </div>
                             <div className="input-container">
-                              <label htmlFor="price">Purchasing Price:</label>
-                              <input
-                                placeholder="Enter Purchasing Price"
+                              {/* <label htmlFor="price">Purchasing Price:</label> */}
+                              <InputBox
+                                // placeholder="Enter Purchasing Price"
+                                label="Purchase Price "
                                 className="input_box"
-                                type="text"
+                                type="number"
                                 id="purchaseprice"
+                                size="small"
                                 value={purchaseprice}
-                                required
                                 onChange={(e) =>
                                   handleNumberChange(e, setPurchasePrice)
                                 }
@@ -1013,6 +1019,14 @@ function AddStocks({ text }) {
                   accept="image/*"
                   onChange={handleCategoryImage}
                 />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={handleCategoryImage}
+                />
                 <br />
 
                 <div className="float-right">
@@ -1074,6 +1088,14 @@ function AddStocks({ text }) {
                   id="image"
                   name="image"
                   accept="image/*"
+                  onChange={handleItemImage}
+                />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  capture="environment"
                   onChange={handleItemImage}
                 />
                 <br />
@@ -1138,6 +1160,14 @@ function AddStocks({ text }) {
                   accept="image/*"
                   onChange={handleSubImage}
                 />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={handleSubImage}
+                />
                 <br />
                 <div className="float-right">
                   <button
@@ -1198,6 +1228,14 @@ function AddStocks({ text }) {
                   id="image"
                   name="image"
                   accept="image/*"
+                  onChange={handleBrandImage}
+                />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  capture="environment"
                   onChange={handleBrandImage}
                 />
                 <br />

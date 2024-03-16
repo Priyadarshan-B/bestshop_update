@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import Login from "./components/Login/login";
 import Signup from "./components/Signup/signup";
 import Dashboard from "./components/Dashboard/dashboard";
@@ -20,7 +21,7 @@ function Protected({ children }) {
 
   useEffect(() => {
   const checkAuth = async () => {
-    if (localStorage.getItem("token")) {
+    if (Cookies.get("token")) {
       setAuth(true);
     } else {
       navigate("/login");
@@ -51,6 +52,7 @@ const routes = () => (
       <Route path= "/export" element={<Protected><ExportData /></Protected>} />
       <Route path= "/export1" element={<Protected><DataConverter /></Protected>} />
       <Route path= "/table" element={<Protected><DataTable /></Protected>} />
+
 
 
       <Route path= "*" element={<h1>404</h1>} />

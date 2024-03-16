@@ -110,24 +110,28 @@
   margin-left: 50px;
   margin-top: 30px;
 }
+@media  (max-width: 950px){
+  .select-category-card{
+    /* height: 10px; */
+    flex: 0.15;
+    justify-content: flex-start;
+    overflow-y: hidden;
+  }
 
-/* .search-bar > input {
-  width: 250px;
-  height: 42px;
-  padding: 0px 16px;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  border: 1px solid black;
-  border-radius: 5px;
-  border: 3px solid var(--greyscale-200, #E2E8F0);
-} */
+}
+@media(min-width:950px){
+  .select-category-card{
+    justify-content: center;
+  }
+}
+  
+
 
 
 .select-category-card {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  /* flex-wrap: wrap; */
+  /* justify-content: center; */
   flex-direction: row;
   overflow-y: auto;
   text-align: center;

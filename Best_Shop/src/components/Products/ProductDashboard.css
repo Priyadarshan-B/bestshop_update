@@ -1,10 +1,10 @@
 
 
 
-/* Table */
+
 table {
   border-collapse:collapse;
-  background-color: white; /* Background color set to white */
+  background-color: white; 
   margin-top: 10px;
   width: 100%;
 }
@@ -13,14 +13,17 @@ table {
   width: 30%;
   min-width: 200px;
 }
+thead{ 
+  position: sticky; 
+  /* top: 0;  */
+} 
 
 
-/* Table Header */
 th {
   text-align: left;
   padding: 10px 30px 10px 20px;
   background-color: white;
-  
+  position: static;
 }
 
 .date-picker-division{
@@ -36,37 +39,41 @@ th {
 }
 @media (max-width: 950px){
   .date-picker-division{
-    flex-direction: column;
+    flex-direction: column-reverse;
+    gap: 10px;
   }
   .container-for-table{
     height: 75%;
     
   }
+  .total-table-container{
+    height: 90%;
+    width: 85vw;
+  }
+
 }
-/* Table Body */
+
 td {
   text-align: left;
   padding: 20px 10px 20px 10px;
   background-color: rgba(254, 255, 255, 0.666);
-  /* Prevents text wrapping */
+  
 
 }
-td:nth-child(5), td:nth-child(1) {
-  text-align: center;
-  white-space: nowrap; 
+td:nth-child(5), td:nth-child(1), th:nth-child(11){
+  text-align: left;
+  white-space: nowrap;
+
 }
 
-/* Alternating row color */
-/* tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-} */
 
-/* Hover effect */
+
+
 tbody tr:hover {
   background-color: #e7e6e6;
 }
 
-/* Buttons */
+
 button {
   background-color: #4caf50; /* Green */
   border: none;
@@ -93,13 +100,24 @@ button:hover {
 }
 
 .total-table-container{
-  height: 90%;
+  height: 95%;
   width: 75vw;
 }
 
+@media (max-width: 900px){
+  .total-table-container{
+    width: 90vw;
+  }
+  .container-for-table{
+    width: 100%;
+  }
+}
+
 .container-for-table{
-  overflow: scroll;
-  height: 85%;
+  overflow-x: scroll;
+  height: 79%;
+  width: 100%;
+  max-height: 75%;
   background-color: white;
   border-radius:5px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

@@ -25,7 +25,6 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 const CategoryTable = () => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [data, setData] = useState([]);
-  const [datalist, setDataList] = useState([]);
   const [editingItem, setEditingItem] = useState(null);
   const [editopen, setEditOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,7 +59,7 @@ const CategoryTable = () => {
         "GET",
         `/api/stock/stock?${queryParams}`
       );
-      setData(response.data); // Directly use the response data
+      setData(response.data);
       console.log(response);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -69,7 +68,6 @@ const CategoryTable = () => {
 
   const handleEdit = (item) => {
     setEditingItem(item);
-    // setEditOpen(true);
     handleEditOpen();
   };
 
@@ -87,10 +85,12 @@ const CategoryTable = () => {
         data,
       });
 
-      if (response.status === 200) {
+      if (response.status >= 200 && response.status < 300) {
         console.log("Row deleted successfully");
         notifySuccess("Stock Deleted Successfully");
-        setData(data.filter((item) => item.id !== id));
+        setData(stocklist.filter((item) => item.id !== id));
+      } else {
+        throw new Error(`Error deleting row: ${response.status}`);
       }
     } catch (error) {
       console.error("Error deleting row:", error);
@@ -109,7 +109,7 @@ const CategoryTable = () => {
 
       const requestBody = {
         id: editingItem.id,
-        selling_price: editingItem.mrp,
+        selling_price: editingItem.selling_price,
         mrp: editingItem.mrp,
         quantity: parseInt(editingItem.quantity),
       };
@@ -146,7 +146,10 @@ const CategoryTable = () => {
       item.shop.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.color_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.model_name.toLowerCase().includes(searchTerm.toLowerCase())
+      item.model_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.mrp.toString().includes(searchTerm) ||
+      item.size_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.selling_price.toString().includes(searchTerm)
   );
 
   return (
@@ -171,6 +174,7 @@ const CategoryTable = () => {
                   value={searchTerm}
                   onChange={handleSearch}
                   size="small"
+                  // helperText="Incorrect entry."
                 />
               </div>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -198,13 +202,14 @@ const CategoryTable = () => {
                     <th>Size</th>
                     <th>Quantity</th>
                     <th>MRP</th>
+                    <th>Selling Price</th>
                     <th>Total</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {stocklist.map((item) => (
-                    <tr key={item.id}>
+                  {stocklist.map((item, index) => (
+                    <tr key={item.id} >
                       <td>{item.id}</td>
                       <td>{item.shop}</td>
                       <td>{item.date}</td>
@@ -215,6 +220,7 @@ const CategoryTable = () => {
                       <td>{item.size_name}</td>
                       <td>{item.quantity}</td>
                       <td>{item.mrp}</td>
+                      <td>{item.selling_price}</td>
                       <td>{item.total_price}</td>
                       <td>
                         <EditIcon
@@ -229,10 +235,6 @@ const CategoryTable = () => {
                           onClick={() => handleDelete(item.id)}
                           sx={{ color: "red", cursor: "pointer" }}
                         />
-                        {/* <button onClick={() => handleEdit(item)}>Edit</button>
-                        <button onClick={() => handleDelete(item.id)}>
-                          Delete
-                        </button> */}
                       </td>
                     </tr>
                   ))}
@@ -273,12 +275,25 @@ const CategoryTable = () => {
                       <br />
                       <InputBox
                         label="MRP"
-                        type="text"
+                        type="number"
                         value={editingItem.mrp}
                         onChange={(e) =>
                           setEditingItem({
                             ...editingItem,
                             mrp: e.target.value,
+                          })
+                        }
+                        size="small"
+                      />
+                      <br />
+                      <InputBox
+                        label="Selling Price"
+                        type="number"
+                        value={editingItem.selling_price}
+                        onChange={(e) =>
+                          setEditingItem({
+                            ...editingItem,
+                            selling_price: e.target.value,
                           })
                         }
                         size="small"

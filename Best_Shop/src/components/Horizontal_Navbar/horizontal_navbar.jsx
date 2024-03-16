@@ -6,17 +6,12 @@ import "./horizontal_navbar.css";
 import { useNavigate } from "react-router-dom";
 import apiHost from "../../utils/api";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
-import CategoryIcon from "@mui/icons-material/Category";
-import TableChartIcon from "@mui/icons-material/TableChart";
-import InfoIcon from "@mui/icons-material/Info";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 import Cookies from "js-cookie";
 
 const HorizontalNavbar = () => {
-  const [notifications, setNotifications] = useState(0);
-  const [messages, setMessages] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
   const [showMasterSubMenu, setShowMasterSubMenu] = useState(false);
   const [selectedField, setSelectedField] = useState(null);
@@ -173,7 +168,9 @@ const HorizontalNavbar = () => {
           position="bottom right"
         >
           <div className="popup-content">
-            <div className="popup-text"></div>
+            <div className="popup-text">
+              <p>Hi {Cookies.get("username").toUpperCase()}!</p>
+            </div>
             <button className="popup-button" onClick={handleLogout}>
               Logout
             </button>

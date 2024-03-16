@@ -156,6 +156,7 @@ const ExportData = () => {
               onChange={(e) => setBill(e.target.value)}
               min={0}
               size="small"
+              helperText="Optional"
               
             />
 

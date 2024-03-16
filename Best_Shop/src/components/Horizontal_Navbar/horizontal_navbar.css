@@ -44,7 +44,6 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-right: 20px;
 }
 
 .icon {
@@ -67,8 +66,8 @@
 
 
 .navbar-dropdown {
-  height: 89vh;
-  width: 250px;
+  height: 90vh;
+  width: 200px;
   position: absolute;
   z-index: 2;
   background-color: white;
@@ -82,7 +81,7 @@
 
 @media (max-width: 750px) {
   .navbar-dropdown {
-    height: 91vh;
+    height: 100vh;
   }
 }
 

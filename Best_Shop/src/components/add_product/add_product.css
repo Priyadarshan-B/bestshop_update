@@ -376,8 +376,9 @@ label {
 
 .sizeandquantity{
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 5px;
+  /* flex-wrap: wrap; */
   align-content: center;
   align-items: center;
   justify-content: center;
@@ -493,6 +494,22 @@ label {
   border-radius: 5px;
   max-width: 120px;
   max-height: 100px;
+  min-height: 80px;
+}
+@media(max-width:950px){
+  .selected-info img{
+    max-width: 100px;
+    min-width: 60px;
+    max-height: 80px;
+  }
+  .selected-info p{
+    padding: 5px;
+    font-size: 15px;
+  }
+
+  .selected-info{
+    gap: 10px;
+  }
 }
 
 .name-and-icon{
