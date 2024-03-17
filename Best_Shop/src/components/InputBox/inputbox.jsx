@@ -33,6 +33,7 @@ const InputBox = ({
   id,
   size,
   helperText,
+  sx
 }) => {
   return (
     <Box
@@ -52,7 +53,8 @@ const InputBox = ({
         id={id}
         size={size}
         helperText={helperText}
-        sx={{ width: "100%" }}
+        // sx={{ width: "100%" }}
+        sx={sx}
       />
     </Box>
   );

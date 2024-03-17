@@ -95,7 +95,7 @@
 }
 
 
-.popup-content {
+.popup-content1 {
   display: flex;
   background-color: #b0abab;
   border: none;
@@ -173,7 +173,7 @@
 
 }
 
-.popup-content {
+.popup-content1 {
   margin: auto;
   background: rgb(255, 255, 255);
   width: 60%;

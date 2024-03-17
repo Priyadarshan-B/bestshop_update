@@ -71,7 +71,7 @@ const Login = () => {
         <div className="login-form-flex">
           <div className="card-to-arrange">
             <form onSubmit={handleLogin}>
-              <div className="login-title">Login</div>
+              <div className="login-title">LOGIN</div>
               {error && <p className="error-message">{error}</p>}
               <div className="user-pass">
                 <div className="username-container">

@@ -45,8 +45,8 @@ const Dashboard = () => {
       xaxis: {
         categories: [
           "Less Than 30 Days",
-          "Between 30 to 180 days",
-          "Between 180 to 365 days",
+          "30 to 180 days",
+          "180 to 365 days",
         ],
         labels: {
           formatter: function (val) {

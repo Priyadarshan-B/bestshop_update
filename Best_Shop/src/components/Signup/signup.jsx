@@ -94,7 +94,7 @@ const Signup = () => {
         <div className="login-form-flex">
           <div className="card-to-arrange">
           <form onSubmit={(e) => { e.preventDefault(); handleSignup(); }}>
-              <div className="login-title">Signup</div>
+              <div className="login-title">SIGNUP</div>
               <div className="user-pass">
                 <div className="username-container">
                   <TextField

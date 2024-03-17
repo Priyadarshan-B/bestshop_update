@@ -167,7 +167,7 @@ const HorizontalNavbar = () => {
           }
           position="bottom right"
         >
-          <div className="popup-content">
+          <div className="popup-content1">
             <div className="popup-text">
               <p>Hi {Cookies.get("username").toUpperCase()}!</p>
             </div>

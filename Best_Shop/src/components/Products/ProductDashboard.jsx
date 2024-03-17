@@ -88,6 +88,8 @@ const CategoryTable = () => {
       if (response.status >= 200 && response.status < 300) {
         console.log("Row deleted successfully");
         notifySuccess("Stock Deleted Successfully");
+    fetchData(selectedDate);
+
         setData(stocklist.filter((item) => item.id !== id));
       } else {
         throw new Error(`Error deleting row: ${response.status}`);
@@ -125,6 +127,8 @@ const CategoryTable = () => {
       if (response.status === 200) {
         console.log("Item updated successfully");
         notifySuccess("Stock Edited Successfull");
+    fetchData(selectedDate);
+
         setData(
           data.map((item) => (item.id === editingItem.id ? editingItem : item))
         );
@@ -147,6 +151,7 @@ const CategoryTable = () => {
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.color_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.model_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.mrp.toString().includes(searchTerm) ||
       item.size_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.selling_price.toString().includes(searchTerm)
@@ -174,7 +179,6 @@ const CategoryTable = () => {
                   value={searchTerm}
                   onChange={handleSearch}
                   size="small"
-                  // helperText="Incorrect entry."
                 />
               </div>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -194,6 +198,7 @@ const CategoryTable = () => {
                   <tr>
                     <th>S.No</th>
                     <th>Shop</th>
+                    <th>User</th>
                     <th>Date</th>
                     <th>Time</th>
                     <th>Name</th>
@@ -212,6 +217,7 @@ const CategoryTable = () => {
                     <tr key={item.id} >
                       <td>{item.id}</td>
                       <td>{item.shop}</td>
+                      <td>{item.user}</td>
                       <td>{item.date}</td>
                       <td>{item.time}</td>
                       <td>{item.name}</td>
@@ -284,6 +290,7 @@ const CategoryTable = () => {
                           })
                         }
                         size="small"
+                        sx={{ width: "100%" }}
                       />
                       <br />
                       <InputBox
@@ -297,6 +304,7 @@ const CategoryTable = () => {
                           })
                         }
                         size="small"
+                        sx={{ width: "100%" }}
                       />
                       <br />
                       <InputBox
@@ -310,6 +318,7 @@ const CategoryTable = () => {
                           })
                         }
                         size="small"
+                        sx={{ width: "100%" }}
                       />
                       <br />
 
@@ -321,7 +330,7 @@ const CategoryTable = () => {
                           CANCEL
                         </button>
                         <button className="add-button-dialog" type="submit">
-                          ADD
+                          EDIT
                         </button>
                       </div>
                     </DialogContent>
