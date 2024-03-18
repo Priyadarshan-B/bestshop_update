@@ -78,7 +78,6 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await requestApi("GET", `/api/stock/dashboard-data`);
-        console.log("Response:", response);
 
         if (!response || !response.success) {
           throw new Error("Failed to fetch data");
@@ -109,7 +108,6 @@ const Dashboard = () => {
           series: updatedSeries,
         }));
       } catch (error) {
-        console.error("Error fetching data:", error);
       }
     };
 

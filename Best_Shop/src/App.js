@@ -8,12 +8,7 @@ import Signup from "./components/Signup/signup";
 import Dashboard from "./components/Dashboard/dashboard";
 import ProductDashboard from "./components/Products/ProductDashboard";
 import AddStocks from "./components/add_product";
-import CategoryTable from "./components/Tables/category_table";
-import FieldTable from "./components/Tables/field_table";
-import DetailTable from "./components/Tables/detail_table";
 import ExportData from "./components/export_data/Export";
-import DataConverter from "./components/export_data/export1";
-import DataTable from "./components/Tables/datatable";
 
 function Protected({ children }) {
   const navigate = useNavigate();
@@ -46,15 +41,7 @@ const routes = () => (
       <Route path= "/dashboard" element={<Protected><Dashboard /></Protected>} />
       <Route path= "/addStock" element={<Protected><AddStocks /></Protected>} />
       <Route path= "/productdashboard" element={<Protected><ProductDashboard /></Protected>} />
-      <Route path= "/categorytable" element={<Protected><CategoryTable /></Protected>} />
-      <Route path= "/detailtable" element={<Protected><DetailTable /></Protected>} />
-      <Route path= "/fieldtable" element={<Protected><FieldTable /></Protected>} />
       <Route path= "/export" element={<Protected><ExportData /></Protected>} />
-      <Route path= "/export1" element={<Protected><DataConverter /></Protected>} />
-      <Route path= "/table" element={<Protected><DataTable /></Protected>} />
-
-
-
       <Route path= "*" element={<h1>404</h1>} />
 
     </Routes>

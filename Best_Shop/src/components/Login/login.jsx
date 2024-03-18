@@ -42,7 +42,6 @@ const Login = () => {
         Cookies.set("token", token);
         setUsername(username);
         Cookies.set("username",username);
-        console.log(Cookies.get("username"))
         setError(null);
         notifySuccess("Login Successfull");
         navigate("/addStock");

@@ -1,22 +1,19 @@
-
-
-
-
 table {
-  border-collapse:collapse;
-  background-color: white; 
+  border-collapse: collapse;
+  background-color: white;
   margin-top: 10px;
   width: 100%;
 }
 
-.search-box-products{
+.search-box-products {
   width: 30%;
   min-width: 200px;
 }
-thead{ 
-  position: sticky; 
+
+thead {
+  position: sticky;
   /* top: 0;  */
-} 
+}
 
 
 th {
@@ -26,7 +23,7 @@ th {
   position: static;
 }
 
-.date-picker-division{
+.date-picker-division {
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -35,19 +32,21 @@ th {
   border-radius: 10px;
   padding: 15px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  
 }
-@media (max-width: 950px){
-  .date-picker-division{
+
+@media (max-width: 950px) {
+  .date-picker-division {
     flex-direction: column-reverse;
     gap: 10px;
   }
-  .container-for-table{
+
+  .container-for-table {
     height: 75%;
-    
+
   }
-  .total-table-container{
-    height: 90%;
+
+  .total-table-container {
+    height: 85%;
     width: 85vw;
   }
 
@@ -57,10 +56,13 @@ td {
   text-align: left;
   padding: 20px 10px 20px 10px;
   background-color: rgba(254, 255, 255, 0.666);
-  
+
 
 }
-td:nth-child(5), td:nth-child(1), th:nth-child(11){
+
+td:nth-child(6),
+td:nth-child(1),
+th:nth-child(12) {
   text-align: left;
   white-space: nowrap;
 
@@ -75,7 +77,8 @@ tbody tr:hover {
 
 
 button {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50;
+  /* Green */
   border: none;
   color: rgb(0, 0, 0);
   padding: 8px 16px;
@@ -99,47 +102,30 @@ button:hover {
   float: right;
 }
 
-.total-table-container{
-  height: 95%;
-  width: 75vw;
+.total-table-container {
+  width: 81vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }
 
-@media (max-width: 900px){
-  .total-table-container{
+@media (max-width: 900px) {
+  .total-table-container {
     width: 90vw;
   }
-  .container-for-table{
+
+  .container-for-table {
     width: 100%;
   }
 }
 
-.container-for-table{
+.container-for-table {
   overflow-x: scroll;
-  height: 79%;
+  flex: 0.99;
   width: 100%;
   max-height: 75%;
   background-color: white;
-  border-radius:5px;
+  border-radius: 5px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -10,6 +10,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 import Cookies from "js-cookie";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const HorizontalNavbar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -66,9 +67,7 @@ const HorizontalNavbar = () => {
       navigate("/login", {
         state: { successMessage: "Logout successfully" },
       });
-      console.log("Logout Successfull");
     } catch (error) {
-      console.error("Error logging out:", error);
     }
   };
 
@@ -169,8 +168,12 @@ const HorizontalNavbar = () => {
         >
           <div className="popup-content1">
             <div className="popup-text">
-              <p>Hi {Cookies.get("username").toUpperCase()}!</p>
+              <p>Welcome {Cookies.get("username").toUpperCase()}!</p>
+              <PersonAddIcon style={{
+              cursor:"pointer"
+            }}onClick={() => handleNavigate("/signup")}/>
             </div>
+           
             <button className="popup-button" onClick={handleLogout}>
               Logout
             </button>

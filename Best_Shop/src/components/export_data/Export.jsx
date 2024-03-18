@@ -38,7 +38,6 @@ const ExportData = () => {
         }));
         setLocation(formattedOptions);
       } else {
-        console.error("Error fetching data");
       }
     };
 
@@ -67,10 +66,8 @@ const ExportData = () => {
       }
 
       const url = `${apiHost}/api/stock/export-csv?${queryParams}`;
-      console.log("Request URL:", url);
 
       // Log the request details before making the call
-      console.log("Making request with method: GET, URL:", url);
 
       // Fetch data using requestApi
       const { success, data, error } = await requestApi(
@@ -78,9 +75,6 @@ const ExportData = () => {
         `/api/stock/export-csv?${queryParams}`,
         {}
       );
-      console.log("Response success:", success);
-      console.log("Raw response data:", data);
-      console.log("Error from requestApi:", error);
 
       if (success && data) {
         setCsvData(data);
@@ -104,13 +98,10 @@ const ExportData = () => {
         link.click();
         document.body.removeChild(link);
       } else {
-        console.error("Data fetching was not successful or data is undefined.");
         if (error) {
-          console.error("Error from requestApi:", error);
         }
       }
     } catch (error) {
-      console.error("Error occurred while exporting data:", error);
     }
 
     setIsLoading(false);

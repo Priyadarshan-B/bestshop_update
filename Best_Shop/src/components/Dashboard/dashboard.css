@@ -5,13 +5,14 @@
 }
 
 .chart-container {
-  
+
   padding: 20px;
   /* box-shadow: 0 0 17px rgba(0, 0, 0, 0.3); */
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  border-radius: 5px;
   background-color: rgb(255, 255, 255);
-  width: 90%;
-  height: 85%;
+  width: 93%;
+  height: 86%;
   justify-content: center;
   align-items: center;
 }
@@ -25,19 +26,21 @@
 @media (max-width: 999px) {
   .chart-container {
     margin-top: 0;
+    width: 85%;
     /* height: max-content; */
   }
 
-  .dashboard-body{
+  .dashboard-body {
     overflow: hidden;
   }
 }
-.dashboard-body{
+
+.dashboard-body {
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color:#e9f4fa ;
+  background-color: #e9f4fa;
   /* overflow: auto; */
 }

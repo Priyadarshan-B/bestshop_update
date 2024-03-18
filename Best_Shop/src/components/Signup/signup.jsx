@@ -29,7 +29,6 @@ const Signup = () => {
         label: location.name,
       }));
     } catch (error) {
-      console.error("Error fetching shop locations:", error);
       return [];
     }
   };
@@ -42,7 +41,6 @@ const Signup = () => {
         label: role.name,
       }));
     } catch (error) {
-      console.error("Error fetching master roles:", error);
       return [];
     }
   };
@@ -76,7 +74,6 @@ const Signup = () => {
         // Handle unsuccessful signup
       }
     } catch (error) {
-      console.error("Error during signup:", error);
       // Handle error
     }
   };

@@ -35,7 +35,6 @@ const CategoryTable = () => {
   const handleEditClose = () => {};
   const handleDateChange = async (newValue) => {
     setSelectedDate(newValue);
-    console.log("Fetching data for date:", newValue.format("YYYY-MM-DD"));
   };
 
   const notifySuccess = (message) => {
@@ -60,9 +59,7 @@ const CategoryTable = () => {
         `/api/stock/stock?${queryParams}`
       );
       setData(response.data);
-      console.log(response);
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
@@ -86,7 +83,6 @@ const CategoryTable = () => {
       });
 
       if (response.status >= 200 && response.status < 300) {
-        console.log("Row deleted successfully");
         notifySuccess("Stock Deleted Successfully");
     fetchData(selectedDate);
 
@@ -95,8 +91,6 @@ const CategoryTable = () => {
         throw new Error(`Error deleting row: ${response.status}`);
       }
     } catch (error) {
-      console.error("Error deleting row:", error);
-      console.log("Failed to delete row");
       notifyError("Failed to Delete Stock");
     }
   };
@@ -125,7 +119,6 @@ const CategoryTable = () => {
       );
 
       if (response.status === 200) {
-        console.log("Item updated successfully");
         notifySuccess("Stock Edited Successfull");
     fetchData(selectedDate);
 
@@ -135,8 +128,6 @@ const CategoryTable = () => {
         setEditOpen(false);
       }
     } catch (error) {
-      console.error("Error updating item:", error);
-      console.log("Failed to update item");
       notifyError("Failed to Edit Stock");
     }
   };

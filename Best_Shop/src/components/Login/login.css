@@ -2,7 +2,7 @@
 .total-login-page {
   height: 100vh;
   width: 100%;
-  background-color: aliceblue;
+  background-color: rgb(217, 237, 255);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +47,7 @@
 .login-form-flex {
   flex: 1.5;
   height: 100%;
-  background-color: aliceblue;
+  background-color: rgb(217, 237, 255);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -152,28 +152,17 @@ form {
   margin-left: 35px;
 }
 
-.select-in-signup{
+.select-in-signup {
   display: flex;
   flex-direction: row;
   gap: 20px;
   margin-left: 7px;
 }
 
-.select-input{
+.select-input {
   width: 200px;
 }
-.error-message{
+
+.error-message {
   color: red;
 }
-
-
-
-
-
-
-
-
-
-
-
-
