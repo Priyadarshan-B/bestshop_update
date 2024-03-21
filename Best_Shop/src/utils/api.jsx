@@ -1,2 +1,2 @@
-const apiHost = "http://10.10.190.6:5000";
+const apiHost = "http://192.168.91.174:5000";
 export default apiHost;
