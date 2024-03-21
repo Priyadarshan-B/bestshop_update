@@ -31,9 +31,10 @@ exports.get_stocks = async (req, res) => {
     }
 
     const stocks = await get_query_database(query, query_params);
-    const formatted_stocks =  stocks.map(stocks=>({
+    const formatted_stocks = stocks.map((stock) => ({
       ...stock,
-      date: format_date(new Date(stock.date))
+      user: stock.user.toUpperCase(), 
+      date: format_date(new Date(stock.date)),
     }));
     res.json(formatted_stocks);
   } catch (err) {
@@ -59,10 +60,10 @@ exports.post_stocks = async (req, res) => {
     mrp,
   } = req.body;
   const location = req.body.location;
-  const user = req.body.user_id
+  const user = req.body.user_id;
 
   if (
-    !user||
+    !user ||
     !location ||
     !bill_number ||
     !category ||
@@ -152,7 +153,7 @@ function format_time(date) {
 }
 
 exports.update_stocks = async (req, res) => {
-  const { id, quantity, selling_price, mrp} = req.body;
+  const { id, quantity, selling_price, mrp } = req.body;
   if (!id || !quantity || !selling_price) {
     return res.status(400).json({
       err: "id, quantity and selling price are required",
@@ -169,13 +170,13 @@ exports.update_stocks = async (req, res) => {
       "Stock updated successfully"
     );
     res.status(200).json({
-      success_message
-    })
+      success_message,
+    });
   } catch (err) {
     console.error("Error updating stocks", err);
     res.status(500).json({
-      err:"Error updating stocks"
-    })
+      err: "Error updating stocks",
+    });
   }
 };
 
