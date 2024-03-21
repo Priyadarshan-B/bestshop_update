@@ -21,7 +21,10 @@ const app = express();
 const port = process.env.DEV_PORT;
 
 // Enable CORS AND LOGGER MIDDLEWARE
-app.use(cors());
+const cors_config = {
+  origin:'*'
+}
+app.use(cors(cors_config));
 app.use(morgan_config);
 app.use(express.json());
 
