@@ -9,6 +9,9 @@ import Dashboard from "./components/Dashboard/dashboard";
 import ProductDashboard from "./components/Products/ProductDashboard";
 import AddStocks from "./components/add_product";
 import ExportData from "./components/export_data/Export";
+import Inventory from "./components/Inventory/inventory";
+import ImportData from "./components/import_data/import";
+
 
 function Protected({ children }) {
   const navigate = useNavigate();
@@ -42,6 +45,10 @@ const routes = () => (
       <Route path= "/addStock" element={<Protected><AddStocks /></Protected>} />
       <Route path= "/productdashboard" element={<Protected><ProductDashboard /></Protected>} />
       <Route path= "/export" element={<Protected><ExportData /></Protected>} />
+      <Route path= "/import" element={<Protected><ImportData /></Protected>} />
+      <Route path= "/inventory" element={<Protected><Inventory /></Protected>} />
+
+
       <Route path= "*" element={<h1>404</h1>} />
 
     </Routes>

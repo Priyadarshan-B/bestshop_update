@@ -45,112 +45,119 @@ exports.get_stocks = async (req, res) => {
 
 exports.post_stocks = async (req, res) => {
   const {
-    bill_number,
-    category,
-    item_name,
-    sub_category,
-    brand,
-    model,
-    color,
-    size,
-    quantity,
-    name,
-    purchasing_price,
-    selling_price,
-    mrp,
+     bill_number,
+     category,
+     item_name,
+     sub_category,
+     brand,
+     model,
+     color,
+     size,
+     quantity,
+     name,
+     purchasing_price,
+     selling_price,
+     mrp,
   } = req.body;
   const location = req.body.location;
   const user = req.body.user_id;
-
+ 
   if (
-    !user ||
-    !location ||
-    !bill_number ||
-    !category ||
-    !item_name ||
-    !sub_category ||
-    !brand ||
-    !model ||
-    !color ||
-    !size ||
-    !quantity ||
-    !name ||
-    !purchasing_price ||
-    !selling_price ||
-    !mrp
+     !user ||
+     !location ||
+     !bill_number ||
+     !category ||
+     !item_name ||
+     !sub_category ||
+     !brand ||
+     !model ||
+     !color ||
+     !size ||
+     !quantity ||
+     !name ||
+     !purchasing_price ||
+     !selling_price ||
+     !mrp
   ) {
-    return res.status(400).json({
-      err: "user, location, bill_number, category, item_name, sub_category, brand, model, color, size, quantity, name, purchasing_price, selling_price, and mrp are required",
-    });
+     return res.status(400).json({
+       err: "user, location, bill_number, category, item_name, sub_category, brand, model, color, size, quantity, name, purchasing_price, selling_price, and mrp are required",
+     });
   }
-
+ 
   try {
-    const value_sets = [];
-    const current_year = year(new Date());
-    const current_date = format_date(new Date());
-    const current_time = format_time(new Date());
-
-    for (let i = 0; i < size.length; i++) {
-      const current_size = size[i];
-      const current_quantity = quantity[i];
-      const total_price = current_quantity * selling_price;
-
-      if (current_quantity > 0) {
-        value_sets.push([
-          user,
-          location,
-          bill_number,
-          current_date,
-          current_time,
-          current_year,
-          category,
-          item_name,
-          sub_category,
-          brand,
-          model,
-          color,
-          current_size,
-          current_quantity,
-          name,
-          purchasing_price,
-          selling_price,
-          mrp,
-          total_price,
-        ]);
-      }
-    }
-
-    if (value_sets.length > 0) {
-      const query =
-        "INSERT INTO stock (user, shop_location, bill_number, date, time, year, category, item_name, sub_category, brand, model, color, size, quantity, name, purchasing_price, selling_price, mrp, total_price) VALUES ?";
-      await post_query_database(query, [value_sets]);
-      res.status(200).json("Stock added successfully");
-    } else {
-      res.status(200).json("No stock to add");
-    }
+     const value_sets = [];
+     const current_year = year(new Date());
+     const current_date = format_date(new Date());
+     const current_time = format_time(new Date());
+ 
+     for (let i = 0; i < size.length; i++) {
+       const current_size = size[i];
+       const current_quantity = quantity[i];
+       const total_price = current_quantity * selling_price;
+ 
+       if (current_quantity > 0) {
+         value_sets.push([
+           user,
+           location,
+           bill_number,
+           current_date,
+           current_time,
+           current_year,
+           category,
+           item_name,
+           sub_category,
+           brand,
+           model,
+           color,
+           current_size,
+           current_quantity,
+           name,
+           purchasing_price,
+           selling_price,
+           mrp,
+           total_price,
+         ]);
+       }
+     }
+ 
+     if (value_sets.length > 0) {
+       const query =
+         "INSERT INTO stock (user, shop_location, bill_number, date, time, year, category, item_name, sub_category, brand, model, color, size, quantity, name, purchasing_price, selling_price, mrp, total_price) VALUES ?";
+       await post_query_database(query, [value_sets]);
+ 
+       // Correctly execute the second insert operation
+       const test_query =
+         "INSERT INTO test_stock (user, shop_location, bill_number, date, time, year, category, item_name, sub_category, brand, model, color, size, quantity, name, purchasing_price, selling_price, mrp, total_price) VALUES ?";
+       await post_query_database(test_query, [value_sets]);
+ 
+       res.status(200).json("Stock added successfully");
+     } else {
+       res.status(200).json("No stock to add");
+     }
   } catch (err) {
-    console.error(`Error adding Stock: ${err.message}`);
-    res.status(500).send("Error adding Stock");
+     console.error(`Error adding Stock: ${err.message}`);
+     res.status(500).send("Error adding Stock");
   }
-};
-
-function year() {
+ };
+ 
+ function year() {
   return new Date().getFullYear();
-}
-
-function format_date(date) {
+ }
+ 
+ function format_date(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
-}
-
-function format_time(date) {
+ }
+ 
+ function format_time(date) {
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
   const seconds = String(date.getSeconds()).padStart(2, "0");
   return `${hours}:${minutes}:${seconds}`;
-}
+ }
+ 
 
 exports.update_stocks = async (req, res) => {
   const { id, quantity, selling_price, mrp } = req.body;

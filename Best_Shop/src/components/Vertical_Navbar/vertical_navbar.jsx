@@ -82,8 +82,8 @@ const VerticalNavbar = () => {
 
         {/* master */}
 
-        {/* 
-        <div className="sub-navbar">
+        
+        {/* <div className="sub-navbar">
           <li className={selectedField === 'master' ? 'selected' : ''} onClick={handleMasterClick}>
           
 

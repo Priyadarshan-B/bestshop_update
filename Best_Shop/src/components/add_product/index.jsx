@@ -266,7 +266,7 @@ function AddStocks({ text }) {
     } catch (error) {
       notifyError("Model Failed to Add");
     }
-    setModelOpen(false); // Close the dialog after submission
+    setModelOpen(false); 
   };
 
   const handleColorOpen = () => {
@@ -397,7 +397,7 @@ function AddStocks({ text }) {
 
   const handleSelectBrand = (brand) => {
     setSelectedBrand(brand);
-    setSelectedModel(null); // Reset selected model when brand changes
+    setSelectedModel(null);
     fetchModels(brand.id);
     setShowBrands(false);
     setShowModels(true);
@@ -577,7 +577,6 @@ function AddStocks({ text }) {
   };
 
   const fetchColors = async (modelId) => {
-    // Changed to modelId
     try {
       const response = await requestApi(
         "GET",
@@ -634,8 +633,8 @@ function AddStocks({ text }) {
       setShowItemNames(false);
       setShowCategories(true);
     }
-    // Add more conditions as needed for other sections
   };
+
   return (
     <div className="dashboard-container">
       <Navbar />
