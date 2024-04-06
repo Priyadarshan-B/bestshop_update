@@ -16,7 +16,7 @@ function parseJson(data) {
 
 // Function to check and update the stock
 exports.updateStock = async (req, res) => {
-    const responses = []; // Collect responses from each iteration
+    const responses = []; 
 
     for (let i = 0; i < req.body.length; i++) {
         const parsedData = parseJson(req.body[i]);
@@ -74,6 +74,5 @@ exports.updateStock = async (req, res) => {
         }
     }
 
-    // Send a single response after the loop completes
     res.json(responses);
 };
