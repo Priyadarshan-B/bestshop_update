@@ -3,22 +3,17 @@ import ReactApexChart from "react-apexcharts";
 import '../Dashboard/dashboard.css';
 import HorizontalNavbar from "../Horizontal_Navbar/horizontal_navbar";
 import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
+import requestApi from "../../utils/axios";
 
 class Inventory extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      series: [
-        {
-          name: 'Stocks',
-          data: [2.3, 3.1, 4.0, 3.5,5.1,2.0]
-        }
-      ],
+      series: [],
       options: {
         chart: {
           type: 'bar',
-          
         },
         plotOptions: {
           bar: {
@@ -41,7 +36,6 @@ class Inventory extends React.Component {
           },
         },
         xaxis: {
-          categories: ["10%", "20%", "30%","40%", "50%", "60%"],
           position: 'top',
           axisBorder: {
             show: false,
@@ -81,9 +75,6 @@ class Inventory extends React.Component {
         },
         title: {
           text: 'Total Impression',
-          // floating: true,
-          // offsetY: 450,
-          // align: 'center',
           style: {
             color: '#444',
           },
@@ -110,12 +101,34 @@ class Inventory extends React.Component {
     };
   }
 
+  async componentDidMount() {
+    try {
+      const response = await requestApi("GET", "/api/stock/sales-dashboard?category=1");
+
+      if (!response || !response.success) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const apiData = response.data;
+      const { model_name, total_quantity } = apiData;
+
+      this.setState({
+        series: [
+          {
+            name: model_name,
+            data: [parseFloat(total_quantity)] // Convert total_quantity to float
+          }
+        ]
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
   render() {
     return (
       <div className="dashboard-container">
         <HorizontalNavbar />
-
-
         <div className="vandc-container">
           <VerticalNavbar />
           <div className="dashboard-body">
@@ -129,7 +142,6 @@ class Inventory extends React.Component {
               />
             </div>
           </div>
-
         </div>
       </div>
     );

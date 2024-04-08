@@ -11,7 +11,7 @@ import AddStocks from "./components/add_product";
 import ExportData from "./components/export_data/Export";
 import Inventory from "./components/Inventory/inventory";
 import ImportData from "./components/import_data/import";
-
+import Stocks from "./components/stocks/stocks";
 
 function Protected({ children }) {
   const navigate = useNavigate();
@@ -47,6 +47,7 @@ const routes = () => (
       <Route path= "/export" element={<Protected><ExportData /></Protected>} />
       <Route path= "/import" element={<Protected><ImportData /></Protected>} />
       <Route path= "/inventory" element={<Protected><Inventory /></Protected>} />
+      <Route path= "/stocks" element={<Protected><Stocks /></Protected>} />
 
 
       <Route path= "*" element={<h1>404</h1>} />

@@ -9,7 +9,7 @@ function parseJson(data) {
         model: data.model.trim(),
         color: data.color.trim(),
         item_name: data.item_name.trim(),
-        quantity: parseInt(data.quantity),
+        sell_quantity: parseInt(data.sell_quantity),
         mrp: parseFloat(data.mrp)
     };
 }
@@ -23,7 +23,7 @@ exports.updateStock = async (req, res) => {
 
         try {
             const checkQuery = `
-                SELECT ts.id, ts.quantity
+                SELECT ts.id, ts.sell_quantity
                 FROM test_stock ts
                 JOIN category c ON ts.category = c.id
                 JOIN item_name i_name ON ts.item_name = i_name.id        
@@ -39,7 +39,7 @@ exports.updateStock = async (req, res) => {
                 AND m.name = ?
                 AND col.name = ?
                 AND s.name = ?
-                AND ts.quantity >= ?
+                AND ts.sell_quantity >= ?
                 LIMIT 1`;
 
             const checkResult = await get_query_database(checkQuery, [
@@ -50,29 +50,42 @@ exports.updateStock = async (req, res) => {
                 parsedData.model,
                 parsedData.color,
                 parsedData.size,
-                parsedData.quantity
+                parsedData.sell_quantity
             ]);
 
             if (checkResult.length > 0) {
+                const updatedQuantity = checkResult[0].sell_quantity - parsedData.sell_quantity;
+
+                // Update stock quantity
                 const updateQuery = `
                     UPDATE test_stock
-                    SET quantity = quantity - ?
+                    SET sell_quantity = ?
                     WHERE id = ?`;
 
-                const updateResult = await post_query_database(updateQuery, [
-                    parsedData.quantity,
+                await post_query_database(updateQuery, [
+                    updatedQuantity,
                     checkResult[0].id
                 ], "Stock updated successfully");
                 
-                responses.push({ message: updateResult }); // Collect successful response
+                responses.push({ message: "Stock updated successfully" });
+
+                // If quantity becomes 0, delete the entry
+                if (updatedQuantity === 0) {
+                    const deleteQuery = `
+                        DELETE FROM test_stock
+                        WHERE id = ?`;
+
+                    await post_query_database(deleteQuery, [checkResult[0].id], "Stock entry deleted successfully");
+                }
             } else {
-                responses.push({ error: "Item not found or insufficient quantity." }); // Collect error response
+                responses.push({ error: "Item not found or insufficient quantity." });
             }
         } catch (err) {
             console.error("Error updating stock:", err);
-            responses.push({ error: "Error updating stock" }); // Collect error response
+            responses.push({ error: "Error updating stock" });
         }
     }
 
     res.json(responses);
 };
+
