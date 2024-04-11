@@ -12,6 +12,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 const VerticalNavbar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -56,9 +57,9 @@ const VerticalNavbar = () => {
 
         <li
           className={selectedField === "dashboard" ? "selected" : ""}
-          onClick={() => handleNavigate("/dashboard")}
+          onClick={() => handleNavigate("/home")}
         >
-          <SpaceDashboardIcon style={{ marginRight: "10px" }} />
+          <SpaceDashboardIcon className="navbar-icon" style={{ marginRight: "10px" }} />
           <b>Dashboard </b>
         </li>
 
@@ -66,7 +67,7 @@ const VerticalNavbar = () => {
           className={selectedField === "addStock" ? "selected" : ""}
           onClick={() => handleNavigate("/addStock")}
         >
-          <AddchartIcon style={{ marginRight: "10px" }} />
+          <AddchartIcon className="navbar-icon" style={{ marginRight: "10px" }} />
           <b>Add Stock</b>
         </li>
 
@@ -76,13 +77,13 @@ const VerticalNavbar = () => {
           className={selectedField === "productdashboard" ? "selected" : ""}
           onClick={() => handleNavigate("/productdashboard")}
         >
-          <ShoppingCartIcon style={{ marginRight: "10px" }} />
+          <ShoppingCartIcon className="navbar-icon" style={{ marginRight: "10px" }} />
           <b>Products</b>
         </li>
 
         {/* master */}
 
-        
+
         {/* <div className="sub-navbar">
           <li className={selectedField === 'master' ? 'selected' : ''} onClick={handleMasterClick}>
           
@@ -119,8 +120,15 @@ const VerticalNavbar = () => {
           className={selectedField === "export" ? "selected" : ""}
           onClick={() => handleNavigate("/export")}
         >
-          <DatasetOutlinedIcon style={{ marginRight: "10px" }} />
+          <DatasetOutlinedIcon className="navbar-icon" style={{ marginRight: "10px" }} />
           <b>Export</b>
+        </li>
+        <li
+          className={selectedField === "stocks" ? "selected" : ""}
+          onClick={() => handleNavigate("/stocks")}
+        >
+          <EqualizerIcon className="navbar-icon" style={{ marginRight: "10px" }}/>
+          <b>Stocks</b>
         </li>
       </ul>
     </div>

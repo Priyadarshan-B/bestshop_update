@@ -13,7 +13,6 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Cookies from "js-cookie";
 import InputBox from "../InputBox/inputbox";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
@@ -266,7 +265,7 @@ function AddStocks({ text }) {
     } catch (error) {
       notifyError("Model Failed to Add");
     }
-    setModelOpen(false); 
+    setModelOpen(false);
   };
 
   const handleColorOpen = () => {
@@ -364,7 +363,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setCategories(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
     setIsLoading(false);
   };
 
@@ -534,7 +533,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setItemNames(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchSubCategories = async (itemNameId) => {
@@ -547,7 +546,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setSubCategories(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchBrands = async (subCategoryId) => {
@@ -560,7 +559,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setBrands(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchModels = async (brandId) => {
@@ -573,7 +572,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setModels(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchColors = async (modelId) => {
@@ -586,7 +585,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setColors(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchSizes = async (colorId) => {
@@ -604,7 +603,7 @@ function AddStocks({ text }) {
         });
         setSizeQuantities(initialQuantity);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const sizeInputs = () => {
@@ -644,16 +643,17 @@ function AddStocks({ text }) {
         <div className="dashboard-body">
           <div className="category-page">
             <div className="select-category-card">
-              {selectedCategory ? null : <h2>No Items Selected</h2>}
+              {selectedCategory ? null : <h2 className="item-list-head">No Items Selected</h2>}
               <div className="selected-info">
                 {selectedCategory &&
                   (selectedCategory.image_path !== "" ? (
                     <img
+                    
                       src={`${apiHost}/` + selectedCategory.image_path}
                       alt={selectedCategory.name}
                     />
                   ) : (
-                    <p>{selectedCategory.name}</p>
+                    <p className="image-alt-text">{selectedCategory.name}</p>
                   ))}
                 {selectedItemName &&
                   (selectedItemName.image_path !== "" ? (
@@ -662,7 +662,7 @@ function AddStocks({ text }) {
                       alt={selectedItemName.name}
                     />
                   ) : (
-                    <p>{selectedItemName.name}</p>
+                    <p className="image-alt-text">{selectedItemName.name}</p>
                   ))}
                 {selectedSubCategory &&
                   (selectedSubCategory.image_path !== "" ? (
@@ -671,7 +671,7 @@ function AddStocks({ text }) {
                       alt={selectedSubCategory.name}
                     />
                   ) : (
-                    <p>{selectedSubCategory.name}</p>
+                    <p className="image-alt-text">{selectedSubCategory.name}</p>
                   ))}
                 {selectedBrand &&
                   (selectedBrand.image_path !== "" ? (
@@ -680,7 +680,7 @@ function AddStocks({ text }) {
                       alt={selectedBrand.name}
                     />
                   ) : (
-                    <p>{selectedBrand.name}</p>
+                    <p className="image-alt-text">{selectedBrand.name}</p>
                   ))}
               </div>
             </div>
@@ -690,8 +690,8 @@ function AddStocks({ text }) {
                 <InputBox
                   // className="input_box"
                   label={
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <SearchSharpIcon sx={{ marginRight: 1 }} />
+                    <div style={{ display: "flex", alignItems: "center", color:"var(--text)" }}>
+                      <SearchSharpIcon sx={{ marginRight: 1, color: "var(--text)" }} />
                       Search
                     </div>
                   }
@@ -700,7 +700,7 @@ function AddStocks({ text }) {
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                   sx={{ width: "100%" }}
-                  // helperText="(Categories,Item name,Sub-Categories and Brand)"
+                // helperText="(Categories,Item name,Sub-Categories and Brand)"
                 />
               </div>
 
@@ -713,7 +713,7 @@ function AddStocks({ text }) {
                       <div className="name-and-icon">
                         <h2>Select a Category</h2>
                         <AddBoxRoundedIcon
-                          sx={{ fontSize: 35, color: "green" }}
+                          sx={{ fontSize: 35, color: "var(--button)" }}
                           className="add-icon"
                           onClick={handleCategoryOpen}
                         />
@@ -757,7 +757,7 @@ function AddStocks({ text }) {
                           <center>Item Name</center>
                         </h2>
                         <AddBoxRoundedIcon
-                          sx={{ fontSize: 35, color: "green" }}
+                          sx={{ fontSize: 35, color: "var(--button)" }}
                           className="add-icon"
                           onClick={handleItemOpen}
                         />
@@ -798,7 +798,7 @@ function AddStocks({ text }) {
                           <center>Select a Sub-Category</center>
                         </h2>
                         <AddBoxRoundedIcon
-                          sx={{ fontSize: 35, color: "green" }}
+                          sx={{ fontSize: 35, color: "var(--button)" }}
                           className="add-icon"
                           onClick={handleSubOpen}
                         />
@@ -839,7 +839,7 @@ function AddStocks({ text }) {
                           <center>Select a Brand</center>
                         </h2>
                         <AddBoxRoundedIcon
-                          sx={{ fontSize: 35, color: "green" }}
+                          sx={{ fontSize: 35, color: "var(--button)" }}
                           className="add-icon"
                           onClick={handleBrandOpen}
                         />
@@ -885,7 +885,7 @@ function AddStocks({ text }) {
                               <div className="name-and-icons">
                                 <b>Select a Model</b>
                                 <AddBoxRoundedIcon
-                                  sx={{ fontSize: 30, color: "green" }}
+                                  sx={{ fontSize: 30, color: "var(--button)" }}
                                   onClick={handleModelOpen}
                                 />
                               </div>
@@ -897,6 +897,33 @@ function AddStocks({ text }) {
                                 }}
                                 value={selectedModel}
                                 placeholder="Select Model"
+                                theme={(theme) => ({
+                                  ...theme,
+                                  borderRadius: 2,
+                                  colors: {
+                                    ...theme.colors,
+                                    //after select dropdown option
+                                    primary50: "var(--text)",
+                                    //Border and Background dropdown color
+                                    primary: "var(--button)",
+                                    //Background hover dropdown color
+                                    primary25: "var(--button-hover)",
+                                    //Background color
+                                    neutral0: "var(--background)",
+                                    //Border before select
+                                    neutral20: "#178a84",
+                                    //Hover border
+                                    neutral30: "#82FFE7",
+                                    //No options color
+                                    neutral40: "#CAFFCA",
+                                    //Select color
+                                    neutral50: "#F4FFFD",
+                                    //arrow icon when click select
+                                    neutral60: "#fff",
+                                    //Text color
+                                    neutral80: "var(--text)",
+                                  },
+                                })}
                               />
                             </div>
 
@@ -904,7 +931,7 @@ function AddStocks({ text }) {
                               <div className="name-and-icons">
                                 <b>Select a Color</b>
                                 <AddBoxRoundedIcon
-                                  sx={{ fontSize: 30, color: "green" }}
+                                  sx={{ fontSize: 30, color: "var(--button)" }}
                                   onClick={handleColorOpen}
                                 />
                               </div>
@@ -916,6 +943,33 @@ function AddStocks({ text }) {
                                 }}
                                 value={selectedColor}
                                 placeholder="Select Color"
+                                theme={(theme) => ({
+                                  ...theme,
+                                  borderRadius: 2,
+                                  colors: {
+                                    ...theme.colors,
+                                    //after select dropdown option
+                                    primary50: "var(--text)",
+                                    //Border and Background dropdown color
+                                    primary: "var(--button)",
+                                    //Background hover dropdown color
+                                    primary25: "var(--button-hover)",
+                                    //Background color
+                                    neutral0: "var(--background)",
+                                    //Border before select
+                                    neutral20: "#178a84",
+                                    //Hover border
+                                    neutral30: "#82FFE7",
+                                    //No options color
+                                    neutral40: "#CAFFCA",
+                                    //Select color
+                                    neutral50: "#F4FFFD",
+                                    //arrow icon when click select
+                                    neutral60: "#fff",
+                                    //Text color
+                                    neutral80: "var(--text)",
+                                  },
+                                })}
                               />
                             </div>
                           </div>
@@ -924,7 +978,7 @@ function AddStocks({ text }) {
                             <div className="name-and-icons">
                               <b>Size and Quantity</b>
                               <AddBoxRoundedIcon
-                                sx={{ fontSize: 30, color: "green" }}
+                                sx={{ fontSize: 30, color: "var(--button)" }}
                                 onClick={handleSizeOpen}
                               />{" "}
                             </div>

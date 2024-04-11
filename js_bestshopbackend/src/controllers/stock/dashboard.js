@@ -4,7 +4,7 @@ exports.get_dashboard_data = async (req, res) => {
   try {
     const query = `SELECT
     intervals.time_interval,
-    IFNULL(SUM(quantity), 0) AS total_quantity,
+    IFNULL(SUM(sell_quantity), 0) AS total_quantity,
     IFNULL(SUM(total_price), 0) AS total_price,
     ROUND(IFNULL(AVG(total_price / quantity), 0)) AS rate_of_product
     FROM
@@ -16,7 +16,7 @@ exports.get_dashboard_data = async (req, res) => {
         SELECT 'Between 180 to 365 days' AS time_interval
     ) AS intervals
     LEFT JOIN
-    stock ON
+    test_stock ON
         CASE
             WHEN intervals.time_interval = 'Less than 30 days' THEN DATEDIFF(CURRENT_DATE(), date) < 30
             WHEN intervals.time_interval = '30 to 180 days' THEN DATEDIFF(CURRENT_DATE(), date) >= 30 AND DATEDIFF(CURRENT_DATE(), date) <= 180

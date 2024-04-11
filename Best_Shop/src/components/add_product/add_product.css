@@ -10,6 +10,10 @@
   justify-content: space-between;
 }
 
+.item-list-head{
+  color: var(--text);
+}
+
 .choose_file_placeHolder {
   color: #808080;
 }
@@ -51,7 +55,7 @@ label {
 }
 
 .generate_button {
-  background: #4A55A2;
+  background:var(--button);
   border: none;
   outline: none;
   margin: 15px 5px 0px 5px;
@@ -68,7 +72,7 @@ label {
 }
 
 .generate_button:hover {
-  background-color: #8a96ff;
+  background-color:var(--menu-hover);
   transition: 0.6s;
 
 }
@@ -128,7 +132,7 @@ label {
   overflow-y: hidden;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 7px;
-  border: 10px solid white;
+  border: 10px solid var(--background);
 }
 
 .price-boxes {
@@ -138,7 +142,7 @@ label {
   padding: 0px 20px 20px 20px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 7px;
-  border: 10px solid white;
+  border: 10px solid var(--background);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -424,7 +428,7 @@ label {
 }
 
 .card {
-  background-color: #ffffff;
+  background-color: var(--background-1);
   border-radius: 10px;
   padding: 10px 20px;
   display: flex;
@@ -437,6 +441,10 @@ label {
 
 }
 
+.image-alt-text{
+  color: var(--text);
+}
+
 .item-card,
 .sub-category-card,
 .brand-card {
@@ -445,7 +453,7 @@ label {
   min-height: 100px;
   padding: 10px;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: var(--background);
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
@@ -601,4 +609,20 @@ input::file-selector-button:hover {
 
 img {
   min-width: 100px;
+  /* height: 90px; */
+}
+
+/* For WebKit (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-1);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--background);
+  border-radius: 10px;
+  border: 2px solid var(--background-1);
 }

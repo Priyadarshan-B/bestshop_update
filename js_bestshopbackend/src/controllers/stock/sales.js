@@ -55,28 +55,25 @@ exports.updateStock = async (req, res) => {
 
             if (checkResult.length > 0) {
                 const updatedQuantity = checkResult[0].sell_quantity - parsedData.sell_quantity;
+                const totalPrice = updatedQuantity * parsedData.mrp;
+                console.log(updatedQuantity)
 
                 // Update stock quantity
                 const updateQuery = `
                     UPDATE test_stock
-                    SET sell_quantity = ?
+                    SET sell_quantity = ?,
+                        total_price = ?
                     WHERE id = ?`;
 
                 await post_query_database(updateQuery, [
                     updatedQuantity,
+                    totalPrice,
                     checkResult[0].id
                 ], "Stock updated successfully");
                 
                 responses.push({ message: "Stock updated successfully" });
 
-                // If quantity becomes 0, delete the entry
-                if (updatedQuantity === 0) {
-                    const deleteQuery = `
-                        DELETE FROM test_stock
-                        WHERE id = ?`;
-
-                    await post_query_database(deleteQuery, [checkResult[0].id], "Stock entry deleted successfully");
-                }
+                
             } else {
                 responses.push({ error: "Item not found or insufficient quantity." });
             }

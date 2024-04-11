@@ -1,0 +1,55 @@
+.dashboard{
+    display: flex;
+    flex-direction: row ;
+    height: 80vh;
+    gap: 5px;
+}
+
+.chart{
+    padding: 10px;
+    /* box-shadow: 0 0 17px rgba(0, 0, 0, 0.3); */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 5px;
+    background-color: var(--background-1);
+    width: 40vw;
+    height: 60%;
+    /* margin: 10px; */
+    justify-content: center;
+    align-items: center;
+}
+.chart-inventory{
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 5px;
+    background-color: var(--background-1);
+    width: 35vw;
+    height: 90%;
+    /* margin: 10px; */
+    justify-content: center;
+    align-items: center;
+}
+.inventory_button{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.total-content{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.content{
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 5px;
+    background-color: var(--background-1);
+    width: 150px;
+    height: 80px;
+
+}
+
+.stock-chart{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

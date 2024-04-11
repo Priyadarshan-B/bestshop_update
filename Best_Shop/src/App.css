@@ -27,13 +27,14 @@
 }
 
 .search-and-product-type-grid {
+  color: var(--text);
   margin-top: 15px;
   display: flex;
   flex-direction: column;
   width: 100%;
   flex: 0.93;
   border-radius: 5px;
-  background: #FFF;
+  background: var(--background-1);
   overflow-y: auto;
   overflow-x: auto;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -146,7 +147,7 @@
   align-items: center;
   border-radius: 5px;
   height: 120px;
-  background: #FFF;
+  background: var(--background-1);
   color: #000000;
   font-size: 25px;
   font-style: normal;

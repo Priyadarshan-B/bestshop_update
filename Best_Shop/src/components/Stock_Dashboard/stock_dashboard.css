@@ -10,9 +10,10 @@
   /* box-shadow: 0 0 17px rgba(0, 0, 0, 0.3); */
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   border-radius: 5px;
-  background-color: rgb(255, 255, 255);
+  background-color: var(--background);
   width: 93%;
-  height: 86%;
+  height: 90%;
+  margin: 10px;
   justify-content: center;
   align-items: center;
 }
@@ -39,8 +40,8 @@
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  background-color: #e9f4fa;
+  background-color: var(--background);
   /* overflow: auto; */
 }

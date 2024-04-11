@@ -193,16 +193,30 @@ exports.update_stocks = async (req, res) => {
   }
   try {
     const total_price = quantity * selling_price;
-    const query = `UPDATE stock 
+    
+    // Update stock table
+    const query_stock = `UPDATE stock 
     SET quantity = ?, selling_price = ?, mrp = ?, total_price = ?
     WHERE id = ?`;
-    const success_message = await post_query_database(
-      query,
+    const success_message_stock = await post_query_database(
+      query_stock,
       [quantity, selling_price, mrp, total_price, id],
       "Stock updated successfully"
     );
+
+    // Update test_stock table
+    const query_test_stock = `UPDATE test_stock 
+    SET quantity = ?, selling_price = ?, mrp = ?, total_price = ?, sell_quantity = ?
+    WHERE id = ?`;
+    const success_message_test_stock = await post_query_database(
+      query_test_stock,
+      [quantity, selling_price, mrp, total_price, quantity, id],
+      "Test Stock updated successfully"
+    );
+
     res.status(200).json({
-      success_message,
+      success_message_stock,
+      success_message_test_stock,
     });
   } catch (err) {
     console.error("Error updating stocks", err);
@@ -222,13 +236,24 @@ exports.delete_stocks = async (req, res) => {
   try {
     const query = `DELETE FROM stock 
     WHERE id = ?`;
-    const success_message = await post_query_database(
+    const success_message_stock = await post_query_database(
       query,
       [id],
-      "Stock delete successfully"
+      "Stock deleted successfully"
     );
+
+    // Delete from test_stock table
+    const query_test_stock = `DELETE FROM test_stock 
+    WHERE id = ?`;
+    const success_message_test_stock = await post_query_database(
+      query_test_stock,
+      [id],
+      "Test Stock deleted successfully"
+    );
+
     res.status(200).json({
-      success_message,
+      success_message_stock,
+      success_message_test_stock,
     });
   } catch (err) {
     console.error("Error deleting stocks", err);

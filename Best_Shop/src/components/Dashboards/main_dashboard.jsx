@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import HorizontalNavbar from "../Horizontal_Navbar/horizontal_navbar";
-import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
-import "../Dashboard/dashboard.css";
+import "../Stock_Dashboard/stock_dashboard.css";
 import requestApi from "../../utils/axios";
 
-import apiHost from "../../utils/api";
-
-const DashboardWrapper = () => {
-  return <Dashboard />;
-};
-
-const Dashboard = () => {
+const StockDashboard = () => {
   const [chartData, setChartData] = useState({
     series: [
       { name: "Product Count", data: [0, 0, 0], yaxis: 0 },
       { name: "Price of the Product", data: [0, 0, 0], yaxis: 1 },
       { name: "Rate of the Product", data: [0, 0, 0], yaxis: 2 },
     ],
+
     options: {
       chart: {
         type: "bar",
@@ -43,18 +36,19 @@ const Dashboard = () => {
         colors: ["transparent"],
       },
       xaxis: {
-        categories: [
-          "Less Than 30 Days",
-          "30 to 180 days",
-          "180 to 365 days",
-        ],
+        categories: ["Less Than 30 Days", "30 to 180 days", "180 to 365 days"],
+
         labels: {
           formatter: function (val) {
             return val;
           },
         },
       },
-      yaxis: [{ show: false }, { show: false }, { show: false }],
+      yaxis: [
+        { show: false },
+        { show: false },
+        { show: false, labels: { style: { color: "var(--text)" } } },
+      ],
       fill: {
         opacity: 1,
       },
@@ -68,7 +62,7 @@ const Dashboard = () => {
       title: {
         text: "Dashboard",
         style: {
-          color: "#444",
+          color: "var(--text)",
         },
       },
     },
@@ -97,42 +91,36 @@ const Dashboard = () => {
           seriesData.rate_of_product.push(parseFloat(item.rate_of_product));
         });
 
-        const updatedSeries = [
-          { name: "Total Quantity", data: seriesData.total_quantity },
-          { name: "Total Price", data: seriesData.total_price },
-          { name: "Rate of Product", data: seriesData.rate_of_product },
-        ];
+        // const updatedSeries = [
+        //   { name: "Total Quantity", data: seriesData.total_quantity },
+        //   { name: "Total Price", data: seriesData.total_price },
+        //   { name: "Rate of Product", data: seriesData.rate_of_product },
+        // ];
 
+        const updatedSeries = [
+          { data: seriesData.total_quantity },
+          { data: seriesData.total_price },
+          { data: seriesData.rate_of_product },
+        ];
         setChartData((prevChartData) => ({
           ...prevChartData,
           series: updatedSeries,
         }));
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     fetchData();
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <HorizontalNavbar />
-      <div className="vandc-container">
-        <VerticalNavbar />
-        <div className="dashboard-body">
-          <div className="chart-container">
-            <ReactApexChart
-              height={"95%"}
-              width={"100%"}
-              options={chartData.options}
-              series={chartData.series}
-              type="bar"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <ReactApexChart
+      height={"95%"}
+      width={"100%"}
+      options={chartData.options}
+      series={chartData.series}
+      type="bar"
+    />
   );
 };
 
-export default DashboardWrapper;
+export default StockDashboard;

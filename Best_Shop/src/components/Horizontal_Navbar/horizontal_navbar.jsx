@@ -11,6 +11,13 @@ import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 import Cookies from "js-cookie";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { FaUserCircle } from "react-icons/fa";
+
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
+import CustomizedSwitches from "./toggleTheme";
+import { BiSolidShoppingBags } from "react-icons/bi";
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 const HorizontalNavbar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -142,27 +149,33 @@ const HorizontalNavbar = () => {
                 <DatasetOutlinedIcon style={{ marginRight: "10px" }} />
                 <b>Export</b>
               </li>
+              <li
+                className={selectedField === "stocks" ? "selected" : ""}
+                onClick={() => handleNavigate("/stocks")}
+              >
+                <EqualizerIcon style={{ marginRight: "10px" }} />
+                <b>Stocks</b>
+              </li>
             </ul>
           </div>
         )}
       </div>
       <div className="logo">
-        <h1 className="website_name">Best Shop</h1>
+        <h1 className="website_name"><BiSolidShoppingBags style={{ color: "#178a84", fontSize: 35 }} />&nbsp; Best Shop</h1>
       </div>
+      
       <div className="icons">
+        <FaUserCircle style={{
+          color: "#178a84",
+          fontSize:35
+        }}/>
+      <h3 className="profile-text">{Cookies.get("username").toUpperCase()}</h3>
+        <CustomizedSwitches />
         <Popup
           className="popup-container"
           trigger={
-            <button
-              style={{
-                border: "none",
-                background: "white",
-                fontSize: "20px",
-                cursor: "pointer",
-              }}
-            >
-              <FaUser />
-            </button>
+          
+              <SettingsIcon style={{ color: "#178a84", fontSize: 35 , margin:7, cursor:"pointer"}} />
           }
           position="bottom right"
         >
@@ -170,10 +183,10 @@ const HorizontalNavbar = () => {
             <div className="popup-text">
               <p>Welcome {Cookies.get("username").toUpperCase()}!</p>
               <PersonAddIcon style={{
-              cursor:"pointer"
-            }}onClick={() => handleNavigate("/signup")}/>
+                cursor: "pointer"
+              }} onClick={() => handleNavigate("/signup")} />
             </div>
-           
+
             <button className="popup-button" onClick={handleLogout}>
               Logout
             </button>

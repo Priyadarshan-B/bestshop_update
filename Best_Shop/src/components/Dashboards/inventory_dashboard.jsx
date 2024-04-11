@@ -2,11 +2,8 @@ import React, { useState, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
 import Select from "react-select";
 import requestApi from "../../utils/axios";
-import HorizontalNavbar from "../Horizontal_Navbar/horizontal_navbar";
-import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
-import InventoryDashboard from "../Dashboards/inventory_dashboard";
 
-export default function SimpleBarChart() {
+export default function InventoryDashboard() {
   const [chartData, setChartData] = useState(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState(1); // Default category ID
   const [categoryOptions, setCategoryOptions] = useState([]); // Options for the dropdown
@@ -64,17 +61,64 @@ export default function SimpleBarChart() {
   const { item_names, total_quantities, available_quantity } = chartData;
 
   return (
-    <div className="dashboard-container">
-      <HorizontalNavbar />
-
-      <div className="vandc-container">
-        <VerticalNavbar />
-        <div className="dashboard-body">
-          <div className="chart-container">
-            <InventoryDashboard />
-          </div>
-        </div>
-      </div>
+    <div style={{
+        height:"100%"
+    }}>
+        <Select
+        options={categoryOptions}
+        onChange={handleCategoryChange}
+        defaultValue={categoryOptions.find(
+          (option) => option.value === selectedCategoryId
+        )}
+          />
+        
+          <ReactApexChart
+        height={"90%"}
+        width={"100%"}
+        options={{
+          chart: {
+            type: "bar",
+            height: 430,
+          },
+          plotOptions: {
+            bar: {
+              horizontal: true,
+              borderRadius: "2",
+              dataLabels: {
+                position: "top",
+              },
+            },
+          },
+          dataLabels: {
+            enabled: true,
+            offsetX: -6,
+            style: {
+              fontSize: "15px",
+              colors: ["#fff"],
+            },
+          },
+          fill: {
+            colors: ["#4ECDC4", "#2B908F"],
+          },
+          stroke: {
+            show: true,
+            width: 1,
+            colors: ["#fff"],
+          },
+          tooltip: {
+            shared: true,
+            intersect: false,
+          },
+          xaxis: {
+            categories: item_names,
+          },
+        }}
+        series={[
+          { name: "Total Quantities", data: total_quantities },
+          { name: "Available Quantity", data: available_quantity },
+        ]}
+        type="bar"
+          />
     </div>
   );
 }
