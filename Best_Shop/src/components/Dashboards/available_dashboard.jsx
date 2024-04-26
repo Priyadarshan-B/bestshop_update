@@ -47,9 +47,9 @@ const ChartExample = ({ data, height, width }) => {
       },
     ],
     legend: { enabled: false },
-    background: {
-      fill: 'rgb(201, 223, 226)',
-  },
+    background :{
+      fill: 'rgb(201, 223, 226)'
+    }
   });
 
   return <AgChartsReact options={options} />;
@@ -125,80 +125,102 @@ class AvailableDashboard extends Component {
      
               <div className="total-container">
                 <div className="dropdown-container">
-                  <Select
-                    options={categories.map((category) => ({
-                      value: category.id,
-                      label: category.name,
-                    }))}
-                    onChange={this.handleCategoryChange}
-                    placeholder="Select Category"
-                    theme={(theme) => ({
-                      ...theme,
-                      borderRadius: 2,
-                      colors: {
-                        ...theme.colors,
-                        //after select dropdown option
-                        primary50: "var(--text)",
-                        //Border and Background dropdown color
-                        primary: "var(--button)",
-                        //Background hover dropdown color
-                        primary25: "var(--button-hover)",
-                        //Background color
-                        neutral0: "var(--background)",
-                        //Border before select
-                        neutral20: "#178a84",
-                        //Hover border
-                        neutral30: "#82FFE7",
-                        //No options color
-                        neutral40: "#CAFFCA",
-                        //Select color
-                        neutral50: "#F4FFFD",
-                        //arrow icon when click select
-                        neutral60: "#fff",
-                        //Text color
-                        neutral80: "var(--text)",
-                      },
-                    })}
-                  />
-                  <Select
-                    options={items}
-                    onChange={this.handleItemChange}
-                    placeholder="Select Item"
-                    theme={(theme) => ({
-                      ...theme,
-                      borderRadius: 2,
-                      colors: {
-                        ...theme.colors,
-                        //after select dropdown option
-                        primary50: "var(--text)",
-                        //Border and Background dropdown color
-                        primary: "var(--button)",
-                        //Background hover dropdown color
-                        primary25: "var(--button-hover)",
-                        //Background color
-                        neutral0: "var(--background)",
-                        //Border before select
-                        neutral20: "#178a84",
-                        //Hover border
-                        neutral30: "#82FFE7",
-                        //No options color
-                        neutral40: "#CAFFCA",
-                        //Select color
-                        neutral50: "#F4FFFD",
-                        //arrow icon when click select
-                        neutral60: "#fff",
-                        //Text color
-                        neutral80: "var(--text)",
-                      },
-                    })}
-                  />
+                  <div className="seperate-select">
+                    <Select
+                      options={categories.map((category) => ({
+                        value: category.id,
+                        label: category.name,
+                      }))}
+                      onChange={this.handleCategoryChange}
+                      placeholder="Select Category"
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 2,
+                        colors: {
+                          ...theme.colors,
+                          // after select dropdown option
+                          primary50: "var(--text)",
+                          // Border and Background dropdown color
+                          primary: "var(--button)",
+                          // Background hover dropdown color
+                          primary25: "var(--button-hover)",
+                          // Background color
+                          neutral0: "var(--background)",
+                          // Border before select
+                          neutral20: "#178a84",
+                          // Hover border
+                          neutral30: "#82FFE7",
+                          // No options color
+                          neutral40: "#CAFFCA",
+                          // Select color
+                          neutral50: "#F4FFFD",
+                          // Arrow icon when click select
+                          neutral60: "#fff",
+                          // Text color
+                          neutral80: "var(--text)",
+                        },
+                      })}
+                      styles={{
+                        option: (provided, state) => ({
+                          ...provided,
+                          color: state.isFocused ? 'var(--text)' : 'var(--text)',
+                          backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+                          '&:hover': {
+                            backgroundColor: 'var(--button)',
+                          },
+                        }),
+                      }}
+                    />
+                    <Select
+                      options={items}
+                      onChange={this.handleItemChange}
+                      placeholder="Select Item"
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 2,
+                        colors: {
+                          ...theme.colors,
+                          // after select dropdown option
+                          primary50: "var(--text)",
+                          // Border and Background dropdown color
+                          primary: "var(--button)",
+                          // Background hover dropdown color
+                          primary25: "var(--button-hover)",
+                          // Background color
+                          neutral0: "var(--background)",
+                          // Border before select
+                          neutral20: "#178a84",
+                          // Hover border
+                          neutral30: "#82FFE7",
+                          // No options color
+                          neutral40: "#CAFFCA",
+                          // Select color
+                          neutral50: "#F4FFFD",
+                          // Arrow icon when click select
+                          neutral60: "#fff",
+                          // Text color
+                          neutral80: "var(--text)",
+                        },
+                      })}
+                      styles={{
+                        option: (provided, state) => ({
+                          ...provided,
+                          color: state.isFocused ? 'var(--text)' : 'var(--text)',
+                          backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+                          '&:hover': {
+                            backgroundColor: 'var(--button)',
+                          },
+                        }),
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="twobytwo1">
 
                 {modelData.map((item, index) => (
                     <div key={index} className="model-card">
-                      <div className="model">
-                        <h5>Model: {item.model_name}</h5>
+                      <div>
+                        <h5 className="model-heading">Model: {item.model_name}</h5>
                       </div>
                       <div id={`chart-${index}`} className="model-chart">
                         <ChartExample
@@ -215,7 +237,7 @@ class AvailableDashboard extends Component {
                             },
                           ]}
                           height={200} // Set your desired height
-                          width={250}
+                          width={275}
                         />
                       </div>
                     </div>

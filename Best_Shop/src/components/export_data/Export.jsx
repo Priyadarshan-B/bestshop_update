@@ -17,6 +17,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import InputBox from "../InputBox/inputbox";
 import CustomDatePicker from "../InputBox/datepicker";
+import ImportData from "../import_data/import";
 
 const ExportData = () => {
   const [bill, setBill] = useState("");
@@ -102,7 +103,7 @@ const ExportData = () => {
         if (error) {
         }
       }
-    } catch (error) {}
+    } catch (error) { }
 
     setIsLoading(false);
   };
@@ -121,91 +122,110 @@ const ExportData = () => {
         <VerticalNavbar />
         <ToastContainer />
 
+
         <div className="dashboard-body">
-          <div className="export-container-card">
-            <div className="dropdown-ex">
-              <Select
-                value={selectedLocation}
-                onChange={handleChange}
-                options={location}
-                placeholder="Select Shop"
-                theme={(theme) => ({
-                  ...theme,
-                  borderRadius: 2,
-                  colors: {
-                    ...theme.colors,
-                    //after select dropdown option
-                    primary50: "var(--text)",
-                    //Border and Background dropdown color
-                    primary: "var(--button)",
-                    //Background hover dropdown color
-                    primary25: "var(--button-hover)",
-                    //Background color
-                    neutral0: "var(--background)",
-                    //Border before select
-                    neutral20: "#178a84",
-                    //Hover border
-                    neutral30: "#82FFE7",
-                    //No options color
-                    neutral40: "#CAFFCA",
-                    //Select color
-                    neutral50: "#F4FFFD",
-                    //arrow icon when click select
-                    neutral60: "#fff",
-                    //Text color
-                    neutral80: "var(--text)",
-                  },
-                })}
-              />
-            </div>
-            {/* <div>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DatePicker", "DatePicker"]}>
-                  <DatePicker
-                    sx={{ width: "100%" }}
+          <div style={{
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            <div style={{
+              display: "flex",
+              flexDirection:"row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "20px",
+              flexWrap: "wrap",
+              width:"900px",
+            }}>
+              <div className="import-container-card">
+                <ImportData />
+              </div>
+              <div className="export-container-card">
+                <div className="dropdown-ex">
+                  <Select
+                    value={selectedLocation}
+                    onChange={handleChange}
+                    options={location}
+                    placeholder="Select Shop"
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 2,
+                      colors: {
+                        ...theme.colors,
+                        // after select dropdown option
+                        primary50: "var(--text)",
+                        // Border and Background dropdown color
+                        primary: "var(--button)",
+                        // Background hover dropdown color
+                        primary25: "var(--button-hover)",
+                        // Background color
+                        neutral0: "var(--background)",
+                        // Border before select
+                        neutral20: "#178a84",
+                        // Hover border
+                        neutral30: "#82FFE7",
+                        // No options color
+                        neutral40: "#CAFFCA",
+                        // Select color
+                        neutral50: "#F4FFFD",
+                        // Arrow icon when click select
+                        neutral60: "#fff",
+                        // Text color
+                        neutral80: "var(--text)",
+                      },
+                    })}
+                    styles={{
+                      option: (provided, state) => ({
+                        ...provided,
+                        color: state.isFocused ? 'var(--text)' : 'var(--text)',
+                        backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+                        '&:hover': {
+                          backgroundColor: 'var(--button)',
+                        },
+                      }),
+                    }}
+                  />
+                </div>
+                <div>
+                  <CustomDatePicker
                     label="Select Date"
                     value={selectedDate}
                     onChange={handleDateChange}
                     size="small"
+                    sx={{ width: "100%" }}
                   />
-                </DemoContainer>
-              </LocalizationProvider>
-            </div> */}
-            <div>
-              <CustomDatePicker
-                label="Select Date"
-                value={selectedDate}
-                onChange={handleDateChange}
-                size="small"
-                sx={{ width: "100%" }}
-              />
+                </div>
+                <div>
+                  <InputBox
+                    label="S.No"
+                    value={bill}
+                    onChange={(e) => setBill(e.target.value)}
+                    min={0}
+                    size="small"
+                    sx={{ width: "100%" }}
+                  />
+                  <p
+                    style={{
+                      color: "var(--text)",
+                    }}
+                  >
+                    (optional)
+                  </p>
+                </div>
+                <button
+                  className="dist_button"
+                  onClick={handleDownload}
+                  disabled={isLoading}
+                >
+                  <DownloadIcon style={{ marginRight: "10px" }} />
+                  Download As CSV
+                </button>
+              </div>
+              
             </div>
-
-            <div>
-              <InputBox
-                label="S.No"
-                value={bill}
-                onChange={(e) => setBill(e.target.value)}
-                min={0}
-                size="small"
-                sx={{ width: "100%" }}
-              />
-              <p
-                style={{
-                  color: "var(--text)",
-                }}
-              >
-                (optional)
-              </p>
-            </div>
-            <button
-              className="dist_button"
-              onClick={handleDownload}
-              disabled={isLoading}
-            >
-              <DownloadIcon style={{ marginRight: "10px" }} />
-              Download As CSV
-            </button>
           </div>
         </div>
       </div>

@@ -16,16 +16,17 @@ import InputBox from "../InputBox/inputbox";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
+// import { FileInput, Label } from "flowbite-react";
 import { Modal, TextField, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 
 function AddStocks({ text }) {
   const username = Cookies.get("username").toUpperCase();
 
   const [editedName, setEditedName] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
-
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectEditCategory, setSelectEditCategory] = useState(null);
@@ -183,7 +184,7 @@ function AddStocks({ text }) {
     formData.append("name", subvalue);
     formData.append("image", subimage);
 
-    try { 
+    try {
       const response = await fetch(`${apiHost}/api/structure/sub-category`, {
         method: "POST",
         body: formData,
@@ -370,7 +371,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setCategories(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
     setIsLoading(false);
   };
 
@@ -540,7 +541,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setItemNames(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchSubCategories = async (itemNameId) => {
@@ -553,7 +554,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setSubCategories(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchBrands = async (subCategoryId) => {
@@ -566,7 +567,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setBrands(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchModels = async (brandId) => {
@@ -579,7 +580,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setModels(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchColors = async (modelId) => {
@@ -592,7 +593,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setColors(response.data);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchSizes = async (colorId) => {
@@ -610,7 +611,7 @@ function AddStocks({ text }) {
         });
         setSizeQuantities(initialQuantity);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const sizeInputs = () => {
@@ -640,7 +641,6 @@ function AddStocks({ text }) {
       setShowCategories(true);
     }
   };
-
   const handleEditModalClose = () => {
     setEditModalOpen(false);
     setSelectEditCategory(null);
@@ -692,11 +692,12 @@ function AddStocks({ text }) {
       console.log(id);
       toast.success(`Category "${name}" deleted successfully`);
     }
-     catch (error) {
+    catch (error) {
       console.error("Error deleting category:", error);
       toast.error("Error deleting category");
     }
   };
+
 
   return (
     <div className="dashboard-container">
@@ -707,13 +708,12 @@ function AddStocks({ text }) {
         <div className="dashboard-body">
           <div className="category-page">
             <div className="select-category-card">
-              {selectedCategory ? null : (
-                <h2 className="item-list-head">No Items Selected</h2>
-              )}
+              {selectedCategory ? null : <h2 className="item-list-head">No Items Selected</h2>}
               <div className="selected-info">
                 {selectedCategory &&
                   (selectedCategory.image_path !== "" ? (
                     <img
+
                       src={`${apiHost}/` + selectedCategory.image_path}
                       alt={selectedCategory.name}
                     />
@@ -755,16 +755,8 @@ function AddStocks({ text }) {
                 <InputBox
                   // className="input_box"
                   label={
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        color: "var(--text)",
-                      }}
-                    >
-                      <SearchSharpIcon
-                        sx={{ marginRight: 1, color: "var(--text)" }}
-                      />
+                    <div style={{ display: "flex", alignItems: "center", color: "var(--text)" }}>
+                      <SearchSharpIcon sx={{ marginRight: 1, color: "var(--text)" }} />
                       Search
                     </div>
                   }
@@ -773,7 +765,7 @@ function AddStocks({ text }) {
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                   sx={{ width: "100%" }}
-                  // helperText="(Categories,Item name,Sub-Categories and Brand)"
+                // helperText="(Categories,Item name,Sub-Categories and Brand)"
                 />
               </div>
 
@@ -872,14 +864,12 @@ function AddStocks({ text }) {
                         </Modal>
                       </div>
                     </div>
-                  )}
-
-                  {/* Item Names */}
+                  )}                  {/* Item Names */}
                   {selectedCategory && selectedItemName === null && (
                     <div className="card1">
                       <div className="name-and-icon">
                         <ArrowBackIcon
-                          sx={{ cursor: "pointer" }}
+                          sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
                             setSelectedCategory(null); // Reset to categories
                             setSelectedItemName(null); // Reset item name selection
@@ -919,7 +909,7 @@ function AddStocks({ text }) {
                     <div className="card1">
                       <div className="name-and-icon">
                         <ArrowBackIcon
-                          sx={{ cursor: "pointer" }}
+                          sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
                             setSelectedItemName(null); // Reset to item names
                             setSelectedSubCategory(null); // Reset sub-category selection
@@ -960,7 +950,7 @@ function AddStocks({ text }) {
                     <div className="card1">
                       <div className="name-and-icon">
                         <ArrowBackIcon
-                          sx={{ cursor: "pointer" }}
+                          sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
                             setSelectedSubCategory(null); // Reset to sub-categories
                             setSelectedBrand(null); // Reset brand selection
@@ -999,7 +989,7 @@ function AddStocks({ text }) {
                     // Last page for size and price
                     <div className="last">
                       <ArrowBackIcon
-                        sx={{ cursor: "pointer", margin: 1 }}
+                        sx={{ cursor: "pointer", margin: 1, color: "#178a84" }}
                         onClick={() => {
                           setSelectedBrand(null);
                           setSelectedModel(null);
@@ -1034,28 +1024,38 @@ function AddStocks({ text }) {
                                   borderRadius: 2,
                                   colors: {
                                     ...theme.colors,
-                                    //after select dropdown option
+                                    // after select dropdown option
                                     primary50: "var(--text)",
-                                    //Border and Background dropdown color
+                                    // Border and Background dropdown color
                                     primary: "var(--button)",
-                                    //Background hover dropdown color
+                                    // Background hover dropdown color
                                     primary25: "var(--button-hover)",
-                                    //Background color
+                                    // Background color
                                     neutral0: "var(--background)",
-                                    //Border before select
+                                    // Border before select
                                     neutral20: "#178a84",
-                                    //Hover border
+                                    // Hover border
                                     neutral30: "#82FFE7",
-                                    //No options color
+                                    // No options color
                                     neutral40: "#CAFFCA",
-                                    //Select color
+                                    // Select color
                                     neutral50: "#F4FFFD",
-                                    //arrow icon when click select
+                                    // Arrow icon when click select
                                     neutral60: "#fff",
-                                    //Text color
+                                    // Text color
                                     neutral80: "var(--text)",
                                   },
                                 })}
+                                styles={{
+                                  option: (provided, state) => ({
+                                    ...provided,
+                                    color: state.isFocused ? 'var(--text)' : 'var(--text)',
+                                    backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+                                    '&:hover': {
+                                      backgroundColor: 'var(--button)',
+                                    },
+                                  }),
+                                }}
                               />
                             </div>
 
@@ -1080,28 +1080,38 @@ function AddStocks({ text }) {
                                   borderRadius: 2,
                                   colors: {
                                     ...theme.colors,
-                                    //after select dropdown option
+                                    // after select dropdown option
                                     primary50: "var(--text)",
-                                    //Border and Background dropdown color
+                                    // Border and Background dropdown color
                                     primary: "var(--button)",
-                                    //Background hover dropdown color
+                                    // Background hover dropdown color
                                     primary25: "var(--button-hover)",
-                                    //Background color
+                                    // Background color
                                     neutral0: "var(--background)",
-                                    //Border before select
+                                    // Border before select
                                     neutral20: "#178a84",
-                                    //Hover border
+                                    // Hover border
                                     neutral30: "#82FFE7",
-                                    //No options color
+                                    // No options color
                                     neutral40: "#CAFFCA",
-                                    //Select color
+                                    // Select color
                                     neutral50: "#F4FFFD",
-                                    //arrow icon when click select
+                                    // Arrow icon when click select
                                     neutral60: "#fff",
-                                    //Text color
+                                    // Text color
                                     neutral80: "var(--text)",
                                   },
                                 })}
+                                styles={{
+                                  option: (provided, state) => ({
+                                    ...provided,
+                                    color: state.isFocused ? 'var(--text)' : 'var(--text)',
+                                    backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+                                    '&:hover': {
+                                      backgroundColor: 'var(--button)',
+                                    },
+                                  }),
+                                }}
                               />
                             </div>
                           </div>
@@ -1212,7 +1222,7 @@ function AddStocks({ text }) {
         </div>
       </div>
       {/* category dialog */}
-      <div>
+      <div >
         <Dialog
           fullWidth
           open={categoryopen}
@@ -1220,6 +1230,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "20px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1228,6 +1239,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Category</h2>
@@ -1250,22 +1262,48 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleCategoryImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleCategoryImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleCategoryImage}
+
+                    />
+                  </div>
+                </label>
                 <br />
+                <h1 className="or-color">(or)</h1>
+                <br />
+
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleCategoryImage}
+                  />
+                  <br />
+                </div>
+
+
+
 
                 <div className="float-right">
                   <button
@@ -1292,6 +1330,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1300,6 +1339,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Item</h2>
@@ -1322,21 +1362,44 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleItemImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleItemImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleItemImage}
+
+                    />
+                  </div>
+                </label>
+                <br />
+                <h5 className="or-color">(or)</h5>
+                <br />
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleItemImage}
+                  />
+                  <br />
+                </div>
                 <br />
                 <div className="float-right">
                   <button
@@ -1363,6 +1426,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1371,6 +1435,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Sub-Category</h2>
@@ -1393,21 +1458,44 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleSubImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleSubImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleSubImage}
+
+                    />
+                  </div>
+                </label>
+                <br />
+                <h5 className="or-color">(or)</h5>
+                <br />
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleSubImage}
+                  />
+                  <br />
+                </div>
                 <br />
                 <div className="float-right">
                   <button
@@ -1434,6 +1522,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1442,6 +1531,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Brand</h2>
@@ -1464,21 +1554,44 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleBrandImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleBrandImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleBrandImage}
+
+                    />
+                  </div>
+                </label>
+                <br />
+                <h5 className="or-color">(or)</h5>
+                <br />
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleBrandImage}
+                  />
+                  <br />
+                </div>
                 <br />
                 <div className="float-right">
                   <button
@@ -1505,6 +1618,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1513,6 +1627,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Model</h2>
@@ -1559,6 +1674,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1567,6 +1683,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Color</h2>
@@ -1613,6 +1730,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1621,6 +1739,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Size</h2>

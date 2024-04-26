@@ -20,7 +20,8 @@ const lightModeProperties = {
     "--button-hover": "rgb(182, 224, 229)",
     "--card-hover": "#f3f9f9",
     "--light-hover": "#c8dddf",
-    "--menu-hover":"#21bdb5"
+    "--menu-hover":"#21bdb5",
+    "--card":"#fff"
 };
 
 const darkModeProperties = {
@@ -32,7 +33,8 @@ const darkModeProperties = {
     "--button-hover": "#262c34",
     "--card-hover": "#28393a",
     "--light-hover": "#c8dddf",
-    "--menu-hover":"#222831"
+    "--menu-hover":"#222831",
+    "--card":"#31363F"
 };
 
 // Set custom properties based on theme mode

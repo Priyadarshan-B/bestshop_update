@@ -10,7 +10,7 @@
   justify-content: space-between;
 }
 
-.item-list-head{
+.item-list-head {
   color: var(--text);
 }
 
@@ -55,7 +55,7 @@ label {
 }
 
 .generate_button {
-  background:var(--button);
+  background: var(--button);
   border: none;
   outline: none;
   margin: 15px 5px 0px 5px;
@@ -72,7 +72,7 @@ label {
 }
 
 .generate_button:hover {
-  background-color:var(--menu-hover);
+  background-color: var(--menu-hover);
   transition: 0.6s;
 
 }
@@ -441,7 +441,7 @@ label {
 
 }
 
-.image-alt-text{
+.image-alt-text {
   color: var(--text);
 }
 
@@ -458,7 +458,7 @@ label {
   display: flex;
   flex-wrap: wrap;
   align-content: center;
-  justify-content: center;
+  justify-content: space-around;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   align-items: center;
 
@@ -557,8 +557,8 @@ label {
 .add-button-dialog {
   border: none;
   padding: 3px 10px;
-  background-color: rgba(255, 255, 255, 0.267);
-  color: rgb(36, 88, 202);
+  background-color: var(--button);
+  color: var(--text);
   font-weight: 500;
   border-radius: 3px;
   font-size: 18px;
@@ -567,7 +567,7 @@ label {
 }
 
 .add-button-dialog:hover {
-  background-color: #45b5ed59;
+  background-color:var(--button-hover);
 }
 
 .float-right {
@@ -578,19 +578,68 @@ label {
 input {
   margin: 5px;
 }
+.drop-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px dashed #555;
+  color: #444;
+  cursor: pointer;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
+}
 
-input::file-selector-button {
+.drop-container:hover {
+  background: var(--menu-hover);
+  border-color: #111;
+}
+
+.drop-container:hover .drop-title {
+  color: var(--text);
+}
+
+.drop-title {
+  color:var(--text);
+  font-size: 20px;
   font-weight: bold;
-  color: white;
-  padding: 7px 15px;
-  border-radius: 5px;
+  text-align: center;
+  transition: color .2s ease-in-out;
+}
+input[type=file]::file-selector-button {
+  margin-right: 20px;
   border: none;
-  background-color: #4A55A2;
+  background: var(--button);
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+  font-size: 12px;
 }
 
-input::file-selector-button:hover {
-  background-color: #4a54a2dc;
+input[type=file]::file-selector-button:hover {
+  background: var(--button-hover);
 }
+
+.custom-file-upload {
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.or-color{
+  color: var(--text);
+}
+
+
+/* #image {
+  display: none;
+} */
 
 .form-dialog {
   display: flex;
@@ -627,42 +676,36 @@ img {
   border: 2px solid var(--background-1);
 }
 
+
 .edit-delete{
-    display: none;
-    transition: all 1s ease-in;
-    /* display: flex;
-    flex-direction: column;
-    gap: 8px; */
-  }
-.c-cards:hover  .edit-delete{
- display: block;
- transition: all 1s ease-in;
- 
-}
-.item-card:hover{
-  /* background-color: #3498db; */
-
-}
-.ed-icon{
-  display: flex;
+  display: none;
+  transition: all 1s ease-in;
+  /* display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 8px; */
+}
+.c-cards:hover  .edit-delete{
+display: block;
+transition: all 1s ease-in;
 
 }
 
-.c-cards:hover{
-    /* opacity: 0.5; */
+.ed-icon{
+display: flex;
+flex-direction: column;
+gap: 8px;
+
 }
+
 .c-cards{
-  display: flex;
-  gap: 10px;
+display: flex;
+gap: 10px;
 }
 .edit-delete-icon{
-  display: flex;
-    padding: 10px;
-  width: 25px;
-  border-radius: 100%;
-  background-color: var(--background);
-  justify-content: center;
+display: flex;
+  padding: 10px;
+width: 25px;
+border-radius: 100%;
+background-color: var(--background);
+justify-content: center;
 }
-

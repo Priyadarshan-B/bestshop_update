@@ -81,23 +81,23 @@ const HorizontalNavbar = () => {
   return (
     <nav className="navbar">
       <div className="menu-icon" onClick={toggleMenu}>
-        <FaBars style={{ fontSize: "20" }} />
+        <FaBars style={{ fontSize: "20", color: "#178a84" }} />
         {showMenu && (
           <div className="navbar-dropdown">
             <ul className={showMenu ? "nav-links show" : "nav-links"}>
               {/* dashboard_nav */}
               <li
-                className={selectedField === "dashboard" ? "selected" : ""}
-                onClick={() => handleNavigate("/dashboard")}
+                className={selectedField === "home" ? "selected" : ""}
+                onClick={() => handleNavigate("/home")}
               >
-                <SpaceDashboardIcon style={{ marginRight: "10px" }} />
+                <SpaceDashboardIcon style={{ marginRight: "10px", color: "#178a84" }} />
                 <b>Dashboard </b>
               </li>
               <li
                 className={selectedField === "addStock" ? "selected" : ""}
                 onClick={() => handleNavigate("/addStock")}
               >
-                <AddchartIcon style={{ marginRight: "10px" }} />
+                <AddchartIcon style={{ marginRight: "10px", color: "#178a84" }} />
                 <b>Add Stock</b>
               </li>
               {/* product_nav */}
@@ -107,7 +107,7 @@ const HorizontalNavbar = () => {
                 }
                 onClick={() => handleNavigate("/productdashboard")}
               >
-                <ShoppingCartIcon style={{ marginRight: "10px" }} />
+                <ShoppingCartIcon style={{ marginRight: "10px", color: "#178a84" }} />
                 <b>Products</b>
               </li>
               {/* master */}
@@ -146,14 +146,14 @@ const HorizontalNavbar = () => {
                 className={selectedField === "export" ? "selected" : ""}
                 onClick={() => handleNavigate("/export")}
               >
-                <DatasetOutlinedIcon style={{ marginRight: "10px" }} />
+                <DatasetOutlinedIcon style={{ marginRight: "10px", color: "#178a84" }} />
                 <b>Export</b>
               </li>
               <li
                 className={selectedField === "stocks" ? "selected" : ""}
                 onClick={() => handleNavigate("/stocks")}
               >
-                <EqualizerIcon style={{ marginRight: "10px" }} />
+                <EqualizerIcon style={{ marginRight: "10px", color: "#178a84" }} />
                 <b>Stocks</b>
               </li>
             </ul>
@@ -163,19 +163,19 @@ const HorizontalNavbar = () => {
       <div className="logo">
         <h1 className="website_name"><BiSolidShoppingBags style={{ color: "#178a84", fontSize: 35 }} />&nbsp; Best Shop</h1>
       </div>
-      
+
       <div className="icons">
         <FaUserCircle style={{
           color: "#178a84",
-          fontSize:35
-        }}/>
-      <h3 className="profile-text">{Cookies.get("username").toUpperCase()}</h3>
+          fontSize: 35
+        }} />
+        <h3 className="profile-text">{Cookies.get("username").toUpperCase()}</h3>
         <CustomizedSwitches />
         <Popup
           className="popup-container"
           trigger={
-          
-              <SettingsIcon style={{ color: "#178a84", fontSize: 35 , margin:7, cursor:"pointer"}} />
+
+            <SettingsIcon style={{ color: "#178a84", fontSize: 35, margin: 7, cursor: "pointer" }} />
           }
           position="bottom right"
         >
