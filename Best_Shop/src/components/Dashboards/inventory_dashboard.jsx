@@ -62,17 +62,48 @@ export default function InventoryDashboard() {
 
   return (
     <div style={{
-        height:"100%"
+      height: "97%",
+      width: "96%",
+      padding: "10px",
+      backgroundColor:"var(--background-1)",
+      borderRadius:"5px"
     }}>
-        <Select
+      <Select
         options={categoryOptions}
         onChange={handleCategoryChange}
         defaultValue={categoryOptions.find(
           (option) => option.value === selectedCategoryId
         )}
-          />
-        
-          <ReactApexChart
+        theme={(theme) => ({
+          ...theme,
+          borderRadius: 2,
+          colors: {
+            ...theme.colors,
+            primary50: "var(--text)",
+            primary: "var(--button)",
+            primary25: "var(--button-hover)",
+            neutral0: "var(--background)",
+            neutral20: "#178a84",
+            neutral30: "#82FFE7",
+            neutral40: "#CAFFCA",
+            neutral50: "#F4FFFD",
+            neutral60: "#fff",
+            neutral80: "var(--text)",
+          },
+        })}
+        styles={{
+          option: (provided, state) => ({
+            ...provided,
+            color: state.isFocused ? 'var(--text)' : 'var(--text)',
+            backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+            '&:hover': {
+              backgroundColor: 'var(--button)',
+            },
+          }),
+        }}
+      />
+
+      <ReactApexChart
         height={"90%"}
         width={"100%"}
         options={{
@@ -82,19 +113,22 @@ export default function InventoryDashboard() {
           },
           plotOptions: {
             bar: {
-              horizontal: true,
-              borderRadius: "2",
+              horizontal: false,
+              borderRadius: "1",
               dataLabels: {
                 position: "top",
               },
             },
           },
           dataLabels: {
+            // position: "top",
             enabled: true,
-            offsetX: -6,
+            offsetX:0,
+            offsetY:-15,
             style: {
-              fontSize: "15px",
-              colors: ["#fff"],
+              fontSize: "10px",
+              
+              colors: ["var(--button)"],
             },
           },
           fill: {
@@ -103,7 +137,6 @@ export default function InventoryDashboard() {
           stroke: {
             show: true,
             width: 1,
-            colors: ["#fff"],
           },
           tooltip: {
             shared: true,
@@ -111,14 +144,36 @@ export default function InventoryDashboard() {
           },
           xaxis: {
             categories: item_names,
+            labels: {
+              style: {
+                fontSize:'9px',
+                colors: 'var(--text)'
+              },
+            }
           },
+          yaxis: {
+            labels: {
+              style: {
+                colors: 'var(--text)'
+              },
+            }
+          },
+          legend:{
+            labels: {
+                colors: 'var(--text)'
+            },
+            markers:{
+              fillColors:["#4ECDC4", "#2B908F"]
+            }
+          }
+
         }}
         series={[
           { name: "Total Quantities", data: total_quantities },
           { name: "Available Quantity", data: available_quantity },
         ]}
         type="bar"
-          />
+      />
     </div>
   );
 }

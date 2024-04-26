@@ -14,6 +14,7 @@ import ImportData from "./components/import_data/import";
 import Stocks from "./components/stocks/stocks";
 import ModelDashboard from "./components/Inventory/model_dashboard";
 import Home from "./components/Home/home";
+import Table from "./components/Edit_Delete_table/table_content";
 
 function Protected({ children }) {
   const navigate = useNavigate();
@@ -111,6 +112,14 @@ const routes = () => (
         element={
           <Protected>
             <Home />
+          </Protected>
+        }
+      />
+      <Route
+        path="/table"
+        element={
+          <Protected>
+            <Table />
           </Protected>
         }
       />

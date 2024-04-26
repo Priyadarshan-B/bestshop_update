@@ -20,6 +20,7 @@ import "./ProductDashboard.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
+import CustomDatePicker from "../InputBox/datepicker";
 
 const CategoryTable = () => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
@@ -31,7 +32,7 @@ const CategoryTable = () => {
   const handleEditOpen = () => {
     setEditOpen(true);
   };
-  const handleEditClose = () => {};
+  const handleEditClose = () => { };
   const handleDateChange = async (newValue) => {
     setSelectedDate(newValue);
   };
@@ -83,7 +84,7 @@ const CategoryTable = () => {
 
       if (response.status >= 200 && response.status < 300) {
         notifySuccess("Stock Deleted Successfully");
-    fetchData(selectedDate);
+        fetchData(selectedDate);
 
         setData(stocklist.filter((item) => item.id !== id));
       } else {
@@ -119,7 +120,7 @@ const CategoryTable = () => {
 
       if (response.status === 200) {
         notifySuccess("Stock Edited Successfull");
-    fetchData(selectedDate);
+        fetchData(selectedDate);
 
         setData(
           data.map((item) => (item.id === editingItem.id ? editingItem : item))
@@ -173,7 +174,7 @@ const CategoryTable = () => {
               </div>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DatePicker", "DatePicker"]}>
-                  <DatePicker
+                  <CustomDatePicker
                     label="Select Date"
                     value={selectedDate}
                     onChange={handleDateChange}
@@ -186,20 +187,20 @@ const CategoryTable = () => {
               <table>
                 <thead>
                   <tr>
-                    <th>S.No</th>
-                    <th>Shop</th>
-                    <th>User</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Name</th>
-                    <th>Model</th>
-                    <th>Color</th>
-                    <th>Size</th>
-                    <th>Quantity</th>
+                    <th>S.NO</th>
+                    <th>SHOP</th>
+                    <th>USER</th>
+                    <th>DATE</th>
+                    <th>TIME</th>
+                    <th>NAME</th>
+                    <th>MODEL</th>
+                    <th>COLOR</th>
+                    <th>SIZE</th>
+                    <th>QUANTITY</th>
                     <th>MRP</th>
-                    <th>Selling Price</th>
-                    <th>Total</th>
-                    <th>Actions</th>
+                    <th>SELLING PRICE</th>
+                    <th>TOTAL</th>
+                    <th>ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -245,6 +246,7 @@ const CategoryTable = () => {
                 PaperProps={{
                   style: {
                     padding: "20px",
+                    backgroundColor: "var(--background-1)"
                   },
                 }}
               >
@@ -259,6 +261,7 @@ const CategoryTable = () => {
                     <DialogTitle
                       style={{
                         textAlign: "center",
+                        color: "var(--text)"
                       }}
                     >
                       <h2>Edit</h2>

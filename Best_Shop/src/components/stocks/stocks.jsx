@@ -120,7 +120,7 @@ function Stocks() {
                     )}
                     {selectedItem && (
                         <div className='sub-items-container'>
-                            <ArrowBackIcon onClick={() => setSelectedItem(null)} style={{ margin: 10, marginBottom: 0 }} />
+                            <ArrowBackIcon onClick={() => setSelectedItem(null)} style={{ margin: 10, marginBottom: 0, color: "#178a84" }} />
                             <div className="search-box">
                                 <InputBox
                                     label={

@@ -42,7 +42,8 @@ const InputBox = ({
   id,
   size,
   helperText,
-  sx
+  sx,
+  accept
 }) => {
   return (
     <Box
@@ -65,6 +66,7 @@ const InputBox = ({
         helperText={helperText}
         // sx={{ width: "100%" }}
         sx={sx}
+        accept={accept}
       />
     </Box>
   );

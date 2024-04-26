@@ -32,6 +32,7 @@
     "datatables.net-scroller-dt": "^2.4.1",
     "dayjs": "^1.11.10",
     "dom": "^0.0.3",
+    "flowbite-react": "^0.8.0",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "material-react-table": "^2.12.1",
@@ -54,7 +55,8 @@
     "xlsx": "^0.18.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+
+    "start": "react-scripts start --host 0.0.0.0",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -5,11 +5,13 @@ import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
 import requestApi from "../../utils/axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import import_image from "../../assets/img/import_image.png";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const ImportData = () => {
   const [jsonData, setJsonData] = useState([]);
 
-  
+
   const notifySuccess = (message) => {
     toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
   };
@@ -41,11 +43,11 @@ const ImportData = () => {
           sub_category: row[1] || "",
           brand: row[2] || "",
           size: row[3] || "",
-          model: row[4] || "",
+          model: String(row[4] || ""), // Convert model to string
           color: row[5] || "",
           item_name: row[7] || "",
-          sell_quantity: parseFloat(row[10]) || 0, 
-          mrp: parseFloat(row[22]) || 0, 
+          sell_quantity: parseFloat(row[10]) || 0,
+          mrp: parseFloat(row[22]) || 0,
         };
       });
 
@@ -61,28 +63,45 @@ const ImportData = () => {
     // Send data to backend
     const response = await requestApi("POST", "/api/sales/sales", jsonData);
     console.log("Response from backend:", response);
-    if(response.success){
+    if (response.success) {
       notifySuccess("Sales Data Imported Successfully")
     }
-    else{
+    else {
       notifyError("Failed to Import Sales Data")
     }
   };
 
   return (
-    <div className="dashboard-container">
-      <HorizontalNavbar />
-      <div className="vandc-container">
-        <VerticalNavbar />
-        <div className="dashboard-body">
-          <div className="export-container-card">
-            <h5>Choose Excel file</h5>
-            <input type="file" onChange={handleFileUpload} />
-            <button className="dist_button" onClick={sendDataToBackend}>Import Sales Stocks</button>
-          </div>
+
+    <div className="import-box">
+      <div className="image-and-guidance">
+        <div>
+          <img
+            style={{ height: "140px", width: "180px" }}
+            className="image"
+            src={import_image}
+            alt="Description of the image"
+          />
+        </div>
+        <div className="to-algn-text">
+            <h3>Import Your Sold</h3>
+            <h3> Stocks Here <FileDownloadIcon style={{fontSize:"20px", position:"relative", top:"5px"}}/></h3>
         </div>
       </div>
+      <div style={
+        {
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          marginTop:"30px",
+        }
+      }>
+        <h4 style={{marginLeft:"7px", color:"var(--text)"}}>Choose Excel file</h4>
+        <input type="file" onChange={handleFileUpload} />
+        <button className="dist_button" onClick={sendDataToBackend}>Import Sales Stocks</button>
+      </div>
     </div>
+
   );
 };
 

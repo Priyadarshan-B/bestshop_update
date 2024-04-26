@@ -44,17 +44,26 @@
 .export-container-card {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap;
   background-color: var(--background-1);
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   padding: 5px;
   flex-direction: column;
   border-radius: 5px;
   padding: 40px 20px;
-  width: 400px;
-  height: fit-content;
-  margin: auto;
+  width: 40%;
 }
+.import-container-card{
+  display: flex;
+  gap: 20px;
+  background-color: var(--background-1);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 30px 20px 50px 20px;
+  width: 40%;
+  min-width: 330px;
+}
+
 
 .container-except-di {
   display: flex;
@@ -100,7 +109,6 @@
 @media (max-width:650px) {
   .container-except-di {
     flex-direction: column-reverse;
-
   }
 
   .export-container-card {

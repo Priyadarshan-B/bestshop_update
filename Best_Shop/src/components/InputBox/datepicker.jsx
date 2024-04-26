@@ -18,8 +18,6 @@ const CustomDatePicker = ({ label, value, onChange, size, sx }) => {
           },
           "& .MuiInputBase-root": {
             color: "var(--text)",
-          },
-          "& .MuiInputBase-root": {
             "& fieldset": {
               borderColor: "var(--button)",
               border: "2px solid var(--button)",
@@ -32,12 +30,11 @@ const CustomDatePicker = ({ label, value, onChange, size, sx }) => {
             },
           },
           "& .MuiInputBase-input": {
-            borderBottom: "2px solid var(--button)", // Change border color
+            borderBottom: "2px solid var(--button)",
+            color: "var(--text)",
           },
-          "& .MuiInputBase-input::placeholder": {
-            color: "var(--text)", // Change placeholder color
-          },
-          ...sx, // Allow further customization through sx prop
+         
+          ...sx,
         }}
       />
     </LocalizationProvider>

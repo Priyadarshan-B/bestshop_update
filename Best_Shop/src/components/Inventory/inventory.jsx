@@ -71,7 +71,10 @@ export default function SimpleBarChart() {
         <VerticalNavbar />
         <div className="dashboard-body">
           <div className="chart-container">
-            <InventoryDashboard />
+
+            <div className="inventory-card">
+              <InventoryDashboard />
+            </div>
           </div>
         </div>
       </div>

@@ -16,12 +16,20 @@ import InputBox from "../InputBox/inputbox";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
+import { FileInput, Label } from "flowbite-react";
+import { Modal, TextField, Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 
 function AddStocks({ text }) {
   const username = Cookies.get("username").toUpperCase();
 
+  const [editedName, setEditedName] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectEditCategory, setSelectEditCategory] = useState(null);
   const [selectedItemName, setSelectedItemName] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
@@ -633,6 +641,63 @@ function AddStocks({ text }) {
       setShowCategories(true);
     }
   };
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+    setSelectEditCategory(null);
+    setEditedName("");
+  };
+
+  const handleNameChange = (event) => {
+    setEditedName(event.target.value);
+  };
+
+  // edit and delete
+  const handleEdit = (id, name) => {
+    setSelectEditCategory({ id, name });
+    setEditedName(name);
+    setEditModalOpen(true);
+    console.log(id);
+  };
+  const handleUpdateCategory = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/category`, {
+        id: selectEditCategory.id,
+        name: editedName,
+      });
+      console.log(response.data.message);
+      // Update the UI to reflect the update
+      const updatedCategory = { ...selectEditCategory, name: editedName };
+      console.log(editedName);
+      setCategories(
+        categories.map((cat) =>
+          cat.id === selectEditCategory.id ? updatedCategory : cat
+        )
+      );
+      toast.success(`Category updated successfully`);
+      handleEditModalClose();
+    } catch (error) {
+      console.error("Error updating category:", error);
+      toast.error("Error updating category");
+    }
+  };
+  const handleDelete = async (id, name) => {
+    try {
+      const response = await requestApi(
+        "DELETE",
+        `/api/structure/category?id=${id}`
+      );
+      console.log(response.data.message);
+      // Update the UI to reflect the deletion
+      setCategories(categories.filter((cat) => cat.id !== id));
+      console.log(id);
+      toast.success(`Category "${name}" deleted successfully`);
+    }
+    catch (error) {
+      console.error("Error deleting category:", error);
+      toast.error("Error deleting category");
+    }
+  };
+
 
   return (
     <div className="dashboard-container">
@@ -648,7 +713,7 @@ function AddStocks({ text }) {
                 {selectedCategory &&
                   (selectedCategory.image_path !== "" ? (
                     <img
-                    
+
                       src={`${apiHost}/` + selectedCategory.image_path}
                       alt={selectedCategory.name}
                     />
@@ -690,7 +755,7 @@ function AddStocks({ text }) {
                 <InputBox
                   // className="input_box"
                   label={
-                    <div style={{ display: "flex", alignItems: "center", color:"var(--text)" }}>
+                    <div style={{ display: "flex", alignItems: "center", color: "var(--text)" }}>
                       <SearchSharpIcon sx={{ marginRight: 1, color: "var(--text)" }} />
                       Search
                     </div>
@@ -721,33 +786,90 @@ function AddStocks({ text }) {
                       <div className="card">
                         <div className="flex-container">
                           {filterData(categories).map((category) => (
-                            <div
-                              key={category.id}
-                              className="item-card"
-                              onClick={() => handleSelectCategory(category)}
-                            >
-                              <div className="category-info">
-                                {category.name}
-                                {category.image_path && (
-                                  <img
-                                    src={`${apiHost}/` + category.image_path}
-                                    alt={category.name}
-                                  />
-                                )}
+                            <div key={category.id} className="c-cards">
+                              <div
+                                className="item-card"
+                                onClick={() => handleSelectCategory(category)}
+                              >
+                                <div className="category-info">
+                                  {category.name}
+                                  {category.image_path && (
+                                    <img
+                                      src={`${apiHost}/` + category.image_path}
+                                      alt={category.name}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                              <div className="edit-delete">
+                                <div className="ed-icon">
+                                  <div className="edit-delete-icon">
+                                    <EditIcon
+                                      style={{
+                                        color: "#5676f5",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleEdit(category.id, category.name)
+                                      }
+                                    />
+                                  </div>
+                                  <div className="edit-delete-icon">
+                                    <DeleteIcon
+                                      style={{
+                                        color: "#ed4545",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleDelete(category.id, category.name)
+                                      }
+                                    />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           ))}
                         </div>
+                        <Modal
+                          open={editModalOpen}
+                          onClose={handleEditModalClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              backgroundColor: "white",
+                              boxShadow: 24,
+                              p: 4,
+                            }}
+                          >
+                            <h2>Edit Category</h2>
+                            <TextField
+                              label="Category Name"
+                              variant="outlined"
+                              value={editedName}
+                              onChange={handleNameChange}
+                            />
+                            <Button
+                              variant="contained"
+                              onClick={handleUpdateCategory}
+                            >
+                              Submit
+                            </Button>
+                          </div>
+                        </Modal>
                       </div>
                     </div>
-                  )}
-
-                  {/* Item Names */}
+                  )}                  {/* Item Names */}
                   {selectedCategory && selectedItemName === null && (
                     <div className="card1">
                       <div className="name-and-icon">
                         <ArrowBackIcon
-                          sx={{ cursor: "pointer" }}
+                          sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
                             setSelectedCategory(null); // Reset to categories
                             setSelectedItemName(null); // Reset item name selection
@@ -787,7 +909,7 @@ function AddStocks({ text }) {
                     <div className="card1">
                       <div className="name-and-icon">
                         <ArrowBackIcon
-                          sx={{ cursor: "pointer" }}
+                          sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
                             setSelectedItemName(null); // Reset to item names
                             setSelectedSubCategory(null); // Reset sub-category selection
@@ -828,7 +950,7 @@ function AddStocks({ text }) {
                     <div className="card1">
                       <div className="name-and-icon">
                         <ArrowBackIcon
-                          sx={{ cursor: "pointer" }}
+                          sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
                             setSelectedSubCategory(null); // Reset to sub-categories
                             setSelectedBrand(null); // Reset brand selection
@@ -867,7 +989,7 @@ function AddStocks({ text }) {
                     // Last page for size and price
                     <div className="last">
                       <ArrowBackIcon
-                        sx={{ cursor: "pointer", margin: 1 }}
+                        sx={{ cursor: "pointer", margin: 1, color: "#178a84" }}
                         onClick={() => {
                           setSelectedBrand(null);
                           setSelectedModel(null);
@@ -902,28 +1024,38 @@ function AddStocks({ text }) {
                                   borderRadius: 2,
                                   colors: {
                                     ...theme.colors,
-                                    //after select dropdown option
+                                    // after select dropdown option
                                     primary50: "var(--text)",
-                                    //Border and Background dropdown color
+                                    // Border and Background dropdown color
                                     primary: "var(--button)",
-                                    //Background hover dropdown color
+                                    // Background hover dropdown color
                                     primary25: "var(--button-hover)",
-                                    //Background color
+                                    // Background color
                                     neutral0: "var(--background)",
-                                    //Border before select
+                                    // Border before select
                                     neutral20: "#178a84",
-                                    //Hover border
+                                    // Hover border
                                     neutral30: "#82FFE7",
-                                    //No options color
+                                    // No options color
                                     neutral40: "#CAFFCA",
-                                    //Select color
+                                    // Select color
                                     neutral50: "#F4FFFD",
-                                    //arrow icon when click select
+                                    // Arrow icon when click select
                                     neutral60: "#fff",
-                                    //Text color
+                                    // Text color
                                     neutral80: "var(--text)",
                                   },
                                 })}
+                                styles={{
+                                  option: (provided, state) => ({
+                                    ...provided,
+                                    color: state.isFocused ? 'var(--text)' : 'var(--text)',
+                                    backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+                                    '&:hover': {
+                                      backgroundColor: 'var(--button)',
+                                    },
+                                  }),
+                                }}
                               />
                             </div>
 
@@ -948,28 +1080,38 @@ function AddStocks({ text }) {
                                   borderRadius: 2,
                                   colors: {
                                     ...theme.colors,
-                                    //after select dropdown option
+                                    // after select dropdown option
                                     primary50: "var(--text)",
-                                    //Border and Background dropdown color
+                                    // Border and Background dropdown color
                                     primary: "var(--button)",
-                                    //Background hover dropdown color
+                                    // Background hover dropdown color
                                     primary25: "var(--button-hover)",
-                                    //Background color
+                                    // Background color
                                     neutral0: "var(--background)",
-                                    //Border before select
+                                    // Border before select
                                     neutral20: "#178a84",
-                                    //Hover border
+                                    // Hover border
                                     neutral30: "#82FFE7",
-                                    //No options color
+                                    // No options color
                                     neutral40: "#CAFFCA",
-                                    //Select color
+                                    // Select color
                                     neutral50: "#F4FFFD",
-                                    //arrow icon when click select
+                                    // Arrow icon when click select
                                     neutral60: "#fff",
-                                    //Text color
+                                    // Text color
                                     neutral80: "var(--text)",
                                   },
                                 })}
+                                styles={{
+                                  option: (provided, state) => ({
+                                    ...provided,
+                                    color: state.isFocused ? 'var(--text)' : 'var(--text)',
+                                    backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
+                                    '&:hover': {
+                                      backgroundColor: 'var(--button)',
+                                    },
+                                  }),
+                                }}
                               />
                             </div>
                           </div>
@@ -1080,7 +1222,7 @@ function AddStocks({ text }) {
         </div>
       </div>
       {/* category dialog */}
-      <div>
+      <div >
         <Dialog
           fullWidth
           open={categoryopen}
@@ -1088,6 +1230,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "20px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1096,6 +1239,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Category</h2>
@@ -1118,22 +1262,48 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleCategoryImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleCategoryImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleCategoryImage}
+
+                    />
+                  </div>
+                </label>
                 <br />
+                <h1 className="or-color">(or)</h1>
+                <br />
+
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleCategoryImage}
+                  />
+                  <br />
+                </div>
+
+
+
 
                 <div className="float-right">
                   <button
@@ -1160,6 +1330,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1168,6 +1339,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Item</h2>
@@ -1190,21 +1362,44 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleItemImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleItemImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleItemImage}
+
+                    />
+                  </div>
+                </label>
+                <br />
+                <h5 className="or-color">(or)</h5>
+                <br />
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleItemImage}
+                  />
+                  <br />
+                </div>
                 <br />
                 <div className="float-right">
                   <button
@@ -1231,6 +1426,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1239,6 +1435,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Sub-Category</h2>
@@ -1261,21 +1458,44 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleSubImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleSubImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleSubImage}
+
+                    />
+                  </div>
+                </label>
+                <br />
+                <h5 className="or-color">(or)</h5>
+                <br />
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleSubImage}
+                  />
+                  <br />
+                </div>
                 <br />
                 <div className="float-right">
                   <button
@@ -1302,6 +1522,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1310,6 +1531,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Brand</h2>
@@ -1332,21 +1554,44 @@ function AddStocks({ text }) {
                   size="small"
                 />
                 <br />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleBrandImage}
-                />
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleBrandImage}
-                />
+                <label className="drop-container">
+                  <span class="drop-title">Drop files here</span>
+
+                  <div style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+
+                  }}>
+                    <input
+                      type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onChange={handleBrandImage}
+
+                    />
+                  </div>
+                </label>
+                <br />
+                <h5 className="or-color">(or)</h5>
+                <br />
+                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <br />
+                <div style={{
+                  border: "1px solid var(--button)",
+                  borderRadius: "5px",
+
+                }}>
+                  <input
+                    type="file"
+                    id="image"
+                    name="image"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleBrandImage}
+                  />
+                  <br />
+                </div>
                 <br />
                 <div className="float-right">
                   <button
@@ -1373,6 +1618,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1381,6 +1627,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Model</h2>
@@ -1427,6 +1674,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1435,6 +1683,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Color</h2>
@@ -1481,6 +1730,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
+              backgroundColor: "var(--background-1)"
             },
           }}
         >
@@ -1489,6 +1739,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
+                  color: "var(--text)"
                 }}
               >
                 <h2>Add Size</h2>

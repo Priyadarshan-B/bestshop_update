@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AddCommentIcon from '@mui/icons-material/AddComment';
 import { FaBars, FaAngleDown, FaAngleUp } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./vertical_navbar.css";
@@ -56,7 +57,7 @@ const VerticalNavbar = () => {
         {/* dashboard_nav */}
 
         <li
-          className={selectedField === "dashboard" ? "selected" : ""}
+          className={selectedField === "home" ? "selected" : ""}
           onClick={() => handleNavigate("/home")}
         >
           <SpaceDashboardIcon className="navbar-icon" style={{ marginRight: "10px" }} />
@@ -130,6 +131,8 @@ const VerticalNavbar = () => {
           <EqualizerIcon className="navbar-icon" style={{ marginRight: "10px" }}/>
           <b>Stocks</b>
         </li>
+
+        
       </ul>
     </div>
   );
