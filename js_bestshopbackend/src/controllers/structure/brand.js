@@ -83,7 +83,7 @@ exports.update_brand = async (req, res) => {
 };
 
 exports.delete_brand = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
 
   if (!id) {
     return res.status(400).json({

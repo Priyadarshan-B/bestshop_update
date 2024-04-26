@@ -74,7 +74,7 @@ exports.update_category = async (req, res) => {
 };
 
 exports.delete_category = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
 
   if (!id) {
     return res.status(400).json({

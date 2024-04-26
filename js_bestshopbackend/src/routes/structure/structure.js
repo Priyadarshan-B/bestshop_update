@@ -18,8 +18,8 @@ router.delete("/category", category.delete_category);
 
 router.get("/item-name", item_name.get_item_name);
 router.post("/item-name", image_uploader_middleware, item_name.post_item_name);
-router.put("/item_name", item_name.update_item_name);
-router.delete("/item_name", item_name.delete_item_name);
+router.put("/item-name", item_name.update_item_name);
+router.delete("/item-name", item_name.delete_item_name);
 
 router.get("/sub-category", sub_category.get_sub_category);
 router.post(
