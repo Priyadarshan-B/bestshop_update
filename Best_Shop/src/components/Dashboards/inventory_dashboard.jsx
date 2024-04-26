@@ -70,6 +70,33 @@ export default function InventoryDashboard() {
         defaultValue={categoryOptions.find(
           (option) => option.value === selectedCategoryId
         )}
+        theme={(theme) => ({
+          ...theme,
+          borderRadius: 2,
+          colors: {
+            ...theme.colors,
+            //after select dropdown option
+            primary50: "var(--text)",
+            //Border and Background dropdown color
+            primary: "var(--button)",
+            //Background hover dropdown color
+            primary25: "var(--button-hover)",
+            //Background color
+            neutral0: "var(--background)",
+            //Border before select
+            neutral20: "#178a84",
+            //Hover border
+            neutral30: "#82FFE7",
+            //No options color
+            neutral40: "#CAFFCA",
+            //Select color
+            neutral50: "#F4FFFD",
+            //arrow icon when click select
+            neutral60: "#fff",
+            //Text color
+            neutral80: "var(--text)",
+          },
+        })}
           />
         
           <ReactApexChart
@@ -111,6 +138,26 @@ export default function InventoryDashboard() {
           },
           xaxis: {
             categories: item_names,
+            labels:{
+              style:{
+                colors:'var(--text)'
+              }
+            },
+          },
+          yaxis:{
+            labels:{
+              style:{
+                colors:'var(--text)'
+              }
+            },
+          },
+          legend: {
+            labels: {
+              colors: "var(--text)", // Setting the color of legend text
+            },
+            markers: {
+              fillColors: ["#4ECDC4", "#2B908F"], // Setting the fill colors for legend markers
+            },
           },
         }}
         series={[

@@ -44,7 +44,7 @@ const Login = () => {
         Cookies.set("username",username);
         setError(null);
         notifySuccess("Login Successfull");
-        navigate("/addStock");
+        navigate("/dashboard");
       } else {
         setError("Incorrect Username or Password");
         notifyError("Login Failed");

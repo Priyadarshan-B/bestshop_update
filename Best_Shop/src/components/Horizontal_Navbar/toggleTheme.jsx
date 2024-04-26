@@ -36,7 +36,7 @@ const darkModeProperties = {
 };
 
 // Set custom properties based on theme mode
-const setCustomProperties = (mode) => {
+export const setCustomProperties = (mode) => {
     const root = document.documentElement;
     root.style.cssText = Object.entries(
         mode === "dark" ? darkModeProperties : lightModeProperties

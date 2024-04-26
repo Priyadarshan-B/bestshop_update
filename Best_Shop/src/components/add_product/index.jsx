@@ -16,12 +16,19 @@ import InputBox from "../InputBox/inputbox";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
+import { Modal, TextField, Button } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function AddStocks({ text }) {
   const username = Cookies.get("username").toUpperCase();
 
+  const [editedName, setEditedName] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectEditCategory, setSelectEditCategory] = useState(null);
   const [selectedItemName, setSelectedItemName] = useState(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
@@ -176,7 +183,7 @@ function AddStocks({ text }) {
     formData.append("name", subvalue);
     formData.append("image", subimage);
 
-    try {
+    try { 
       const response = await fetch(`${apiHost}/api/structure/sub-category`, {
         method: "POST",
         body: formData,
@@ -363,7 +370,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setCategories(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
     setIsLoading(false);
   };
 
@@ -533,7 +540,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setItemNames(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchSubCategories = async (itemNameId) => {
@@ -546,7 +553,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setSubCategories(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchBrands = async (subCategoryId) => {
@@ -559,7 +566,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setBrands(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchModels = async (brandId) => {
@@ -572,7 +579,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setModels(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchColors = async (modelId) => {
@@ -585,7 +592,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setColors(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchSizes = async (colorId) => {
@@ -603,7 +610,7 @@ function AddStocks({ text }) {
         });
         setSizeQuantities(initialQuantity);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const sizeInputs = () => {
@@ -634,6 +641,63 @@ function AddStocks({ text }) {
     }
   };
 
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+    setSelectEditCategory(null);
+    setEditedName("");
+  };
+
+  const handleNameChange = (event) => {
+    setEditedName(event.target.value);
+  };
+
+  // edit and delete
+  const handleEdit = (id, name) => {
+    setSelectEditCategory({ id, name });
+    setEditedName(name);
+    setEditModalOpen(true);
+    console.log(id);
+  };
+  const handleUpdateCategory = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/category`, {
+        id: selectEditCategory.id,
+        name: editedName,
+      });
+      console.log(response.data.message);
+      // Update the UI to reflect the update
+      const updatedCategory = { ...selectEditCategory, name: editedName };
+      console.log(editedName);
+      setCategories(
+        categories.map((cat) =>
+          cat.id === selectEditCategory.id ? updatedCategory : cat
+        )
+      );
+      toast.success(`Category updated successfully`);
+      handleEditModalClose();
+    } catch (error) {
+      console.error("Error updating category:", error);
+      toast.error("Error updating category");
+    }
+  };
+  const handleDelete = async (id, name) => {
+    try {
+      const response = await requestApi(
+        "DELETE",
+        `/api/structure/category?id=${id}`
+      );
+      console.log(response.data.message);
+      // Update the UI to reflect the deletion
+      setCategories(categories.filter((cat) => cat.id !== id));
+      console.log(id);
+      toast.success(`Category "${name}" deleted successfully`);
+    }
+     catch (error) {
+      console.error("Error deleting category:", error);
+      toast.error("Error deleting category");
+    }
+  };
+
   return (
     <div className="dashboard-container">
       <Navbar />
@@ -643,12 +707,13 @@ function AddStocks({ text }) {
         <div className="dashboard-body">
           <div className="category-page">
             <div className="select-category-card">
-              {selectedCategory ? null : <h2 className="item-list-head">No Items Selected</h2>}
+              {selectedCategory ? null : (
+                <h2 className="item-list-head">No Items Selected</h2>
+              )}
               <div className="selected-info">
                 {selectedCategory &&
                   (selectedCategory.image_path !== "" ? (
                     <img
-                    
                       src={`${apiHost}/` + selectedCategory.image_path}
                       alt={selectedCategory.name}
                     />
@@ -690,8 +755,16 @@ function AddStocks({ text }) {
                 <InputBox
                   // className="input_box"
                   label={
-                    <div style={{ display: "flex", alignItems: "center", color:"var(--text)" }}>
-                      <SearchSharpIcon sx={{ marginRight: 1, color: "var(--text)" }} />
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "var(--text)",
+                      }}
+                    >
+                      <SearchSharpIcon
+                        sx={{ marginRight: 1, color: "var(--text)" }}
+                      />
                       Search
                     </div>
                   }
@@ -700,7 +773,7 @@ function AddStocks({ text }) {
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                   sx={{ width: "100%" }}
-                // helperText="(Categories,Item name,Sub-Categories and Brand)"
+                  // helperText="(Categories,Item name,Sub-Categories and Brand)"
                 />
               </div>
 
@@ -721,23 +794,82 @@ function AddStocks({ text }) {
                       <div className="card">
                         <div className="flex-container">
                           {filterData(categories).map((category) => (
-                            <div
-                              key={category.id}
-                              className="item-card"
-                              onClick={() => handleSelectCategory(category)}
-                            >
-                              <div className="category-info">
-                                {category.name}
-                                {category.image_path && (
-                                  <img
-                                    src={`${apiHost}/` + category.image_path}
-                                    alt={category.name}
-                                  />
-                                )}
+                            <div key={category.id} className="c-cards">
+                              <div
+                                className="item-card"
+                                onClick={() => handleSelectCategory(category)}
+                              >
+                                <div className="category-info">
+                                  {category.name}
+                                  {category.image_path && (
+                                    <img
+                                      src={`${apiHost}/` + category.image_path}
+                                      alt={category.name}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                              <div className="edit-delete">
+                                <div className="ed-icon">
+                                  <div className="edit-delete-icon">
+                                    <EditIcon
+                                      style={{
+                                        color: "#5676f5",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleEdit(category.id, category.name)
+                                      }
+                                    />
+                                  </div>
+                                  <div className="edit-delete-icon">
+                                    <DeleteIcon
+                                      style={{
+                                        color: "#ed4545",
+                                        cursor: "pointer",
+                                      }}
+                                      onClick={() =>
+                                        handleDelete(category.id, category.name)
+                                      }
+                                    />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           ))}
                         </div>
+                        <Modal
+                          open={editModalOpen}
+                          onClose={handleEditModalClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              backgroundColor: "white",
+                              boxShadow: 24,
+                              p: 4,
+                            }}
+                          >
+                            <h2>Edit Category</h2>
+                            <TextField
+                              label="Category Name"
+                              variant="outlined"
+                              value={editedName}
+                              onChange={handleNameChange}
+                            />
+                            <Button
+                              variant="contained"
+                              onClick={handleUpdateCategory}
+                            >
+                              Submit
+                            </Button>
+                          </div>
+                        </Modal>
                       </div>
                     </div>
                   )}

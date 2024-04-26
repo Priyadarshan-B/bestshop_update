@@ -15,7 +15,19 @@ const StockDashboard = () => {
       chart: {
         type: "bar",
         height: 350,
+        // background: 'var(--background)'
       },
+      // theme:{
+      //   mode:'light',
+      //   palette: 'palette1', 
+      //   color:'var(--background)',
+      //   monochrome: {
+      //     enabled: false,
+      //     color: 'var(--background)',
+      //     shadeTo: 'dark', // Change this if you want darker or lighter shade
+      //     shadeIntensity: 0.65
+      //   }
+      // },
       plotOptions: {
         bar: {
           horizontal: false,
@@ -39,15 +51,21 @@ const StockDashboard = () => {
         categories: ["Less Than 30 Days", "30 to 180 days", "180 to 365 days"],
 
         labels: {
+          style: {
+            colors: 'var(--text)', // Change the color of x-axis labels
+          },
           formatter: function (val) {
             return val;
           },
+        },
+        style: {
+          colors: 'var(--text)',
         },
       },
       yaxis: [
         { show: false },
         { show: false },
-        { show: false, labels: { style: { color: "var(--text)" } } },
+        { show: false },
       ],
       fill: {
         opacity: 1,
@@ -65,6 +83,11 @@ const StockDashboard = () => {
           color: "var(--text)",
         },
       },
+      legend: {
+        labels: {
+          colors: 'var(--text)' // Setting the color of legend text
+        }
+      }
     },
   });
 

@@ -41,7 +41,7 @@ const ImportData = () => {
           sub_category: row[1] || "",
           brand: row[2] || "",
           size: row[3] || "",
-          model: row[4] || "",
+          model: String(row[4] || ""),
           color: row[5] || "",
           item_name: row[7] || "",
           sell_quantity: parseFloat(row[10]) || 0, 

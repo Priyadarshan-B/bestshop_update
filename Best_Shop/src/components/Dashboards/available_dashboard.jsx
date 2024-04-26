@@ -4,6 +4,7 @@ import "ag-charts-enterprise";
 import Select from "react-select";
 import requestApi from "../../utils/axios";
 import "../Inventory/inventory.css";
+import { colors } from "@mui/material";
 
 const ChartExample = ({ data, height, width }) => {
   const [options, setOptions] = useState({
@@ -17,12 +18,18 @@ const ChartExample = ({ data, height, width }) => {
         radiusKey: "quarter",
         angleKey: "software",
         angleName: "Available Qunatity",
+        label: {
+          color: "var(--text)", // Set label color
+        },
       },
       {
         type: "radial-bar",
         radiusKey: "quarter",
         angleKey: "hardware",
         angleName: "Total Quantity",
+        label: {
+          color: "var(--text)", // Set label color
+        },
       },
     ],
     axes: [
@@ -30,6 +37,9 @@ const ChartExample = ({ data, height, width }) => {
         type: "angle-number",
         startAngle: 270,
         endAngle: 450,
+        label: {
+          color: "var(--text)", // Set label color
+        },
       },
       {
         type: "radius-category",
@@ -37,6 +47,9 @@ const ChartExample = ({ data, height, width }) => {
       },
     ],
     legend: { enabled: false },
+    background: {
+      fill: 'rgb(201, 223, 226)',
+  },
   });
 
   return <AgChartsReact options={options} />;
@@ -119,18 +132,72 @@ class AvailableDashboard extends Component {
                     }))}
                     onChange={this.handleCategoryChange}
                     placeholder="Select Category"
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 2,
+                      colors: {
+                        ...theme.colors,
+                        //after select dropdown option
+                        primary50: "var(--text)",
+                        //Border and Background dropdown color
+                        primary: "var(--button)",
+                        //Background hover dropdown color
+                        primary25: "var(--button-hover)",
+                        //Background color
+                        neutral0: "var(--background)",
+                        //Border before select
+                        neutral20: "#178a84",
+                        //Hover border
+                        neutral30: "#82FFE7",
+                        //No options color
+                        neutral40: "#CAFFCA",
+                        //Select color
+                        neutral50: "#F4FFFD",
+                        //arrow icon when click select
+                        neutral60: "#fff",
+                        //Text color
+                        neutral80: "var(--text)",
+                      },
+                    })}
                   />
                   <Select
                     options={items}
                     onChange={this.handleItemChange}
                     placeholder="Select Item"
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 2,
+                      colors: {
+                        ...theme.colors,
+                        //after select dropdown option
+                        primary50: "var(--text)",
+                        //Border and Background dropdown color
+                        primary: "var(--button)",
+                        //Background hover dropdown color
+                        primary25: "var(--button-hover)",
+                        //Background color
+                        neutral0: "var(--background)",
+                        //Border before select
+                        neutral20: "#178a84",
+                        //Hover border
+                        neutral30: "#82FFE7",
+                        //No options color
+                        neutral40: "#CAFFCA",
+                        //Select color
+                        neutral50: "#F4FFFD",
+                        //arrow icon when click select
+                        neutral60: "#fff",
+                        //Text color
+                        neutral80: "var(--text)",
+                      },
+                    })}
                   />
                 </div>
                 <div className="twobytwo1">
 
                 {modelData.map((item, index) => (
                     <div key={index} className="model-card">
-                      <div>
+                      <div className="model">
                         <h5>Model: {item.model_name}</h5>
                       </div>
                       <div id={`chart-${index}`} className="model-chart">

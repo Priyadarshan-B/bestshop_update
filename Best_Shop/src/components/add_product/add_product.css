@@ -626,3 +626,43 @@ img {
   border-radius: 10px;
   border: 2px solid var(--background-1);
 }
+
+.edit-delete{
+    display: none;
+    transition: all 1s ease-in;
+    /* display: flex;
+    flex-direction: column;
+    gap: 8px; */
+  }
+.c-cards:hover  .edit-delete{
+ display: block;
+ transition: all 1s ease-in;
+ 
+}
+.item-card:hover{
+  /* background-color: #3498db; */
+
+}
+.ed-icon{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+}
+
+.c-cards:hover{
+    /* opacity: 0.5; */
+}
+.c-cards{
+  display: flex;
+  gap: 10px;
+}
+.edit-delete-icon{
+  display: flex;
+    padding: 10px;
+  width: 25px;
+  border-radius: 100%;
+  background-color: var(--background);
+  justify-content: center;
+}
+
