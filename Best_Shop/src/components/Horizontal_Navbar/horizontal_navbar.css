@@ -148,9 +148,13 @@
   .nav-links.show {
     display: flex;
   }
-
+  
+  
 
 }
+
+
+
 
 .popup-button:hover {
   background-color: #c00e0e;
@@ -195,8 +199,3 @@
   background: transparent;
 }
 
-.profile-text{
-  color: var(--text);
-  margin-right: 20px;
-  letter-spacing: 1.5px;
-}

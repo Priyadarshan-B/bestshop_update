@@ -44,7 +44,7 @@ const Login = () => {
         Cookies.set("username",username);
         setError(null);
         notifySuccess("Login Successfull");
-        navigate("/dashboard");
+        navigate("/addStock");
       } else {
         setError("Incorrect Username or Password");
         notifyError("Login Failed");
@@ -89,6 +89,7 @@ const Login = () => {
                   <Passwordbox
                     type="password"
                     label="Password"
+                    size="small"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required

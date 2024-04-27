@@ -147,14 +147,11 @@ function Stocks() {
                                             <div className='product-identity'>
                                                 <p className='category-bold'>{subItem.category_name}</p>
                                                 <p className='item-bold'>{subItem.itemname_name}</p>
-                                                <div></div>
-                                                <div className='gents-bottom'>
-                                                    <p className='sub-cat-bold'>{subItem.subcategory_name}</p>
-                                                </div>
+                                                <p className='sub-cat-bold'>{subItem.subcategory_name}</p>
                                             </div>
                                         </div>
-                                        <h3 style={{letterSpacing: 1.5}}>Product Details:</h3>
-                                        <div className='product-details'>   
+                                        <h3 style={{ letterSpacing: 1.5 }}>Product Details:</h3>
+                                        <div className='product-details'>
                                             <div>
                                                 <p className='details-para'><span className='bold'>Brand:</span> {subItem.brand_name}</p>
                                                 <p className='details-para'><span className='bold'>Model:</span> {subItem.model_name}</p>
@@ -169,7 +166,7 @@ function Stocks() {
                                             </div>
 
                                         </div>
-                                       
+
                                     </div>
                                 ))}
                             </div>
@@ -182,16 +179,3 @@ function Stocks() {
 }
 
 export default Stocks;
-
-
-
-
-
-
-
-
-
-
-
-
-

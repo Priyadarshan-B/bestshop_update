@@ -33,7 +33,7 @@ exports.get_stocks = async (req, res) => {
     const stocks = await get_query_database(query, query_params);
     const formatted_stocks = stocks.map((stock) => ({
       ...stock,
-      user: stock.user.toUpperCase(), 
+      user: stock.user.toUpperCase(),
       date: format_date(new Date(stock.date)),
     }));
     res.json(formatted_stocks);
@@ -93,10 +93,12 @@ exports.post_stocks = async (req, res) => {
 
     for (let i = 0; i < size.length; i++) {
       const current_size = size[i];
-      const current_quantity = quantity[i];
+      let current_quantity = quantity[i];
       const total_price = current_quantity * selling_price;
 
       if (current_quantity > 0) {
+        current_quantity = current_quantity < 10 ? Number(`0${current_quantity}`) : Number(current_quantity);
+        
         value_sets.push([
           user,
           location,
@@ -165,6 +167,7 @@ exports.post_stocks = async (req, res) => {
   }
 };
 
+
 function year() {
   return new Date().getFullYear();
 }
@@ -183,7 +186,6 @@ function format_time(date) {
   return `${hours}:${minutes}:${seconds}`;
 }
 
-
 exports.update_stocks = async (req, res) => {
   const { id, quantity, selling_price, mrp } = req.body;
   if (!id || !quantity || !selling_price) {
@@ -193,7 +195,7 @@ exports.update_stocks = async (req, res) => {
   }
   try {
     const total_price = quantity * selling_price;
-    
+
     // Update stock table
     const query_stock = `UPDATE stock 
     SET quantity = ?, selling_price = ?, mrp = ?, total_price = ?

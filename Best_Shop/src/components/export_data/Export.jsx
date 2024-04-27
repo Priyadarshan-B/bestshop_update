@@ -10,11 +10,7 @@ import apiHost from "../../utils/api";
 import requestApi from "../../utils/axios";
 import Select from "react-select";
 import DownloadIcon from "@mui/icons-material/Download";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import InputBox from "../InputBox/inputbox";
 import CustomDatePicker from "../InputBox/datepicker";
 import ImportData from "../import_data/import";
@@ -133,12 +129,12 @@ const ExportData = () => {
           }}>
             <div style={{
               display: "flex",
-              flexDirection:"row",
+              flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
-              gap: "20px",
+              gap: "10px",
               flexWrap: "wrap",
-              width:"900px",
+              width: "900px",
             }}>
               <div className="import-container-card">
                 <ImportData />
@@ -224,7 +220,7 @@ const ExportData = () => {
                   Download As CSV
                 </button>
               </div>
-              
+
             </div>
           </div>
         </div>

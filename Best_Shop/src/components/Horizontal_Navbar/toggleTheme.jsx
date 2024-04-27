@@ -17,7 +17,8 @@ const lightModeProperties = {
     "--button": "#178a84",
     "--text": "#00000a",
     "--gray-text": "rgb(79, 79, 79)",
-    "--button-hover": "rgb(182, 224, 229)",
+    "--button-hover":"#178a84c2",
+    "--button-hover-1": "rgb(182, 224, 229)",
     "--card-hover": "#f3f9f9",
     "--light-hover": "#c8dddf",
     "--menu-hover":"#21bdb5",
@@ -38,7 +39,7 @@ const darkModeProperties = {
 };
 
 // Set custom properties based on theme mode
-export const setCustomProperties = (mode) => {
+const setCustomProperties = (mode) => {
     const root = document.documentElement;
     root.style.cssText = Object.entries(
         mode === "dark" ? darkModeProperties : lightModeProperties

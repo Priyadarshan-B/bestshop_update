@@ -205,8 +205,8 @@ const CategoryTable = () => {
                 </thead>
                 <tbody>
                   {stocklist.map((item, index) => (
-                    <tr key={item.id} >
-                      <td>{item.id}</td>
+                    <tr key={item.id}  >
+                      <td>{index+1}</td>
                       <td>{item.shop}</td>
                       <td>{item.user}</td>
                       <td>{item.date}</td>

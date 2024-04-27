@@ -52,7 +52,8 @@
   padding: 40px 20px;
   width: 40%;
 }
-.import-container-card{
+
+.import-container-card {
   display: flex;
   gap: 20px;
   background-color: var(--background-1);
@@ -113,6 +114,7 @@
 
   .export-container-card {
     width: 80%;
+    margin-bottom: 60px;
   }
 
 }

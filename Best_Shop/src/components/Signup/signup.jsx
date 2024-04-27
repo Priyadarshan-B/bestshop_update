@@ -67,7 +67,7 @@ const Signup = () => {
       });
 
       if (response.data) {
-        navigate("/dashboard", {
+        navigate("/home", {
           state: { successMessage: "Signup successfully" },
         });
       } else {
@@ -94,18 +94,16 @@ const Signup = () => {
               <div className="login-title">SIGNUP</div>
               <div className="user-pass">
                 <div className="username-container">
-                  <TextField
-                    fullWidth
-                    id="outlined-basic"
+                  <InputBox
+                    sx={{width: "100%"}}
                     label="Username"
-                    variant="outlined"
                     size="small"
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="username-container">
-                  <TextField
-                    fullWidth
+                  <InputBox
+                  sx={{width: "100%"}}
                     label="Enter Phone No."
                     type="text"
                     onChange={(e) => setNumber(e.target.value)}
@@ -116,6 +114,7 @@ const Signup = () => {
                   <Passwordbox
                     label="Password"
                     type="password"
+                    size="small"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
@@ -129,6 +128,7 @@ const Signup = () => {
                       setLocation(selectedOption.value)
                     } // Update the selected location
                     placeholder="Location"
+                    
                   />
                   <Select
                     className="select-input"
@@ -136,7 +136,7 @@ const Signup = () => {
                     onChange={(selectedOption) =>
                       setRole(selectedOption.value)
                     } // Update the selected role
-                    placeholder="Master Role"
+                    placeholder="Role"
                   />
                 </div>
               </div>

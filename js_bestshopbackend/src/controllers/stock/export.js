@@ -10,7 +10,7 @@ exports.get_csv = async (req, res) => {
   try {
     let query = `SELECT 
         it.name AS ItemName, 
-        s.quantity AS QTY, 
+        LPAD(s.quantity, 2, '0') AS QTY, 
         s.purchasing_price AS PurchasePrice, 
         s.selling_price AS SellingPrice, 
         s.mrp AS MRP, 

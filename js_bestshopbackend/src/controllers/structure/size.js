@@ -77,7 +77,7 @@ exports.update_size = async (req, res) => {
 };
 
 exports.delete_size = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
   if (!id) {
     return res.status(400).json({
       error: "ID is required",

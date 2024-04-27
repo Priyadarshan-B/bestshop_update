@@ -5,7 +5,7 @@
     width: 97%;
     height: 87%;
     border-radius: 5px;
-    min-height: 85vh;
+    min-height: 83vh;
 }
 
 .search-box {
@@ -16,13 +16,13 @@
 
 .sub-items-container {
     color: var(--text);
-    margin: 10px;
+    margin: 8px;
     background-color: var(--background-1);
     overflow: scroll;
-    width: 97%;
+    width: 95%;
     height: 87%;
     border-radius: 5px;
-    min-height: 87vh;
+    /* min-height: 87vh; */
     display: flex;
     flex-direction: column;
     overflow: scroll;
@@ -43,8 +43,8 @@
     cursor: pointer;
 }
 
-.each-item-card:hover{
-    background-color: var(--button-hover);
+.each-item-card:hover {
+    background-color: var(--button-hover-1);
     transform: scale(0.994);
 }
 
@@ -66,18 +66,21 @@
 }
 
 @media (max-width:999px) {
-    .twobytwo{
+    .twobytwo {
         grid-template-columns: repeat(1, 1fr);
     }
-    .item-id-div{
+
+    .item-id-div {
         width: 30px;
     }
-    .each-item-card{
+
+    .each-item-card {
         padding: 10px 5px 5px 5px;
 
     }
-    
+
 }
+
 .stockitem-name {
     color: var(--text);
     font-weight: 600;
@@ -95,7 +98,7 @@
 .sub-item-card {
     background-color: var(--background);
     height: fit-content;
-    padding: 10px;
+    padding: 8px;
     margin: 5px;
     display: flex;
     flex-direction: column;
@@ -105,8 +108,9 @@
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     cursor: pointer;
 }
-.sub-item-card:hover{
-    background-color: var(--button-hover);
+
+.sub-item-card:hover {
+    background-color: var(--button-hover-1);
     transform: scale(0.994);
 }
 
@@ -127,6 +131,12 @@
     background-color: var(--background-1);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+}
+
+@media (max-width:999px) {
+    .image-and-category-name {
+        min-width: 335px;
+    }
 }
 
 .category-bold {
@@ -161,8 +171,8 @@
     left: 30px;
 }
 
-.sub-item-card:hover .sub-cat-bold{
-    background-color: var(--button-hover);
+.sub-item-card:hover .sub-cat-bold {
+    background-color: var(--button-hover-1);
 }
 
 .separator {
@@ -193,3 +203,4 @@
     font-weight: 800;
     font-size: 18px;
 }
+

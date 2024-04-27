@@ -5,15 +5,14 @@ import requestApi from "../../utils/axios";
 
 export default function InventoryDashboard() {
   const [chartData, setChartData] = useState(null);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(1); // Default category ID
-  const [categoryOptions, setCategoryOptions] = useState([]); // Options for the dropdown
+  const [selectedCategoryId, setSelectedCategoryId] = useState(1); 
+  const [categoryOptions, setCategoryOptions] = useState([]); 
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await requestApi("GET", "/api/structure/category");
         if (response.success) {
-          // Map category data to options for the dropdown
           const options = response.data.map((category) => ({
             value: category.id,
             label: category.name,
@@ -106,6 +105,7 @@ export default function InventoryDashboard() {
       <ReactApexChart
         height={"90%"}
         width={"100%"}
+        
         options={{
           chart: {
             type: "bar",
@@ -128,7 +128,7 @@ export default function InventoryDashboard() {
             style: {
               fontSize: "10px",
               
-              colors: ["var(--button)"],
+              colors: ["var(--text)"],
             },
           },
           fill: {
@@ -165,9 +165,32 @@ export default function InventoryDashboard() {
             markers:{
               fillColors:["#4ECDC4", "#2B908F"]
             }
-          }
+
+            
+          },
+          responsive: [
+            {
+              breakpoint: 1000,
+              options: {
+                plotOptions: {
+                  bar: {
+                    horizontal: true
+                  }
+                },
+                legend: {
+                  position: "bottom"
+                },
+                dataLabels:{
+                  offsetX:0,
+            offsetY:0,
+                }
+              }
+            }
+          ]
+          
 
         }}
+        
         series={[
           { name: "Total Quantities", data: total_quantities },
           { name: "Available Quantity", data: available_quantity },

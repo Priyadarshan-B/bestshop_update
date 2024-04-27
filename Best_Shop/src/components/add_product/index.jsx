@@ -4,44 +4,63 @@ import Navbar from "../Horizontal_Navbar/horizontal_navbar";
 import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
 import requestApi from "../../utils/axios";
 import apiHost from "../../utils/api";
-import Select from "react-select";
 import "./add_product.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Cookies from "js-cookie";
 import InputBox from "../InputBox/inputbox";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
-// import { FileInput, Label } from "flowbite-react";
-import { Modal, TextField, Button } from "@mui/material";
+import { Modal } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-
 function AddStocks({ text }) {
-  const username = Cookies.get("username").toUpperCase();
 
   const [editedName, setEditedName] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectEditCategory, setSelectEditCategory] = useState(null);
-  const [selectedItemName, setSelectedItemName] = useState(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
-  const [selectedBrand, setSelectedBrand] = useState(null);
-  const [selectedModel, setSelectedModel] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
 
+  const [editedItemName, setEditedItemName] = useState("");
+  const [editModalItemOpen, setEditModalItemOpen] = useState(false);
   const [itemNames, setItemNames] = useState([]);
+  const [selectedItemName, setSelectedItemName] = useState(null);
+  const [selectedEditItem, setSelectedEditItem] = useState(null);
+
+  const [editSubName, setEditedSubName] = useState("");
+  const [editModalSubOpen, setEditModalSubOpen] = useState(false);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const [subCategories, setSubCategories] = useState([]);
+  const [selectedEditSub, setSelectedEditSub] = useState(null);
+
+  const [editBrandName, setEditedBrandName] = useState("");
+  const [editModalBrandOpen, setEditModalBrandOpen] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState(null);
   const [brands, setBrands] = useState([]);
+  const [selectedEditBrand, setSelectedEditBrand] = useState(null);
+
+  const [editModelName, setEditedModelName] = useState("");
+  const [editModalModelOpen, setEditModalModelOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(null);
   const [models, setModels] = useState([]);
+  const [selectedEditModel, setSelectedEditModel] = useState(null);
+
+  const [editColorName, setEditedColorName] = useState("");
+  const [editModalColorOpen, setEditModalColorOpen] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [colors, setColors] = useState([]);
+  const [selectedEditColor, setSelectedEditColor] = useState(null);
+
+  const [editSizeName, setEditedSizeName] = useState("");
   const [sizes, setSizes] = useState([]);
+  const [editModalSizeOpen, setEditModalSizeOpen] = useState(false);
+  const [selectedEditSize, setSelectedEditSize] = useState(null);
+
   const [sizeQuantities, setSizeQuantities] = useState({});
 
   const [showCategories, setShowCategories] = useState(true);
@@ -49,6 +68,7 @@ function AddStocks({ text }) {
   const [showSubCategories, setShowSubCategories] = useState(false);
   const [showBrands, setShowBrands] = useState(false);
   const [showModels, setShowModels] = useState(false);
+  const [showColors, setShowColors] = useState(false);
 
   const notifySuccess = (message) => {
     toast.success(message, { position: toast.POSITION.BOTTOM_LEFT });
@@ -63,7 +83,7 @@ function AddStocks({ text }) {
   const [sellingprice, setSellingPrice] = useState("");
   const [mrp, setMrp] = useState("");
   const [purchaseprice, setPurchasePrice] = useState(1);
-  const [errors, setErrors] = useState([]);
+  // const [errors, setErrors] = useState([]);
   const [bill, setBill] = useState("");
   const navigate = useNavigate();
   // value
@@ -113,12 +133,10 @@ function AddStocks({ text }) {
       });
 
       if (response.ok) {
-        const data = await response.json();
         notifySuccess("Category Added Successfull");
         fetchCategories();
         setCategoryOpen(false);
       } else {
-        // notifyError("Category Failed Added");
         setCategoryOpen(false);
       }
     } catch (error) {
@@ -152,7 +170,6 @@ function AddStocks({ text }) {
         body: formData,
       });
       if (response.ok) {
-        const data = await response.json();
         fetchItemNames(selectedCategory.id);
         notifySuccess("Item-Name Added Successfull");
         setItemOpen(false);
@@ -191,7 +208,6 @@ function AddStocks({ text }) {
       });
 
       if (response.ok) {
-        const data = await response.json();
         fetchSubCategories(selectedItemName.id);
         notifySuccess("Sub-Category Addded Successfull");
         setSubOpen(false);
@@ -225,7 +241,6 @@ function AddStocks({ text }) {
         body: formData,
       });
       if (response.ok) {
-        const data = await response.json();
         fetchBrands(selectedSubCategory.id);
         notifySuccess("Brand Added Successfull");
         setBrandOpen(false);
@@ -249,8 +264,7 @@ function AddStocks({ text }) {
       const formData = new FormData();
       formData.append("brand", selectedBrand.id);
       formData.append("name", modelvalue);
-      for (let [key, value] of formData.entries()) {
-      }
+    
 
       const response = await requestApi(
         "POST",
@@ -268,7 +282,6 @@ function AddStocks({ text }) {
         notifySuccess("Model Added Successfull");
       } else {
         setModelOpen(false);
-        // notifyError("Model Failed to Add");
       }
     } catch (error) {
       notifyError("Model Failed to Add");
@@ -287,10 +300,9 @@ function AddStocks({ text }) {
     event.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("model", selectedModel.value);
+      formData.append("model", selectedModel.id);
       formData.append("name", colorvalue);
-      for (let [key, value] of formData.entries()) {
-      }
+  
 
       const response = await requestApi(
         "POST",
@@ -304,16 +316,15 @@ function AddStocks({ text }) {
       );
 
       if (response.success) {
-        fetchColors(selectedModel.value);
+        fetchColors(selectedModel.id);
         notifySuccess("Color Added Successfull");
       } else {
-        // notifyError("Color Failed to Add");
         setColorOpen(false);
       }
     } catch (error) {
       notifyError("Color Failed to Add");
     }
-    setColorOpen(false); // Close the dialog after submission
+    setColorOpen(false); 
   };
 
   const handleSizeOpen = () => {
@@ -327,10 +338,9 @@ function AddStocks({ text }) {
     event.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("color", selectedColor.value);
+      formData.append("color", selectedColor.id);
       formData.append("name", sizevalue);
-      for (let [key, value] of formData.entries()) {
-      }
+    
 
       const response = await requestApi(
         "POST",
@@ -344,16 +354,15 @@ function AddStocks({ text }) {
       );
 
       if (response.success) {
-        fetchSizes(selectedColor.value);
+        fetchSizes(selectedColor.id);
         notifySuccess("Size Added Successfull");
         setSizeOpen(false);
       } else {
-        // notifyError("Size Failed to Add");
       }
     } catch (error) {
       notifyError("Size Failed to Add");
     }
-    setSizeOpen(false); // Close the dialog after submission
+    setSizeOpen(false); 
   };
   // navigate
   const handleNavigate = (path) => {
@@ -371,7 +380,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setCategories(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
     setIsLoading(false);
   };
 
@@ -410,27 +419,19 @@ function AddStocks({ text }) {
     setShowModels(true);
   };
 
-  const handleSelectedModel = (model) => {
+  const handleSelectModel = (model) => {
     setSelectedModel(model);
     setSelectedColor(null);
-    fetchColors(model.value);
+    fetchColors(model.id);
+    setShowModels(false);
+    setShowColors(true);
   };
 
-  const handleSelectedColor = (color) => {
+  const handleSelectColor = (color) => {
     setSelectedColor(color);
-    fetchSizes(color.value);
+    fetchSizes(color.id);
   };
-  // model data
-  const modelOptions = models.map((model) => ({
-    value: model.id,
-    label: model.name,
-  }));
 
-  // color data
-  const colorOptions = colors.map((color) => ({
-    value: color.id,
-    label: color.name,
-  }));
 
   // size and quantity
   const handleSizeQuantity = (sizeId, value) => {
@@ -457,7 +458,6 @@ function AddStocks({ text }) {
   const handleSellingPriceChange = (e) => {
     const value = e.target.value;
     setSellingPrice(value);
-    // Automatically update Purchasing Price based on Selling Price
     setMrp(value);
   };
 
@@ -479,8 +479,8 @@ function AddStocks({ text }) {
     setMrp("");
     setBill("");
     resetSizeQuantities();
-    setSelectedModel(null);
-    setSelectedColor(null);
+    // setSelectedModel(null);
+    // setSelectedColor(null);
   };
 
   const handleGenerate = async () => {
@@ -492,14 +492,13 @@ function AddStocks({ text }) {
     );
 
     const data = {
-      // user: username,
       bill_number: parseInt(bill),
       category: selectedCategory.id,
       item_name: selectedItemName.id,
       sub_category: selectedSubCategory.id,
       brand: selectedBrand.id,
-      model: selectedModel.value,
-      color: selectedColor.value,
+      model: selectedModel.id,
+      color: selectedColor.id,
       selling_price: parseInt(sellingprice),
       purchasing_price: parseInt(purchaseprice),
       mrp: parseInt(mrp),
@@ -513,11 +512,13 @@ function AddStocks({ text }) {
         selectedBrand.name,
       ].join("-"),
     };
+    console.log(data);
 
     try {
       const response = await requestApi("POST", "/api/stock/stock", data, {});
       if (response.success) {
         notifySuccess("Stock Added Successfull");
+        
       } else {
         notifyError("Stock Failed to Add");
       }
@@ -541,7 +542,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setItemNames(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchSubCategories = async (itemNameId) => {
@@ -554,7 +555,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setSubCategories(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchBrands = async (subCategoryId) => {
@@ -567,7 +568,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setBrands(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchModels = async (brandId) => {
@@ -580,7 +581,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setModels(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchColors = async (modelId) => {
@@ -593,7 +594,7 @@ function AddStocks({ text }) {
       if (response.success) {
         setColors(response.data);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const fetchSizes = async (colorId) => {
@@ -611,7 +612,7 @@ function AddStocks({ text }) {
         });
         setSizeQuantities(initialQuantity);
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const sizeInputs = () => {
@@ -623,24 +624,70 @@ function AddStocks({ text }) {
           type="number"
           value={sizeQuantities[size.id]}
           onChange={(e) => handleSizeQuantity(size.id, e.target.value)}
-          size="small"
+          // size="small"
         />
+        <div className="">
+          <EditIcon
+            style={{
+              color: "var(--button)",
+              cursor: "pointer",
+            }}
+            onClick={() => handleSizeEdit(size.id, size.name)}
+          />
+        </div>
+        <div className="">
+          <DeleteIcon
+            style={{
+              color: "var(--button)",
+              cursor: "pointer",
+            }}
+            onClick={() => handleSizeDelete(size.id, size.name)}
+          />
+        </div>
+        <Modal
+          open={editModalSizeOpen}
+          onClose={handleEditModalSizeClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <div
+            style={{
+              position: "absolute",
+              width: "60%",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "var(--background-1)",
+              boxShadow: 24,
+              padding: "30px 60px",
+              display: "flex",
+              flexDirection: "column",
+              color: "var(--text)",
+              gap: "10px",
+            }}
+          >
+            <h2>Edit Size</h2>
+            <InputBox
+              label="Category Name"
+              value={editSizeName}
+              size="small"
+              sx={{ width: "100%" }}
+              onChange={handleNameSizeChange}
+            />
+            <button
+              className="button-in-dialog"
+              variant="contained"
+              onClick={handleUpdateSizeCategory}
+            >
+              SUBMIT
+            </button>
+          </div>
+        </Modal>
       </div>
     ));
   };
 
-  const handleBack = () => {
-    if (showBrands) {
-      setShowBrands(false);
-      setShowSubCategories(true);
-    } else if (showSubCategories) {
-      setShowSubCategories(false);
-      setShowItemNames(true);
-    } else if (showItemNames) {
-      setShowItemNames(false);
-      setShowCategories(true);
-    }
-  };
+
   const handleEditModalClose = () => {
     setEditModalOpen(false);
     setSelectEditCategory(null);
@@ -651,7 +698,7 @@ function AddStocks({ text }) {
     setEditedName(event.target.value);
   };
 
-  // edit and delete
+  // edit and delete category
   const handleEdit = (id, name) => {
     setSelectEditCategory({ id, name });
     setEditedName(name);
@@ -665,7 +712,6 @@ function AddStocks({ text }) {
         name: editedName,
       });
       console.log(response.data.message);
-      // Update the UI to reflect the update
       const updatedCategory = { ...selectEditCategory, name: editedName };
       console.log(editedName);
       setCategories(
@@ -673,31 +719,381 @@ function AddStocks({ text }) {
           cat.id === selectEditCategory.id ? updatedCategory : cat
         )
       );
-      toast.success(`Category updated successfully`);
+      notifySuccess(`Category updated successfully`);
       handleEditModalClose();
     } catch (error) {
       console.error("Error updating category:", error);
-      toast.error("Error updating category");
+      notifyError("Error updating category");
     }
   };
   const handleDelete = async (id, name) => {
     try {
-      const response = await requestApi(
-        "DELETE",
-        `/api/structure/category?id=${id}`
+      const confirmDelete = window.confirm(
+        `Are you sure you want to delete category "${name}"?`
       );
-      console.log(response.data.message);
-      // Update the UI to reflect the deletion
-      setCategories(categories.filter((cat) => cat.id !== id));
-      console.log(id);
-      toast.success(`Category "${name}" deleted successfully`);
-    }
-    catch (error) {
+
+      if (confirmDelete) {
+        const response = await requestApi(
+          "DELETE",
+          `/api/structure/category?id=${id}`
+        );
+        console.log(response.data.message);
+        setCategories(categories.filter((cat) => cat.id !== id));
+
+        console.log(id);
+        notifySuccess(`Category "${name}" deleted successfully`);
+      }
+    } catch (error) {
       console.error("Error deleting category:", error);
-      toast.error("Error deleting category");
+      notifyError("Error deleting category");
     }
   };
 
+  // item edit and delete
+
+  const handleItemNameChange = (event) => {
+    setEditedItemName(event.target.value);
+  };
+  const handleItemEdit = (id, name) => {
+    setSelectedEditItem({ id, name });
+    setEditedItemName(name);
+    setEditModalItemOpen(true);
+  };
+
+  const handleEditItemModalClose = () => {
+    setEditModalItemOpen(false);
+    setSelectedEditItem(null);
+    setEditedItemName("");
+  };
+
+  const handleUpdateItem = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/item-name`, {
+        id: selectedEditItem.id,
+        name: editedItemName,
+      });
+      console.log(response.data.message);
+      const updatedItem = { ...selectedEditItem, name: editedItemName };
+      setItemNames(
+        itemNames.map((cat) =>
+          cat.id === selectedEditItem.id ? updatedItem : cat
+        )
+      );
+      notifySuccess(`Item updated successfully`);
+      handleEditItemModalClose();
+    } catch (error) {
+      console.error("Error updating Item:", error);
+      notifyError("Error updating Item");
+    }
+  };
+
+  const handleDeleteItem = async (id, name) => {
+    try {
+      const confrimdelete = window.confirm(
+        `Are you sure you want to delete ItemName "${name}"?`
+      );
+      if (confrimdelete) {
+        const response = await requestApi(
+          "DELETE",
+          `/api/structure/item-name?id=${id}`
+        );
+        console.log(response.data.message);
+        setItemNames(itemNames.filter((cat) => cat.id !== id));
+        notifySuccess(`Item "${name}" deleted successfully`);
+      }
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      notifyError("Error deleting category");
+    }
+  };
+
+  // edit and delete sub
+  const handleSubNameChange = (event) => {
+    setEditedSubName(event.target.value);
+  };
+
+  const handleSubEdit = (id, name) => {
+    setSelectedEditSub({ id, name });
+    setEditedSubName(name);
+    setEditModalSubOpen(true);
+  };
+
+  const handleEditModalSubClose = () => {
+    setEditModalSubOpen(false);
+    setSelectedEditSub(null);
+    setEditedSubName("");
+  };
+
+  const handleUpdateSubCategory = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/sub-category`, {
+        id: selectedEditSub.id,
+        name: editSubName,
+      });
+      console.log(response.data.message);
+      const updatedSub = { ...selectedEditSub, name: editSubName };
+      setSubCategories(
+        subCategories.map((cat) =>
+          cat.id === selectedEditSub.id ? updatedSub : cat
+        )
+      );
+      notifySuccess(`Sub Category updated successfully`);
+      handleEditModalSubClose();
+    } catch (error) {
+      console.error("Error updating Sub category:", error);
+      notifyError("Error updating Sub category");
+    }
+  };
+
+  const handleSubDelete = async (id, name) => {
+    try {
+      const confrimdelete = window.confirm(
+        `Are you sure you want to delete sub-category "${name}"?`
+      );
+      if (confrimdelete) {
+        const response = await requestApi(
+          "DELETE",
+          `/api/structure/sub-category?id=${id}`
+        );
+        console.log(response.data.message);
+        setSubCategories(subCategories.filter((cat) => cat.id !== id));
+        notifySuccess(`Sub Category "${name}" deleted successfully`);
+      }
+    } catch (error) {
+      console.error("Error deleting Subcategory:", error);
+      notifyError("Error deleting Sub category");
+    }
+  };
+
+  // edit and delete brand
+  const handleBrandEdit = (id, name) => {
+    setSelectedEditBrand({ id, name });
+    setEditedBrandName(name);
+    setEditModalBrandOpen(true);
+  };
+
+  const handleEditModalBrandClose = () => {
+    setEditModalBrandOpen(false);
+    setSelectedEditBrand(null);
+    setEditedBrandName("");
+  };
+
+  const handleBrandNameChange = (event) => {
+    setEditedBrandName(event.target.value);
+  };
+
+  const handleUpdateBrandCategory = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/brand`, {
+        id: selectedEditBrand.id,
+        name: editBrandName,
+      });
+      console.log(response.data.message);
+      const updateBrand = { ...selectedEditBrand, name: editBrandName };
+      setBrands(
+        brands.map((mod) =>
+          mod.id === selectedEditBrand.id ? updateBrand : mod
+        )
+      );
+      notifySuccess(`Brand updated successfully`);
+      handleEditModalBrandClose();
+    } catch (error) {
+      console.error("Error updating Brand:", error);
+      notifyError("Error updating Brand");
+    }
+  };
+
+  const handleBrandDelete = async (id, name) => {
+    try {
+      const confrimdelete = window.confirm(
+        `Are you sure you wnat to delete brand "${name}"?`
+      );
+      if (confrimdelete) {
+        const response = await requestApi(
+          "DELETE",
+          `/api/structure/brand?id=${id}`
+        );
+        console.log(response.data.message);
+        setBrands(brands.filter((mod) => mod.id !== id));
+        notifySuccess(`Brand "${name}" deleted successfully`);
+      }
+    } catch (error) {
+      console.error("Error deleting Brand:", error);
+      notifyError("Error deleting Brand");
+    }
+  };
+
+  // edit and delete model
+  const handleModelEdit = (id, name) => {
+    setSelectedEditModel({ id, name });
+    setEditedModelName(name);
+    setEditModalModelOpen(true);
+  };
+
+  const handleEditModalModelClose = () => {
+    setEditModalModelOpen(false);
+    setSelectedEditModel(null);
+    setEditedModelName("");
+  };
+
+  const handleNameModelChange = (event) => {
+    setEditedModelName(event.target.value);
+  };
+
+  const handleUpdateModelCategory = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/model`, {
+        id: selectedEditModel.id,
+        name: editModelName,
+      });
+      console.log(response.data.message);
+      const updatedModal = { ...selectedEditModel, name: editModelName };
+      setModels(
+        models.map((mod) =>
+          mod.id === selectedEditModel.id ? updatedModal : mod
+        )
+      );
+      notifySuccess(`Model updated successfully`);
+      handleEditModalModelClose();
+    } catch (error) {
+      console.error("Error updating Model:", error);
+      notifyError("Error updating Model");
+    }
+  };
+
+  const handleModelDelete = async (id, name) => {
+    try {
+      const confrimdelete = window.confirm(
+        `Are you sure you want to delete "${name}?"`
+      );
+      if (confrimdelete) {
+        const response = await requestApi(
+          "DELETE",
+          `/api/structure/model?id=${id}`
+        );
+        console.log(response.data.message);
+        setModels(models.filter((mod) => mod.id !== id));
+        notifySuccess(`Model "${name}" deleted successfully`);
+      }
+    } catch (error) {
+      console.error("Error deleting Model:", error);
+      notifyError("Error deleting Model");
+    }
+  };
+
+  // edit and delete color
+  const handleColorEdit = (id, name) => {
+    setSelectedEditColor({ id, name });
+    setEditedColorName(name);
+    setEditModalColorOpen(true);
+  };
+
+  const handleEditModalColorClose = () => {
+    setEditModalColorOpen(false);
+    setSelectedEditColor(null);
+    setEditedColorName("");
+  };
+
+  const handleNameColorChange = (event) => {
+    setEditedColorName(event.target.value);
+  };
+  const handleUpdateColorCategory = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/color`, {
+        id: selectedEditColor.id,
+        name: editColorName,
+      });
+      console.log(response.data.message);
+      const updatedColor = { ...selectedEditColor, name: editColorName };
+      setColors(
+        colors.map((col) =>
+          col.id === selectedEditColor.id ? updatedColor : col
+        )
+      );
+      notifySuccess(`Color updated successfully`);
+      handleEditModalColorClose();
+    } catch (error) {
+      console.error("Error updating Color:", error);
+      notifyError("Error updating Color");
+    }
+  };
+
+  const handleColorDelete = async (id, name) => {
+    try {
+      const confrimdelete = window.confirm(
+        `Are you sure you wnat to delete color "${name}"?`
+      );
+      if (confrimdelete) {
+        const response = await requestApi(
+          "DELETE",
+          `/api/structure/color?id=${id}`
+        );
+        console.log(response.data.message);
+        setColors(colors.filter((col) => col.id !== id));
+        notifySuccess(`Color "${name}" deleted successfully`);
+      }
+    } catch (error) {
+      console.error("Error deleting Color:", error);
+      notifyError(`Color "${name}" deleted failed`);
+    }
+  };
+
+  // edit and delete size
+  const handleSizeEdit = (id, name) => {
+    setSelectedEditSize({ id, name });
+    setEditedSizeName(name);
+    setEditModalSizeOpen(true);
+  };
+
+  const handleEditModalSizeClose = () => {
+    setEditModalSizeOpen(false);
+    setSelectedEditSize(null);
+    setEditedSizeName("");
+  };
+
+  const handleNameSizeChange = (event) => {
+    setEditedSizeName(event.target.value);
+  };
+  const handleUpdateSizeCategory = async () => {
+    try {
+      const response = await requestApi("PUT", `/api/structure/size`, {
+        id: selectedEditSize.id,
+        name: editSizeName,
+      });
+      console.log(response.data.message);
+      const updatedColor = { ...selectedEditSize, name: editSizeName };
+      setSizes(
+        sizes.map((col) =>
+          col.id === selectedEditSize.id ? updatedColor : col
+        )
+      );
+      notifySuccess(`Size updated successfully`);
+      handleEditModalSizeClose();
+    } catch (error) {
+      console.error("Error updating Size:", error);
+      notifyError("Error updating Size");
+    }
+  };
+
+  const handleSizeDelete = async (id, name) => {
+    try {
+      const confrimDelete = window.confirm(
+        `Are you sure you wnat to delete size "${name}"?`
+      );
+      if (confrimDelete) {
+        const response = await requestApi(
+          "DELETE",
+          `/api/structure/size?id=${id}`
+        );
+        console.log(response.data.message);
+        setSizes(sizes.filter((col) => col.id !== id));
+        notifySuccess(`Color "${name}" deleted successfully`);
+      }
+    } catch (error) {
+      console.error("Error deleting Size:", error);
+      notifyError(`Size "${name}" deleted failed`);
+    }
+  };
 
   return (
     <div className="dashboard-container">
@@ -708,12 +1104,13 @@ function AddStocks({ text }) {
         <div className="dashboard-body">
           <div className="category-page">
             <div className="select-category-card">
-              {selectedCategory ? null : <h2 className="item-list-head">No Items Selected</h2>}
+              {selectedCategory ? null : (
+                <h2 className="item-list-head">No Items Selected</h2>
+              )}
               <div className="selected-info">
                 {selectedCategory &&
                   (selectedCategory.image_path !== "" ? (
                     <img
-
                       src={`${apiHost}/` + selectedCategory.image_path}
                       alt={selectedCategory.name}
                     />
@@ -747,16 +1144,35 @@ function AddStocks({ text }) {
                   ) : (
                     <p className="image-alt-text">{selectedBrand.name}</p>
                   ))}
+                {selectedModel &&
+                  (selectedModel.image_path !== "" ? (
+                    <p className="image-alt-text">{selectedModel.name}</p>
+                  ) : (
+                    <p className="image-alt-text">{selectedModel.name}</p>
+                  ))}
+                {selectedColor &&
+                  (selectedColor.image_path !== "" ? (
+                    <p className="image-alt-text">{selectedColor.name}</p>
+                  ) : (
+                    <p className="image-alt-text">{selectedColor.name}</p>
+                  ))}
               </div>
             </div>
 
             <div className="search-and-product-type-grid">
               <div className="search-container">
                 <InputBox
-                  // className="input_box"
                   label={
-                    <div style={{ display: "flex", alignItems: "center", color: "var(--text)" }}>
-                      <SearchSharpIcon sx={{ marginRight: 1, color: "var(--text)" }} />
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "var(--text)",
+                      }}
+                    >
+                      <SearchSharpIcon
+                        sx={{ marginRight: 1, color: "var(--text)" }}
+                      />
                       Search
                     </div>
                   }
@@ -765,7 +1181,6 @@ function AddStocks({ text }) {
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                   sx={{ width: "100%" }}
-                // helperText="(Categories,Item name,Sub-Categories and Brand)"
                 />
               </div>
 
@@ -787,12 +1202,12 @@ function AddStocks({ text }) {
                         <div className="flex-container">
                           {filterData(categories).map((category) => (
                             <div key={category.id} className="c-cards">
-                              <div
-                                className="item-card"
-                                onClick={() => handleSelectCategory(category)}
-                              >
-                                <div className="category-info">
-                                  {category.name}
+                              <div className="item-card">
+                                <div
+                                  className="category-info"
+                                  onClick={() => handleSelectCategory(category)}
+                                >
+                                  <div className="names">{category.name}</div>
                                   {category.image_path && (
                                     <img
                                       src={`${apiHost}/` + category.image_path}
@@ -800,30 +1215,33 @@ function AddStocks({ text }) {
                                     />
                                   )}
                                 </div>
-                              </div>
-                              <div className="edit-delete">
-                                <div className="ed-icon">
-                                  <div className="edit-delete-icon">
-                                    <EditIcon
-                                      style={{
-                                        color: "#5676f5",
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() =>
-                                        handleEdit(category.id, category.name)
-                                      }
-                                    />
-                                  </div>
-                                  <div className="edit-delete-icon">
-                                    <DeleteIcon
-                                      style={{
-                                        color: "#ed4545",
-                                        cursor: "pointer",
-                                      }}
-                                      onClick={() =>
-                                        handleDelete(category.id, category.name)
-                                      }
-                                    />
+                                <div className="edit-delete">
+                                  <div className="ed-icon">
+                                    <div className="edit-delete-icon">
+                                      <EditIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleEdit(category.id, category.name)
+                                        }
+                                      />
+                                    </div>
+                                    <div className="edit-delete-icon">
+                                      <DeleteIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleDelete(
+                                            category.id,
+                                            category.name
+                                          )
+                                        }
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
@@ -839,40 +1257,48 @@ function AddStocks({ text }) {
                           <div
                             style={{
                               position: "absolute",
+                              width: "60%",
                               top: "50%",
                               left: "50%",
                               transform: "translate(-50%, -50%)",
-                              backgroundColor: "white",
+                              backgroundColor: "var(--background-1)",
                               boxShadow: 24,
-                              p: 4,
+                              padding: "30px 60px",
+                              display: "flex",
+                              flexDirection: "column",
+                              color: "var(--text)",
+                              gap: "10px",
                             }}
                           >
                             <h2>Edit Category</h2>
-                            <TextField
+                            <InputBox
                               label="Category Name"
-                              variant="outlined"
                               value={editedName}
+                              size="small"
+                              sx={{ width: "100%" }}
                               onChange={handleNameChange}
                             />
-                            <Button
+                            <button
+                              className="button-in-dialog"
                               variant="contained"
                               onClick={handleUpdateCategory}
                             >
-                              Submit
-                            </Button>
+                              SUBMIT
+                            </button>
                           </div>
                         </Modal>
                       </div>
                     </div>
-                  )}                  {/* Item Names */}
+                  )}
+                  {/* Item Names */}
                   {selectedCategory && selectedItemName === null && (
                     <div className="card1">
                       <div className="name-and-icon">
                         <ArrowBackIcon
                           sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
-                            setSelectedCategory(null); // Reset to categories
-                            setSelectedItemName(null); // Reset item name selection
+                            setSelectedCategory(null); 
+                            setSelectedItemName(null);
                           }}
                         />
                         <h2>
@@ -885,21 +1311,97 @@ function AddStocks({ text }) {
                         />
                       </div>
                       <div className="card">
-                        {filterData(itemNames).map((itemName) => (
+                        <div className="flex-container">
+                          {filterData(itemNames).map((itemName) => (
+                            <div className="c-cards">
+                              <div key={itemName.id} className="item-card">
+                                <div
+                                  className="category-info"
+                                  onClick={() => handleSelectItemName(itemName)}
+                                >
+                                  {itemName.name}
+                                  {itemName.image_path && (
+                                    <img
+                                      src={`${apiHost}/` + itemName.image_path}
+                                      alt={itemName.name}
+                                    />
+                                  )}
+                                </div>
+
+                                <div className="edit-delete">
+                                  <div className="ed-icon">
+                                    <div className="edit-delete-icon">
+                                      <EditIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleItemEdit(
+                                            itemName.id,
+                                            itemName.name
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                    <div className="edit-delete-icon">
+                                      <DeleteIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleDeleteItem(
+                                            itemName.id,
+                                            itemName.name
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <Modal
+                          open={editModalItemOpen}
+                          onClose={handleEditItemModalClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
                           <div
-                            key={itemName.id}
-                            onClick={() => handleSelectItemName(itemName)}
-                            className="item-card"
+                            style={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              backgroundColor: "var(--background-1)",
+                              boxShadow: 24,
+                              padding: "30px 60px",
+                              display: "flex",
+                              flexDirection: "column",
+                              color: "var(--text)",
+                              gap: "10px",
+                            }}
                           >
-                            {itemName.name}
-                            {itemName.image_path && (
-                              <img
-                                src={`${apiHost}/` + itemName.image_path}
-                                alt={itemName.name}
-                              />
-                            )}
+                            <h2>Edit Item Name</h2>
+                            <InputBox
+                              label="Category Name"
+                              value={editedItemName}
+                              size="small"
+                              sx={{ width: "100%" }}
+                              onChange={handleItemNameChange}
+                            />
+                            <button
+                              variant="contained"
+                              onClick={handleUpdateItem}
+                              className="button-in-dialog"
+                            >
+                              SUBMIT
+                            </button>
                           </div>
-                        ))}
+                        </Modal>
                       </div>
                     </div>
                   )}
@@ -911,8 +1413,8 @@ function AddStocks({ text }) {
                         <ArrowBackIcon
                           sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
-                            setSelectedItemName(null); // Reset to item names
-                            setSelectedSubCategory(null); // Reset sub-category selection
+                            setSelectedItemName(null);
+                            setSelectedSubCategory(null); 
                           }}
                         />
 
@@ -926,21 +1428,100 @@ function AddStocks({ text }) {
                         />
                       </div>
                       <div className="card">
-                        {filterData(subCategories).map((subCategory) => (
+                        <div className="flex-container">
+                          {filterData(subCategories).map((subCategory) => (
+                            <div key={subCategory.id} className="c-cards">
+                              <div key={subCategory.id} className="item-card">
+                                <div
+                                  className="category-info"
+                                  onClick={() =>
+                                    handleSelectSubCategory(subCategory)
+                                  }
+                                >
+                                  {subCategory.name}
+                                  {subCategory.image_path && (
+                                    <img
+                                      src={
+                                        `${apiHost}/` + subCategory.image_path
+                                      }
+                                      alt={subCategory.name}
+                                    />
+                                  )}
+                                </div>
+                                <div className="edit-delete">
+                                  <div className="ed-icon">
+                                    <div className="edit-delete-icon">
+                                      <EditIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleSubEdit(
+                                            subCategory.id,
+                                            subCategory.name
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                    <div className="edit-delete-icon">
+                                      <DeleteIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleSubDelete(
+                                            subCategory.id,
+                                            subCategory.name
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <Modal
+                          open={editModalSubOpen}
+                          onClose={handleEditModalClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
                           <div
-                            key={subCategory.id}
-                            onClick={() => handleSelectSubCategory(subCategory)}
-                            className="item-card"
+                            style={{
+                              position: "absolute",
+                              width: "60%",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              backgroundColor: "var(--background-1)",
+                              boxShadow: 24,
+                              padding: "30px 60px",
+                              display: "flex",
+                              flexDirection: "column",
+                              color: "var(--text)",
+                              gap: "10px",
+                            }}
                           >
-                            {subCategory.name}
-                            {subCategory.image_path && (
-                              <img
-                                src={`${apiHost}/` + subCategory.image_path}
-                                alt={subCategory.name}
-                              />
-                            )}
+                            <h2>Edit Sub Category</h2>
+                            <InputBox
+                              label="SubCategory"
+                              value={editSubName}
+                              size="small"
+                              sx={{ width: "100%" }}
+                              onChange={handleSubNameChange}
+                            />
+                            <button
+                              className="button-in-dialog"
+                              onClick={handleUpdateSubCategory}
+                            >
+                              SUBMIT
+                            </button>
                           </div>
-                        ))}
+                        </Modal>
                       </div>
                     </div>
                   )}
@@ -952,14 +1533,15 @@ function AddStocks({ text }) {
                         <ArrowBackIcon
                           sx={{ cursor: "pointer", color: "#178a84" }}
                           onClick={() => {
-                            setSelectedSubCategory(null); // Reset to sub-categories
-                            setSelectedBrand(null); // Reset brand selection
+                            setSelectedSubCategory(null);
+                            setSelectedBrand(null); 
                           }}
                         />
 
                         <h2>
                           <center>Select a Brand</center>
                         </h2>
+
                         <AddBoxRoundedIcon
                           sx={{ fontSize: 35, color: "var(--button)" }}
                           className="add-icon"
@@ -967,32 +1549,328 @@ function AddStocks({ text }) {
                         />
                       </div>
                       <div className="card">
-                        {filterData(brands).map((brand) => (
+                        <div className="flex-container">
+                          {filterData(brands).map((brand) => (
+                            <div key={brand.id} className="c-cards">
+                              <div className="item-card">
+                                <div
+                                  className="category-info"
+                                  onClick={() => handleSelectBrand(brand)}
+                                >
+                                  {brand.name}
+                                  {brand.image_path && (
+                                    <img
+                                      src={`${apiHost}/` + brand.image_path}
+                                      alt={brand.name}
+                                    />
+                                  )}
+                                </div>
+                                <div className="edit-delete">
+                                  <div className="ed-icon">
+                                    <div className="edit-delete-icon">
+                                      <EditIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleBrandEdit(brand.id, brand.name)
+                                        }
+                                      />
+                                    </div>
+                                    <div className="edit-delete-icon">
+                                      <DeleteIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleBrandDelete(
+                                            brand.id,
+                                            brand.name
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <Modal
+                          open={editModalBrandOpen}
+                          onClose={handleEditModalBrandClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
                           <div
-                            key={brand.id}
-                            onClick={() => handleSelectBrand(brand)}
-                            className="brand-card"
+                            style={{
+                              position: "absolute",
+                              width: "60%",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              backgroundColor: "var(--background-1)",
+                              boxShadow: 24,
+                              padding: "30px 60px",
+                              display: "flex",
+                              flexDirection: "column",
+                              color: "var(--text)",
+                              gap: "10px",
+                            }}
                           >
-                            {brand.name}
-                            {brand.image_path && (
-                              <img
-                                src={`${apiHost}/` + brand.image_path}
-                                alt={brand.name}
-                              />
-                            )}
+                            <h2>Edit Brand</h2>
+                            <InputBox
+                              label="Brand Name"
+                              value={editBrandName}
+                              size="small"
+                              sx={{ width: "100%" }}
+                              onChange={handleBrandNameChange}
+                            />
+                            <button
+                              className="button-in-dialog"
+                              onClick={handleUpdateBrandCategory}
+                            >
+                              SUBMIT
+                            </button>
                           </div>
-                        ))}
+                        </Modal>
                       </div>
                     </div>
                   )}
-                  {selectedBrand && (
+
+                  {selectedBrand && selectedModel === null && (
+                    <div className="card1">
+                      <div className="name-and-icon">
+                        <ArrowBackIcon
+                          sx={{ cursor: "pointer", color: "#178a84" }}
+                          onClick={() => {
+                            setSelectedModel(null); 
+                            setSelectedBrand(null); 
+                          }}
+                        />
+
+                        <h2>
+                          <center>Select a Model</center>
+                        </h2>
+
+                        <AddBoxRoundedIcon
+                          sx={{ fontSize: 35, color: "var(--button)" }}
+                          className="add-icon"
+                          onClick={handleModelOpen}
+                        />
+                      </div>
+                      <div className="card">
+                        <div className="flex-container">
+                          {filterData(models).map((model) => (
+                            <div key={model.id} className="c-cards">
+                              <div className="item-card">
+                                <div
+                                  className="category-info"
+                                  onClick={() => handleSelectModel(model)}
+                                >
+                                  {model.name}
+                                  {model.image_path && (
+                                    <img
+                                      src={`${apiHost}/` + model.image_path}
+                                      alt={model.name}
+                                    />
+                                  )}
+                                </div>
+                                <div className="edit-delete">
+                                  <div className="ed-icon">
+                                    <div className="edit-delete-icon">
+                                      <EditIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleModelEdit(model.id, model.name)
+                                        }
+                                      />
+                                    </div>
+                                    <div className="edit-delete-icon">
+                                      <DeleteIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleModelDelete(
+                                            model.id,
+                                            model.name
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <Modal
+                          open={editModalModelOpen}
+                          onClose={handleEditModalModelClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              width: "60%",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              backgroundColor: "var(--background-1)",
+                              boxShadow: 24,
+                              padding: "30px 60px",
+                              display: "flex",
+                              flexDirection: "column",
+                              color: "var(--text)",
+                              gap: "10px",
+                            }}
+                          >
+                            <h2>Edit Model</h2>
+                            <InputBox
+                              label="Brand Name"
+                              value={editModelName}
+                              size="small"
+                              sx={{ width: "100%" }}
+                              onChange={handleNameModelChange}
+                            />
+                            <button
+                              className="button-in-dialog"
+                              onClick={handleUpdateModelCategory}
+                            >
+                              SUBMIT
+                            </button>
+                          </div>
+                        </Modal>
+                      </div>
+                    </div>
+                  )}
+                  {selectedModel && selectedColor === null && (
+                    <div className="card1">
+                      <div className="name-and-icon">
+                        <ArrowBackIcon
+                          sx={{ cursor: "pointer", color: "#178a84" }}
+                          onClick={() => {
+                            setSelectedModel(null); 
+                            setSelectedColor(null);
+                          }}
+                        />
+
+                        <h2>
+                          <center>Select a Color</center>
+                        </h2>
+
+                        <AddBoxRoundedIcon
+                          sx={{ fontSize: 35, color: "var(--button)" }}
+                          className="add-icon"
+                          onClick={handleColorOpen}
+                        />
+                      </div>
+                      <div className="card">
+                        <div className="flex-container">
+                          {filterData(colors).map((color) => (
+                            <div key={color.id} className="c-cards">
+                              <div className="item-card">
+                                <div
+                                  className="category-info"
+                                  onClick={() => handleSelectColor(color)}
+                                >
+                                  {color.name}
+                                  {color.image_path && (
+                                    <img
+                                      src={`${apiHost}/` + color.image_path}
+                                      alt={color.name}
+                                    />
+                                  )}
+                                </div>
+                                <div className="edit-delete">
+                                  <div className="ed-icon">
+                                    <div className="edit-delete-icon">
+                                      <EditIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleColorEdit(color.id, color.name)
+                                        }
+                                      />
+                                    </div>
+                                    <div className="edit-delete-icon">
+                                      <DeleteIcon
+                                        style={{
+                                          color: "#ffff",
+                                          cursor: "pointer",
+                                        }}
+                                        onClick={() =>
+                                          handleColorDelete(
+                                            color.id,
+                                            color.name
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <Modal
+                          open={editModalColorOpen}
+                          onClose={handleEditModalColorClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
+                          <div
+                            style={{
+                              position: "absolute",
+                              width: "60%",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%)",
+                              backgroundColor: "var(--background-1)",
+                              boxShadow: 24,
+                              padding: "30px 60px",
+                              display: "flex",
+                              flexDirection: "column",
+                              color: "var(--text)",
+                              gap: "10px",
+                            }}
+                          >
+                            <h2>Edit Color</h2>
+                            <InputBox
+                              label="Brand Name"
+                              value={editColorName}
+                              size="small"
+                              sx={{ width: "100%" }}
+                              onChange={handleNameColorChange}
+                            />
+                            <button
+                              className="button-in-dialog"
+                              onClick={handleUpdateColorCategory}
+                            >
+                              SUBMIT
+                            </button>
+                          </div>
+                        </Modal>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedColor && (
                     // Last page for size and price
                     <div className="last">
                       <ArrowBackIcon
                         sx={{ cursor: "pointer", margin: 1, color: "#178a84" }}
                         onClick={() => {
-                          setSelectedBrand(null);
-                          setSelectedModel(null);
                           setSelectedColor(null);
                           setSellingPrice("");
                           setMrp("");
@@ -1002,128 +1880,15 @@ function AddStocks({ text }) {
                       />
                       <div className="part_for_size">
                         <div className="count-size-quantity-box">
-                          <div className="count-div">
-                            <div className="count_lable">
-                              <div className="name-and-icons">
-                                <b>Select a Model</b>
-                                <AddBoxRoundedIcon
-                                  sx={{ fontSize: 30, color: "var(--button)" }}
-                                  onClick={handleModelOpen}
-                                />
-                              </div>
-                              <Select
-                                options={modelOptions}
-                                onChange={(selectedOption) => {
-                                  setSelectedModel(selectedOption);
-                                  handleSelectedModel(selectedOption);
-                                }}
-                                value={selectedModel}
-                                placeholder="Select Model"
-                                theme={(theme) => ({
-                                  ...theme,
-                                  borderRadius: 2,
-                                  colors: {
-                                    ...theme.colors,
-                                    // after select dropdown option
-                                    primary50: "var(--text)",
-                                    // Border and Background dropdown color
-                                    primary: "var(--button)",
-                                    // Background hover dropdown color
-                                    primary25: "var(--button-hover)",
-                                    // Background color
-                                    neutral0: "var(--background)",
-                                    // Border before select
-                                    neutral20: "#178a84",
-                                    // Hover border
-                                    neutral30: "#82FFE7",
-                                    // No options color
-                                    neutral40: "#CAFFCA",
-                                    // Select color
-                                    neutral50: "#F4FFFD",
-                                    // Arrow icon when click select
-                                    neutral60: "#fff",
-                                    // Text color
-                                    neutral80: "var(--text)",
-                                  },
-                                })}
-                                styles={{
-                                  option: (provided, state) => ({
-                                    ...provided,
-                                    color: state.isFocused ? 'var(--text)' : 'var(--text)',
-                                    backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
-                                    '&:hover': {
-                                      backgroundColor: 'var(--button)',
-                                    },
-                                  }),
-                                }}
-                              />
-                            </div>
-
-                            <div className="count_lable">
-                              <div className="name-and-icons">
-                                <b>Select a Color</b>
-                                <AddBoxRoundedIcon
-                                  sx={{ fontSize: 30, color: "var(--button)" }}
-                                  onClick={handleColorOpen}
-                                />
-                              </div>
-                              <Select
-                                options={colorOptions}
-                                onChange={(selectedColorOp) => {
-                                  setSelectedColor(selectedColorOp);
-                                  handleSelectedColor(selectedColorOp);
-                                }}
-                                value={selectedColor}
-                                placeholder="Select Color"
-                                theme={(theme) => ({
-                                  ...theme,
-                                  borderRadius: 2,
-                                  colors: {
-                                    ...theme.colors,
-                                    // after select dropdown option
-                                    primary50: "var(--text)",
-                                    // Border and Background dropdown color
-                                    primary: "var(--button)",
-                                    // Background hover dropdown color
-                                    primary25: "var(--button-hover)",
-                                    // Background color
-                                    neutral0: "var(--background)",
-                                    // Border before select
-                                    neutral20: "#178a84",
-                                    // Hover border
-                                    neutral30: "#82FFE7",
-                                    // No options color
-                                    neutral40: "#CAFFCA",
-                                    // Select color
-                                    neutral50: "#F4FFFD",
-                                    // Arrow icon when click select
-                                    neutral60: "#fff",
-                                    // Text color
-                                    neutral80: "var(--text)",
-                                  },
-                                })}
-                                styles={{
-                                  option: (provided, state) => ({
-                                    ...provided,
-                                    color: state.isFocused ? 'var(--text)' : 'var(--text)',
-                                    backgroundColor: state.isFocused ? 'var(--background)' : 'var(--button-hover)',
-                                    '&:hover': {
-                                      backgroundColor: 'var(--button)',
-                                    },
-                                  }),
-                                }}
-                              />
-                            </div>
-                          </div>
-
-                          <div className="size-and-quantity">
-                            <div className="name-and-icons">
-                              <b>Size and Quantity</b>
+                        <div className="name-and-icons">
+                            <b>Size and Quantity</b>
                               <AddBoxRoundedIcon
                                 sx={{ fontSize: 30, color: "var(--button)" }}
                                 onClick={handleSizeOpen}
                               />{" "}
                             </div>
+                          <div className="size-and-quantity">
+                            
 
                             {sizeInputs()}
                           </div>
@@ -1134,7 +1899,6 @@ function AddStocks({ text }) {
                         <div className="price-boxes">
                           <div className="centering">
                             <div className="input-container">
-                              {/* <label htmlFor="selling_price">Bill:</label> */}
                               <InputBox
                                 label="S.No"
                                 className="input_box"
@@ -1144,6 +1908,7 @@ function AddStocks({ text }) {
                                 size="small"
                                 sx={{ width: "100%" }}
                                 onChange={(e) => setBill(e.target.value)}
+                                required
                               />
                             </div>
                             <div className="input-container">
@@ -1160,9 +1925,7 @@ function AddStocks({ text }) {
                               />
                             </div>
                             <div className="input-container">
-                              {/* <label htmlFor="mrp">MRP:</label> */}
                               <InputBox
-                                // placeholder="Enter MRP"
                                 label="MRP"
                                 className="input_box"
                                 type="number"
@@ -1172,12 +1935,11 @@ function AddStocks({ text }) {
                                 sx={{ width: "100%" }}
                                 onChange={handleMrpPriceChange}
                                 size="small"
+                                
                               />
                             </div>
                             <div className="input-container">
-                              {/* <label htmlFor="price">Purchasing Price:</label> */}
                               <InputBox
-                                // placeholder="Enter Purchasing Price"
                                 label="Purchase Price "
                                 className="input_box"
                                 type="number"
@@ -1222,7 +1984,7 @@ function AddStocks({ text }) {
         </div>
       </div>
       {/* category dialog */}
-      <div >
+      <div>
         <Dialog
           fullWidth
           open={categoryopen}
@@ -1230,7 +1992,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "20px",
-              backgroundColor: "var(--background-1)"
+              backgroundColor: "var(--background-1)",
             },
           }}
         >
@@ -1239,7 +2001,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
-                  color: "var(--text)"
+                  color: "var(--text)",
                 }}
               >
                 <h2>Add Category</h2>
@@ -1265,18 +2027,18 @@ function AddStocks({ text }) {
                 <label className="drop-container">
                   <span class="drop-title">Drop files here</span>
 
-                  <div style={{
-                    border: "1px solid var(--button)",
-                    borderRadius: "5px",
-
-                  }}>
+                  <div
+                    style={{
+                      border: "1px solid var(--button)",
+                      borderRadius: "5px",
+                    }}
+                  >
                     <input
                       type="file"
                       id="image"
                       name="image"
                       accept="image/*"
                       onChange={handleCategoryImage}
-
                     />
                   </div>
                 </label>
@@ -1284,13 +2046,16 @@ function AddStocks({ text }) {
                 <h1 className="or-color">(or)</h1>
                 <br />
 
-                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <label htmlFor="image" className="custom-file-upload">
+                  &nbsp;Take Picture:
+                </label>
                 <br />
-                <div style={{
-                  border: "1px solid var(--button)",
-                  borderRadius: "5px",
-
-                }}>
+                <div
+                  style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+                  }}
+                >
                   <input
                     type="file"
                     id="image"
@@ -1301,9 +2066,6 @@ function AddStocks({ text }) {
                   />
                   <br />
                 </div>
-
-
-
 
                 <div className="float-right">
                   <button
@@ -1330,7 +2092,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
-              backgroundColor: "var(--background-1)"
+              backgroundColor: "var(--background-1)",
             },
           }}
         >
@@ -1339,7 +2101,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
-                  color: "var(--text)"
+                  color: "var(--text)",
                 }}
               >
                 <h2>Add Item</h2>
@@ -1365,31 +2127,34 @@ function AddStocks({ text }) {
                 <label className="drop-container">
                   <span class="drop-title">Drop files here</span>
 
-                  <div style={{
-                    border: "1px solid var(--button)",
-                    borderRadius: "5px",
-
-                  }}>
+                  <div
+                    style={{
+                      border: "1px solid var(--button)",
+                      borderRadius: "5px",
+                    }}
+                  >
                     <input
                       type="file"
                       id="image"
                       name="image"
                       accept="image/*"
                       onChange={handleItemImage}
-
                     />
                   </div>
                 </label>
                 <br />
                 <h5 className="or-color">(or)</h5>
                 <br />
-                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <label htmlFor="image" className="custom-file-upload">
+                  &nbsp;Take Picture:
+                </label>
                 <br />
-                <div style={{
-                  border: "1px solid var(--button)",
-                  borderRadius: "5px",
-
-                }}>
+                <div
+                  style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+                  }}
+                >
                   <input
                     type="file"
                     id="image"
@@ -1426,7 +2191,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
-              backgroundColor: "var(--background-1)"
+              backgroundColor: "var(--background-1)",
             },
           }}
         >
@@ -1435,7 +2200,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
-                  color: "var(--text)"
+                  color: "var(--text)",
                 }}
               >
                 <h2>Add Sub-Category</h2>
@@ -1461,31 +2226,34 @@ function AddStocks({ text }) {
                 <label className="drop-container">
                   <span class="drop-title">Drop files here</span>
 
-                  <div style={{
-                    border: "1px solid var(--button)",
-                    borderRadius: "5px",
-
-                  }}>
+                  <div
+                    style={{
+                      border: "1px solid var(--button)",
+                      borderRadius: "5px",
+                    }}
+                  >
                     <input
                       type="file"
                       id="image"
                       name="image"
                       accept="image/*"
                       onChange={handleSubImage}
-
                     />
                   </div>
                 </label>
                 <br />
                 <h5 className="or-color">(or)</h5>
                 <br />
-                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <label htmlFor="image" className="custom-file-upload">
+                  &nbsp;Take Picture:
+                </label>
                 <br />
-                <div style={{
-                  border: "1px solid var(--button)",
-                  borderRadius: "5px",
-
-                }}>
+                <div
+                  style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+                  }}
+                >
                   <input
                     type="file"
                     id="image"
@@ -1522,7 +2290,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
-              backgroundColor: "var(--background-1)"
+              backgroundColor: "var(--background-1)",
             },
           }}
         >
@@ -1531,7 +2299,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
-                  color: "var(--text)"
+                  color: "var(--text)",
                 }}
               >
                 <h2>Add Brand</h2>
@@ -1557,31 +2325,34 @@ function AddStocks({ text }) {
                 <label className="drop-container">
                   <span class="drop-title">Drop files here</span>
 
-                  <div style={{
-                    border: "1px solid var(--button)",
-                    borderRadius: "5px",
-
-                  }}>
+                  <div
+                    style={{
+                      border: "1px solid var(--button)",
+                      borderRadius: "5px",
+                    }}
+                  >
                     <input
                       type="file"
                       id="image"
                       name="image"
                       accept="image/*"
                       onChange={handleBrandImage}
-
                     />
                   </div>
                 </label>
                 <br />
                 <h5 className="or-color">(or)</h5>
                 <br />
-                <label htmlFor="image" className="custom-file-upload" >&nbsp;Take Picture:</label>
+                <label htmlFor="image" className="custom-file-upload">
+                  &nbsp;Take Picture:
+                </label>
                 <br />
-                <div style={{
-                  border: "1px solid var(--button)",
-                  borderRadius: "5px",
-
-                }}>
+                <div
+                  style={{
+                    border: "1px solid var(--button)",
+                    borderRadius: "5px",
+                  }}
+                >
                   <input
                     type="file"
                     id="image"
@@ -1618,7 +2389,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
-              backgroundColor: "var(--background-1)"
+              backgroundColor: "var(--background-1)",
             },
           }}
         >
@@ -1627,7 +2398,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
-                  color: "var(--text)"
+                  color: "var(--text)",
                 }}
               >
                 <h2>Add Model</h2>
@@ -1674,7 +2445,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
-              backgroundColor: "var(--background-1)"
+              backgroundColor: "var(--background-1)",
             },
           }}
         >
@@ -1683,7 +2454,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
-                  color: "var(--text)"
+                  color: "var(--text)",
                 }}
               >
                 <h2>Add Color</h2>
@@ -1730,7 +2501,7 @@ function AddStocks({ text }) {
           PaperProps={{
             style: {
               padding: "10px",
-              backgroundColor: "var(--background-1)"
+              backgroundColor: "var(--background-1)",
             },
           }}
         >
@@ -1739,7 +2510,7 @@ function AddStocks({ text }) {
               <DialogTitle
                 style={{
                   textAlign: "center",
-                  color: "var(--text)"
+                  color: "var(--text)",
                 }}
               >
                 <h2>Add Size</h2>

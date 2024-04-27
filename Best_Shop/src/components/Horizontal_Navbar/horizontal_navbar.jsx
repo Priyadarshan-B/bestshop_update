@@ -1,19 +1,15 @@
 import React, { useState } from "react";
-import { FaBell, FaUser, FaEnvelope, FaBars } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import "./horizontal_navbar.css";
 import { useNavigate } from "react-router-dom";
-import apiHost from "../../utils/api";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 import Cookies from "js-cookie";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { FaUserCircle } from "react-icons/fa";
-
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CustomizedSwitches from "./toggleTheme";
 import { BiSolidShoppingBags } from "react-icons/bi";
@@ -165,11 +161,7 @@ const HorizontalNavbar = () => {
       </div>
 
       <div className="icons">
-        <FaUserCircle style={{
-          color: "#178a84",
-          fontSize: 35
-        }} />
-        <h3 className="profile-text">{Cookies.get("username").toUpperCase()}</h3>
+        
         <CustomizedSwitches />
         <Popup
           className="popup-container"

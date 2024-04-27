@@ -48,6 +48,6 @@ router.delete("/color", color.delete_color);
 router.get("/size", size.get_size);
 router.post("/size", size.post_size);
 router.put("/size", size.update_size);
-router.delete("size", size.delete_size);
+router.delete("/size", size.delete_size);
 
 module.exports = router;

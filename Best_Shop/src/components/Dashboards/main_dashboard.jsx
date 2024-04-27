@@ -16,19 +16,7 @@ const StockDashboard = () => {
       chart: {
         type: "bar",
         height: 350,
-        // background: 'var(--background)'
       },
-      // theme:{
-      //   mode:'light',
-      //   palette: 'palette1', 
-      //   color:'var(--background)',
-      //   monochrome: {
-      //     enabled: false,
-      //     color: 'var(--background)',
-      //     shadeTo: 'dark', // Change this if you want darker or lighter shade
-      //     shadeIntensity: 0.65
-      //   }
-      // },
       plotOptions: {
         bar: {
           horizontal: false,
@@ -52,14 +40,14 @@ const StockDashboard = () => {
         categories: ["Less Than 30 Days", "30 to 180 days", "180 to 365 days"],
 
         labels: {
-          style:{
+          style: {
             colors: 'var(--text)'
           },
           formatter: function (val) {
             return val;
           },
         },
-        style:{
+        style: {
           colors: 'var(--text)'
         },
 
@@ -67,7 +55,7 @@ const StockDashboard = () => {
       yaxis: [
         { show: false },
         { show: false },
-        { show: false },
+        { show: false, labels: { style: { color: "var(--text)" } } },
       ],
       fill: {
         opacity: 1,
@@ -85,9 +73,9 @@ const StockDashboard = () => {
           color: "var(--text)",
         },
       },
-      legend:{
-        labels:{
-          colors:'var(--text)'
+      legend: {
+        labels: {
+          colors: 'var(--text)'
         }
       }
     },
@@ -96,7 +84,7 @@ const StockDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await requestApi("GET", `/api/stock/dashboard-data`);
+        const response = await requestApi("GET", "/api/stock/dashboard-data");
 
         if (!response || !response.success) {
           throw new Error("Failed to fetch data");
@@ -131,7 +119,7 @@ const StockDashboard = () => {
           ...prevChartData,
           series: updatedSeries,
         }));
-      } catch (error) {}
+      } catch (error) { }
     };
 
     fetchData();
@@ -139,9 +127,9 @@ const StockDashboard = () => {
 
   return (
     <div style={{
-      height:"100%",
-        width: "95%",
-        padding: "10px"
+      height: "100%",
+      width: "95%",
+      padding: "10px"
 
     }}>
       <ReactApexChart

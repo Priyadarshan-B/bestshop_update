@@ -5,21 +5,21 @@ import TextField from "@mui/material/TextField";
 
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
-    color: "var(--button)",
+    color: "#178a84",
   },
   "& .MuiInput-underline:after": {
     borderBottomColor: "#B2BAC2",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "var(--button)",
-      border: "2px solid var(--button)",
+      borderColor: "#178a84",
+      border: "2px solid #178a84",
     },
     "&:hover fieldset": {
-      borderColor: "var(--button)",
+      borderColor: "#178a84",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "var(--button)",
+      borderColor: "#178a84",
     },
   },
   "& input": {

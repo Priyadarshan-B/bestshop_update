@@ -44,7 +44,7 @@ th {
   }
 
   .container-for-table {
-    height: 75%;
+    height: 73%;
 
   }
 
@@ -56,24 +56,25 @@ th {
 }
 
 td {
-  text-align: left;
+  text-align: center;
   padding: 20px 10px 20px 10px;
   /* background-color: var(--background-1); */
   color: var(--text);
   border-bottom: 1px solid var(--button);
+  white-space: nowrap;
 
 }
 
 td:nth-child(6),
 td:nth-child(1),
 th:nth-child(12) {
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
 
 }
-tr{
-  
-}
+
+tr {}
+
 tr:hover {
   cursor: pointer;
   background-color: var(--background);
@@ -98,6 +99,7 @@ tr:hover {
 @media (max-width: 900px) {
   .total-table-container {
     width: 90vw;
+    height: 87vh;
   }
 
   .container-for-table {
@@ -107,9 +109,9 @@ tr:hover {
 
 .container-for-table {
   overflow-x: scroll;
-  flex: 0.99;
+  flex: 0.91;
   width: 100%;
-  max-height: 78%;
+  height: 77%;
   background-color: var(--background-1);
   border-radius: 5px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

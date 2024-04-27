@@ -14,13 +14,7 @@ import ImportData from "./components/import_data/import";
 import Stocks from "./components/stocks/stocks";
 import ModelDashboard from "./components/Inventory/model_dashboard";
 import Home from "./components/Home/home";
-import CategoryTable from "./components/Edit_Delete_table/category_table";
-import ItemTable from "./components/Edit_Delete_table/item_table";
-import SubTable from "./components/Edit_Delete_table/sub_table";
-import ModalTable from "./components/Edit_Delete_table/modal_table";
-import BrandTable from "./components/Edit_Delete_table/brand_table";
-import ColorTable from "./components/Edit_Delete_table/color_table";
-import Table from "./components/Edit_Delete_table/table_content";
+
 
 function Protected({ children }) {
   const navigate = useNavigate();
@@ -121,63 +115,7 @@ const routes = () => (
           </Protected>
         }
       />
-      <Route
-        path="/categorytable"
-        element={
-          <Protected>
-            <CategoryTable />
-          </Protected>
-        }
-      />
-      <Route
-        path="/itemtable"
-        element={
-          <Protected>
-            <ItemTable />
-          </Protected>
-        }
-      />
-       <Route
-        path="/subtable"
-        element={
-          <Protected>
-            <SubTable />
-          </Protected>
-        }
-      />
-       <Route
-        path="/modeltable"
-        element={
-          <Protected>
-            <ModalTable />
-          </Protected>
-        }
-      />
-       <Route
-        path="/brand"
-        element={
-          <Protected>
-            <BrandTable />
-          </Protected>
-        }
-      />
-      <Route
-        path="/color"
-        element={
-          <Protected>
-            <ColorTable />
-          </Protected>
-        }
-      />
-      <Route
-        path="/table"
-        element={
-          <Protected>
-            <Table />
-          </Protected>
-        }
-      />
-
+      
       <Route path="*" element={<h1>404</h1>} />
     </Routes>
   </Router>

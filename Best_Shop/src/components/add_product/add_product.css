@@ -128,7 +128,7 @@ label {
 .count-size-quantity-box {
   width: 60%;
   height: 84%;
-  padding: 0px 20px 20px 20px;
+  padding: 10px;
   overflow-y: hidden;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   border-radius: 7px;
@@ -149,7 +149,7 @@ label {
 }
 
 .size-and-quantity {
-  height: 25vh;
+  height: 45vh;
   overflow-y: scroll;
 }
 
@@ -390,7 +390,7 @@ label {
   /* flex-wrap: wrap; */
   align-content: center;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .add-colour {
@@ -448,8 +448,10 @@ label {
 .item-card,
 .sub-category-card,
 .brand-card {
+  position: relative;
   margin: 10px 0;
   min-width: 250px;
+  max-width: 250px;
   min-height: 100px;
   padding: 10px;
   border-radius: 8px;
@@ -461,7 +463,11 @@ label {
   justify-content: space-around;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   align-items: center;
+  border: 1px solid var(--button);
+}
 
+.names {
+  text-wrap: wrap;
 }
 
 .selected-info {
@@ -491,6 +497,9 @@ label {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .selected-info {
@@ -567,7 +576,7 @@ label {
 }
 
 .add-button-dialog:hover {
-  background-color:var(--button-hover);
+  background-color: var(--button-hover);
 }
 
 .float-right {
@@ -578,6 +587,7 @@ label {
 input {
   margin: 5px;
 }
+
 .drop-container {
   position: relative;
   display: flex;
@@ -604,12 +614,13 @@ input {
 }
 
 .drop-title {
-  color:var(--text);
+  color: var(--text);
   font-size: 20px;
   font-weight: bold;
   text-align: center;
   transition: color .2s ease-in-out;
 }
+
 input[type=file]::file-selector-button {
   margin-right: 20px;
   border: none;
@@ -632,7 +643,7 @@ input[type=file]::file-selector-button:hover {
   color: var(--text);
 }
 
-.or-color{
+.or-color {
   color: var(--text);
 }
 
@@ -676,36 +687,67 @@ img {
   border: 2px solid var(--background-1);
 }
 
+/* 
+.item-card {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  background-color: #f0f0f0; 
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  overflow: hidden;
+} */
 
-.edit-delete{
-  display: none;
-  transition: all 1s ease-in;
-  /* display: flex;
-  flex-direction: column;
-  gap: 8px; */
-}
-.c-cards:hover  .edit-delete{
-display: block;
-transition: all 1s ease-in;
-
-}
-
-.ed-icon{
-display: flex;
-flex-direction: column;
-gap: 8px;
-
+.edit-delete {
+  position: absolute;
+  bottom: 100px;
+  right: -10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.c-cards{
-display: flex;
-gap: 10px;
+.item-card:hover .edit-delete {
+  opacity: 10;
 }
-.edit-delete-icon{
-display: flex;
-  padding: 10px;
-width: 25px;
-border-radius: 100%;
-background-color: var(--background);
-justify-content: center;
+
+.ed-icon {
+  display: flex;
+}
+
+.edit-delete-icon {
+  margin-right: 7px;
+}
+
+.ed-icon {
+  display: flex;
+  flex-direction: row;
+}
+
+.c-cards {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-delete-icon {
+  display: flex;
+  padding: 5px;
+  width: 25px;
+  border-radius: 10px;
+  background-color: var(--button);
+  justify-content: center;
+}
+
+.button-in-dialog {
+  background-color: var(--button);
+  border: none;
+  padding: 7px 20px;
+  border-radius: 5px;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.button-in-dialog:hover {
+  background-color: var(--button-hover);
+  color: var(--text);
 }
