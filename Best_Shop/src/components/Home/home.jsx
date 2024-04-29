@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import HorizontalNavbar from "../Horizontal_Navbar/horizontal_navbar";
 import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
 import StockDashboard from "../Dashboards/main_dashboard";
@@ -54,26 +54,38 @@ const Home = () => {
                 </div>
                 <div className="shop-info">
                   <div className="content">
-                    <h3>
-                      Shops:
-                      <CountUp duration={1} end={shopCount} />
-                    </h3>
+                    <h3 className="dashb-card-heading">
+                      SHOPS</h3>
+                      
+                        <div className="count-dashb">
+                          <CountUp duration={1} end={shopCount} />
+                        </div>
+                      
+                    
                   </div>
                   <div className="content">
-                    <h4>
-                      Total Price:
-                      <CountUp duration={2} end={totalPrice} />{" "}
-                    </h4>
-                    <p>(Upto 30 Days)</p>
+                    <h3 className="dashb-card-heading">
+                      TOTAL PRICE</h3>
+                      <div className="count-dashb1">
+                        <CountUp duration={2} end={totalPrice} />{" "}
+                        <p className="label-dashb">(Last 30 Days)</p>
+                      </div>
+                    
+                    
                   </div>
                   <div className="content con1">
-                    <h3>
-                      Users:
-                      <CountUp duration={1} end={userData} />
-                    </h3>
+                    <h3 className="dashb-card-heading">
+                      USERS</h3>
+                      <div className="count-dashb">
+                        <CountUp duration={1} end={userData} />
+                      </div>
+                    
                   </div>
                   <div className="content con1">
-                    <h3>BestShop Website</h3>
+                    <h3 className="dashb-card-heading">BESTSHOP WEBSITE</h3>
+                    <div className="web-link">
+                      UNDER DEVELOPMENT
+                    </div>
                   </div>
                   <div className="view-more-button-div">
                     <button
@@ -81,7 +93,7 @@ const Home = () => {
                       onClick={() => handleNaviagte("/model")}
                     >
                       {" "}
-                      View More
+                      VIEW MORE
                     </button>
                   </div>
                 </div>

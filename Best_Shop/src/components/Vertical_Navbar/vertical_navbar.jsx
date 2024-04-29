@@ -60,7 +60,7 @@ const VerticalNavbar = () => {
             }}
             
             />
-           {username && username.length > 10 ? (
+           {username && username.length > 15 ? (
           <marquee className="profile-text">{username.toUpperCase()}</marquee>
         ) : (
           <div className="profile-text">{username.toUpperCase()}</div>

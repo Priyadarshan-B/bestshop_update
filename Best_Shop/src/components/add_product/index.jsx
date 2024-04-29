@@ -1316,7 +1316,7 @@ function AddStocks({ text }) {
                             <div className="c-cards">
                               <div key={itemName.id} className="item-card">
                                 <div
-                                  className="category-info"
+                                  className="category-info names"
                                   onClick={() => handleSelectItemName(itemName)}
                                 >
                                   {itemName.name}
@@ -1433,7 +1433,7 @@ function AddStocks({ text }) {
                             <div key={subCategory.id} className="c-cards">
                               <div key={subCategory.id} className="item-card">
                                 <div
-                                  className="category-info"
+                                  className="category-info names"
                                   onClick={() =>
                                     handleSelectSubCategory(subCategory)
                                   }
@@ -1554,7 +1554,7 @@ function AddStocks({ text }) {
                             <div key={brand.id} className="c-cards">
                               <div className="item-card">
                                 <div
-                                  className="category-info"
+                                  className="category-info names"
                                   onClick={() => handleSelectBrand(brand)}
                                 >
                                   {brand.name}
@@ -1667,7 +1667,7 @@ function AddStocks({ text }) {
                             <div key={model.id} className="c-cards">
                               <div className="item-card">
                                 <div
-                                  className="category-info"
+                                  className="category-info names"
                                   onClick={() => handleSelectModel(model)}
                                 >
                                   {model.name}
@@ -1779,7 +1779,7 @@ function AddStocks({ text }) {
                             <div key={color.id} className="c-cards">
                               <div className="item-card">
                                 <div
-                                  className="category-info"
+                                  className="category-info names"
                                   onClick={() => handleSelectColor(color)}
                                 >
                                   {color.name}

@@ -32,7 +32,7 @@ const CategoryTable = () => {
   const handleEditOpen = () => {
     setEditOpen(true);
   };
-  const handleEditClose = () => { };
+  const handleEditClose = () => {};
   const handleDateChange = async (newValue) => {
     setSelectedDate(newValue);
   };
@@ -59,8 +59,7 @@ const CategoryTable = () => {
         `/api/stock/stock?${queryParams}`
       );
       setData(response.data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleEdit = (item) => {
@@ -205,8 +204,8 @@ const CategoryTable = () => {
                 </thead>
                 <tbody>
                   {stocklist.map((item, index) => (
-                    <tr key={item.id}  >
-                      <td>{index+1}</td>
+                    <tr key={item.id}>
+                      <td>{index + 1}</td>
                       <td>{item.shop}</td>
                       <td>{item.user}</td>
                       <td>{item.date}</td>
@@ -224,13 +223,13 @@ const CategoryTable = () => {
                           onClick={() => handleEdit(item)}
                           sx={{
                             marginRight: 2,
-                            color: "green",
+                            color: "var(--button)",
                             cursor: "pointer",
                           }}
                         />
                         <DeleteIcon
                           onClick={() => handleDelete(item.id)}
-                          sx={{ color: "red", cursor: "pointer" }}
+                          sx={{ color: "var(--button)", cursor: "pointer" }}
                         />
                       </td>
                     </tr>
@@ -246,7 +245,7 @@ const CategoryTable = () => {
                 PaperProps={{
                   style: {
                     padding: "20px",
-                    backgroundColor: "var(--background-1)"
+                    backgroundColor: "var(--background-1)",
                   },
                 }}
               >
@@ -261,7 +260,7 @@ const CategoryTable = () => {
                     <DialogTitle
                       style={{
                         textAlign: "center",
-                        color: "var(--text)"
+                        color: "var(--text)",
                       }}
                     >
                       <h2>Edit</h2>

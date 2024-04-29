@@ -468,6 +468,7 @@ label {
 
 .names {
   text-wrap: wrap;
+  font-weight: 700;
 }
 
 .selected-info {
@@ -567,7 +568,7 @@ label {
   border: none;
   padding: 3px 10px;
   background-color: var(--button);
-  color: var(--text);
+  color: var(--white);
   font-weight: 500;
   border-radius: 3px;
   font-size: 18px;
@@ -742,7 +743,7 @@ img {
   border: none;
   padding: 7px 20px;
   border-radius: 5px;
-  color: var(--text);
+  color: var(--white);
   font-size: 16px;
   font-weight: 600;
 }

@@ -97,10 +97,10 @@ function Stocks() {
                             </div>
                             <div className='twobytwo'>
                                 {
-                                    filterData(items).map((item) => (
+                                    filterData(items).map((item, index) => (
                                         <div className='each-item-card' key={item.id} onClick={() => handleItemClick(item.id)}>
                                             <div className='id-with-image'>
-                                                <div className='item-id-div'>{item.id}</div>
+                                                <div className='item-id-div'>{index+1}</div>
                                                 <div className='images-in-stocks'>
                                                     <img className='image-in-stocks' src={`${apiHost}/` + item.category_image} alt={item.item_name} />
                                                 </div>
@@ -120,7 +120,7 @@ function Stocks() {
                     )}
                     {selectedItem && (
                         <div className='sub-items-container'>
-                            <ArrowBackIcon onClick={() => setSelectedItem(null)} style={{ margin: 10, marginBottom: 0, color: "#178a84" }} />
+                            <ArrowBackIcon onClick={() => setSelectedItem(null)} style={{ margin: 10, marginBottom: 0, color: "#178a84", cursor:"pointer" }} />
                             <div className="search-box">
                                 <InputBox
                                     label={
