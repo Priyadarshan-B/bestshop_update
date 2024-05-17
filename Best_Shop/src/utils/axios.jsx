@@ -18,12 +18,10 @@ const requestApi = async (method, url, data) => {
       response = await axios.post(apiHost + url, data, { headers });
     } else if (method === "GET") {
       response = await axios.get(apiHost + url, { headers });
-    }
-    else if (method === "DELETE") {
+    } else if (method === "DELETE") {
       // const queryParams = new URLSearchParams({ id: data.id });
-      response = await axios.delete(apiHost + url , data, { headers });
-    }
-    else if (method === "PUT"){
+      response = await axios.delete(apiHost + url, data, { headers });
+    } else if (method === "PUT") {
       response = await axios.put(apiHost + url, data, { headers });
     }
 

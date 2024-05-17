@@ -11,10 +11,11 @@ exports.get_size = async (req, res) => {
 
   try {
     const query = `
-      SELECT id, name
-      FROM size 
-      WHERE color = ?
-      AND status = '1'`;
+    SELECT id, name
+    FROM size
+    WHERE color = ?
+      AND status = '1'
+    `;
 
     const sizes = await get_query_database(query, [color]);
     res.json(sizes);
