@@ -1,2 +1,2 @@
-const apiHost = "http://localhost:5000";
+const apiHost = "https://app.bestshopsathy.in";
 export default apiHost;
