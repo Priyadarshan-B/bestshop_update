@@ -1,4 +1,7 @@
-const { get_query_database, post_query_database } = require("../../config/database_utlis");
+const {
+  get_query_database,
+  post_query_database,
+} = require("../../config/database_utlis");
 
 exports.get_brand = async (req, res) => {
   const sub_category = req.query.sub_category;
