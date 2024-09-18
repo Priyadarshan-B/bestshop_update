@@ -152,10 +152,9 @@ exports.post_stocks = async (req, res) => {
         "INSERT INTO stock (user, shop_location, bill_number, date, time, year, category, item_name, sub_category, brand, model, color, size, quantity, name, purchasing_price, selling_price, mrp, total_price) VALUES ?";
       await post_query_database(query, [value_sets]);
 
-      // Correctly execute the second insert operation
-      const test_query =
-        "INSERT INTO test_stock (user, shop_location, bill_number, date, time, year, category, item_name, sub_category, brand, model, color, size, quantity,sell_quantity, name, purchasing_price, selling_price, mrp, total_price) VALUES ?";
-      await post_query_database(test_query, [value_sell_sets]);
+      // const test_query =
+      //   "INSERT INTO test_stock (user, shop_location, bill_number, date, time, year, category, item_name, sub_category, brand, model, color, size, quantity,sell_quantity, name, purchasing_price, selling_price, mrp, total_price) VALUES ?";
+      // await post_query_database(test_query, [value_sell_sets]);
 
       res.status(200).json("Stock added successfully");
     } else {
@@ -207,18 +206,18 @@ exports.update_stocks = async (req, res) => {
     );
 
     // Update test_stock table
-    const query_test_stock = `UPDATE test_stock 
-    SET quantity = ?, selling_price = ?, mrp = ?, total_price = ?, sell_quantity = ?
-    WHERE id = ?`;
-    const success_message_test_stock = await post_query_database(
-      query_test_stock,
-      [quantity, selling_price, mrp, total_price, quantity, id],
-      "Test Stock updated successfully"
-    );
+    // const query_test_stock = `UPDATE test_stock 
+    // SET quantity = ?, selling_price = ?, mrp = ?, total_price = ?, sell_quantity = ?
+    // WHERE id = ?`;
+    // const success_message_test_stock = await post_query_database(
+    //   query_test_stock,
+    //   [quantity, selling_price, mrp, total_price, quantity, id],
+    //   "Test Stock updated successfully"
+    // );
 
     res.status(200).json({
       success_message_stock,
-      success_message_test_stock,
+      // success_message_test_stock,
     });
   } catch (err) {
     console.error("Error updating stocks", err);
@@ -245,17 +244,17 @@ exports.delete_stocks = async (req, res) => {
     );
 
     // Delete from test_stock table
-    const query_test_stock = `DELETE FROM test_stock 
-    WHERE id = ?`;
-    const success_message_test_stock = await post_query_database(
-      query_test_stock,
-      [id],
-      "Test Stock deleted successfully"
-    );
+    // const query_test_stock = `DELETE FROM test_stock 
+    // WHERE id = ?`;
+    // const success_message_test_stock = await post_query_database(
+    //   query_test_stock,
+    //   [id],
+    //   "Test Stock deleted successfully"
+    // );
 
     res.status(200).json({
       success_message_stock,
-      success_message_test_stock,
+      // success_message_test_stock,
     });
   } catch (err) {
     console.error("Error deleting stocks", err);
