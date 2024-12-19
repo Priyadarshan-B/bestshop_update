@@ -1,0 +1,92 @@
+.request_page {
+    height: 70vh;
+    width: 85vw;
+    overflow: scroll;
+    max-width: 850px;
+    margin: auto;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.request-form .form-group {
+    margin-bottom: 15px;
+}
+
+.request-form .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.request-form .form-group input,
+.request-form .form-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background: #0056b3;
+}
+
+
+/* 
+@media (max-width: 900px) {
+    .request_page {
+        width: 90vw;
+        height: 87vh;
+    }
+} */
+
+
+
+.dialogContent {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dialogItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dialogLabel {
+    font-weight: bold;
+    margin-right: 10px;
+    min-width: 120px; /* Ensure that labels have enough space */
+}
+
+.dialogValue {
+    text-align: right; /* Align values to the right */
+    flex-grow: 1; /* Allow values to take up remaining space */
+}
+
+.dialogImage {
+    width: 100%;
+    margin-top: 10px;
+    max-width: 500px; /* You can adjust the image size */
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -9,6 +9,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+import LowPriorityIcon from '@mui/icons-material/LowPriority';
 
 const VerticalNavbar = () => {
   const username = Cookies.get("username");
@@ -41,7 +42,7 @@ const VerticalNavbar = () => {
     setSelectedField(currentPath || "dashboard");
   }, [location.pathname]);
 
-  
+
 
   return (
     <div className="vertical-navbar">
@@ -50,7 +51,7 @@ const VerticalNavbar = () => {
       </div>
 
       <ul className={showMenu ? "nav-links show" : "nav-links"}>
-        
+
         <div className="user">
           <div className="to-hide-user">
             <FaUserCircle style={{
@@ -58,17 +59,17 @@ const VerticalNavbar = () => {
               fontSize: 25
 
             }}
-            
+
             />
-           {username && username.length > 15 ? (
-          <marquee className="profile-text">{username.toUpperCase()}</marquee>
-        ) : (
-          <div className="profile-text">{username.toUpperCase()}</div>
-        )}
-            
+            {username && username.length > 15 ? (
+              <marquee className="profile-text">{username.toUpperCase()}</marquee>
+            ) : (
+              <div className="profile-text">{username.toUpperCase()}</div>
+            )}
+
           </div>
         </div>
-        
+
         {/* dashboard_nav */}
 
         <li
@@ -143,11 +144,18 @@ const VerticalNavbar = () => {
           className={selectedField === "stocks" ? "selected" : ""}
           onClick={() => handleNavigate("/stocks")}
         >
-          <EqualizerIcon className="navbar-icon" style={{ marginRight: "10px" }}/>
+          <EqualizerIcon className="navbar-icon" style={{ marginRight: "10px" }} />
           <b>Stocks</b>
         </li>
+        <li
+          className={selectedField === "requests" ? "selected" : ""}
+          onClick={() => handleNavigate("/requests")}
+        >
+          <LowPriorityIcon className="navbar-icon" style={{ marginRight: "10px" }} />
+          <b>Requests</b>
+        </li>
 
-        
+
       </ul>
     </div>
   );

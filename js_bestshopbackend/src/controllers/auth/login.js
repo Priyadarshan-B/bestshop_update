@@ -38,9 +38,34 @@ exports.post_login = async (req, res) => {
         delete user_detail.password;
         return res
             .status(200)
-            .json({ message: "Login successful", token: token, username: user_detail.name});
+            .json({ message: "Login successful", token: token, username: user_detail.name });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ err: "Internal server error" });
     }
 };
+exports.get_users = async (req, res) => {
+    try {
+        // SQL query to fetch active users
+        const query = `
+            SELECT id, name
+            FROM master_user
+            WHERE status = '1'
+        `;
+
+        // Execute the query
+        const result = await get_query_database(query);
+
+        // Send the response with fetched data
+        res.status(200).json({
+            users: result,
+        });
+    } catch (err) {
+        // Log the error for debugging
+        console.error("Error fetching users:", err);
+
+        // Send a 500 Internal Server Error response
+        return res.status(500).json({ err: "Internal server error" });
+    }
+};
+
