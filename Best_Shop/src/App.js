@@ -15,7 +15,7 @@ import Stocks from "./components/stocks/stocks";
 import ModelDashboard from "./components/Inventory/model_dashboard";
 import Home from "./components/Home/home";
 import Requests from "./components/PurchaseRequests/Purchase_req";
-import RequestTable from "./components/PurchaseRequests/RequestTable";
+import AllTables from "./components/PurchaseRequests/AllTables";
 
 
 function Protected({ children }) {
@@ -113,7 +113,7 @@ const routes = () => (
         path="/requests/all"
         element={
           <Protected>
-            <RequestTable />
+            <AllTables />
           </Protected>
         }
       />

@@ -208,3 +208,25 @@ h2 {
     display: none;
     /* For Chrome, Safari, and Opera */
 }
+
+
+.btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: medium;
+    flex: 1;
+}
+
+.btn.active {
+    background-color: var(--button);
+    color: white;
+}
+
+.btn:hover {
+    background-color: var(--button);
+    color: white;
+}

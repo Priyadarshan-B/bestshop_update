@@ -30,11 +30,9 @@ import InputBox from '../InputBox/inputbox';
 import SearchSharpIcon from '@mui/icons-material/SearchSharp';
 import ViewModuleIcon from '@mui/icons-material/ViewModule'; // Import the grid view icon
 import DeleteForeverSharpIcon from '@mui/icons-material/DeleteForeverSharp';
-import PendingTable from './PendingTable';
-import ReceivedTable from './ReceivedTable';
 
 
-function RequestTable() {
+function ReceivedTable() {
     const [requests, setRequests] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -49,7 +47,7 @@ function RequestTable() {
 
     const fetchRequests = async () => {
         try {
-            const response = await requestApi("GET", "/api/requests/requests", {});
+            const response = await requestApi("GET", "/api/requests/received", {});
             if (response.success) {
                 const formattedData = response.data.map(request => ({
                     ...request,
@@ -92,23 +90,23 @@ function RequestTable() {
         setPage(0);
     };
 
-    const handleOrderPlaced = async (id) => {
-        console.log(id);
-        try {
-            const response = await requestApi("PUT", `/api/requests/requests`, { id });
-            if (response.success) {
-                toast.success("Order placed successfully!");
-                fetchRequests()
-            } else {
-                toast.error("Failed to place the order.");
-            }
-        } catch (error) {
-            console.error("Error placing order:", error);
-            toast.error("An error occurred while placing the order.");
-        } finally {
-            setOpenConfirmDialog(false); // Close the dialog after the operation
-        }
-    };
+    // const handleOrderReceived = async (id) => {
+    //     console.log(id);
+    //     try {
+    //         const response = await requestApi("PUT", `/api/requests/orders`, { id });
+    //         if (response.success) {
+    //             toast.success("Order received successfully!");
+    //             fetchRequests()
+    //         } else {
+    //             toast.error("Failed to place the order.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error receiving order:", error);
+    //         toast.error("An error occurred while receiving the order.");
+    //     } finally {
+    //         setOpenConfirmDialog(false); // Close the dialog after the operation
+    //     }
+    // };
 
     const handleOpenConfirmDialog = (id) => {
         setSelectedId(id);
@@ -129,9 +127,10 @@ function RequestTable() {
         setViewMode((prevMode) => (prevMode === 'table' ? 'card' : 'table'));
     };
     return (
+
         <div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "20px", color: "var(--text)" }}>
-                <h2>Purchase Requests</h2>
+                <h2>Products Received</h2>
                 <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: "flex" }}>
                         <InputBox
@@ -166,6 +165,8 @@ function RequestTable() {
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Quantity</TableCell>
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Emergency</TableCell>
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Requested Date</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Ordered on</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Received on</TableCell>
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Action</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -201,6 +202,8 @@ function RequestTable() {
                                                     </div>
                                                 </TableCell>
                                                 <TableCell sx={{ color: "var(--text)" }}>{request.requested_date}</TableCell>
+                                                <TableCell sx={{ color: "var(--text)" }}>{request.ordered_date}</TableCell>
+                                                <TableCell sx={{ color: "var(--text)" }}>{request.received_date}</TableCell>
                                                 <TableCell sx={{ color: "var(--text)" }}>
                                                     <IconButton
                                                         onClick={() => handleOpenDialog(request)}
@@ -208,14 +211,14 @@ function RequestTable() {
                                                     >
                                                         <VisibilityIcon />
                                                     </IconButton>
-                                                    <IconButton
+                                                    {/* <IconButton
                                                         onClick={() => handleOpenConfirmDialog(request.id)}
                                                         color="secondary"
                                                         aria-label="place order"
                                                         sx={{ marginLeft: "10px" }}
                                                     >
                                                         <RemoveShoppingCartRoundedIcon sx={{ color: "rgba(235, 36, 36, 0.71)" }} />
-                                                    </IconButton>
+                                                    </IconButton> */}
                                                 </TableCell>
                                             </TableRow>
                                         ))
@@ -241,7 +244,7 @@ function RequestTable() {
                     <Grid container spacing={3}>
                         {filteredRequests.length === 0 ? (
                             <Grid item xs={12}>
-                                <Typography>No Purchase Requests</Typography>
+                                <Typography>No Products received</Typography>
                             </Grid>
                         ) : (
                             filteredRequests.map((request) => (
@@ -253,10 +256,10 @@ function RequestTable() {
                                                 style={{
                                                     display: 'inline-block',
                                                     padding: '0px 15px 3px 15px',
-                                                    backgroundColor: request.emergency === "1" ? 'rgba(235, 36, 36, 0.57)' : 'rgba(36, 235, 162, 0.701)', // Red for emergency, Green for no emergency
-                                                    color: 'white', // Text color
+                                                    backgroundColor: request.emergency === "1" ? 'rgba(235, 36, 36, 0.57)' : 'rgba(36, 235, 162, 0.701)',
+                                                    color: 'white',
                                                     fontWeight: 'bold',
-                                                    borderRadius: '4px', // Rounded corners for the label
+                                                    borderRadius: '4px',
                                                 }}
                                             >
                                                 {request.emergency === "1" ? 'Emergency' : 'Required'}
@@ -286,12 +289,12 @@ function RequestTable() {
                     </Grid>
                 </div>
             )}
-            <Dialog fullWidth open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
+            {/* <Dialog fullWidth open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
                 <DialogTitle>Confirm Order</DialogTitle>
                 <Divider />
                 <DialogContent>
                     <Typography>
-                        Purchase order placed?
+                        Order received?
                     </Typography>
                 </DialogContent>
                 <Divider />
@@ -300,19 +303,19 @@ function RequestTable() {
                         Cancel
                     </Button>
                     <Button
-                        onClick={() => handleOrderPlaced(selectedId)}
+                        onClick={() => handleOrderReceived(selectedId)}
                         color="primary"
                         variant="contained"
                     >
                         Confirm
                     </Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog> */}
 
             {selectedRequest && (
                 <Dialog fullWidth open={openDialog} onClose={handleCloseDialog}>
                     <DialogTitle>
-                        Request Details
+                        Order Details
                     </DialogTitle>
                     <Divider />
                     <DialogContent className="dialogContent">
@@ -384,8 +387,7 @@ function RequestTable() {
                 </Dialog>
             )}
         </div>
-
     );
 }
 
-export default RequestTable;
+export default ReceivedTable;
