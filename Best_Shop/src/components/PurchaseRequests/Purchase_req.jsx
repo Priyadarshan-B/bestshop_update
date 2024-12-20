@@ -5,6 +5,9 @@ import { toast, ToastContainer } from "react-toastify";
 import './Purchase_req.css';
 import requestApi from '../../utils/axios';
 import apiHost from '../../utils/api';
+// import Select from 'react-select';
+import SelectInput from './SelectInput';
+
 
 function Requests() {
     const [shopLocations, setShopLocations] = useState([]);
@@ -39,7 +42,7 @@ function Requests() {
     useEffect(() => {
         const fetchShopLocations = async () => {
             try {
-                const response = await requestApi("GET", `/api/master/shop-location`);
+                const response = await requestApi("GET", "/api/master/shop-location");
                 setShopLocations(response.data.map(location => ({
                     value: location.id,
                     label: location.name,
@@ -375,37 +378,29 @@ function Requests() {
                     <div className="request_page">
                         <h2>Submit Purchase Request</h2>
                         <form onSubmit={handleSubmit} className="request-form">
-                            <div className="form-group">
-                                <label>Shop Location:</label>
-                                <select
-                                    name="shop_location"
-                                    value={formData.shop_location}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="" disabled>Select a shop location</option>
-                                    {shopLocations.map(location => (
-                                        <option key={location.value} value={location.value}>
-                                            {location.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Master User:</label>
-                                <select
-                                    name="master_user"
-                                    value={formData.master_user}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="" disabled>Select a master user</option>
-                                    {masterUsers.map(user => (
-                                        <option key={user.id} value={user.id}>
-                                            {user.name}
-                                        </option>
-                                    ))}
-                                </select>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Shop Location:</label>
+                                    <select name="shop_location" value={formData.shop_location} onChange={handleInputChange} required>
+                                        <option value="" disabled>Select a shop location</option>
+                                        {shopLocations.map(location => (
+                                            <option key={location.value} value={location.value}>
+                                                {location.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Master User:</label>
+                                    <select name="master_user" value={formData.master_user} onChange={handleInputChange} required>
+                                        <option value="" disabled>Select a master user</option>
+                                        {masterUsers.map(user => (
+                                            <option key={user.id} value={user.id}>
+                                                {user.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label>Category:</label>
@@ -492,38 +487,29 @@ function Requests() {
                                 </select>
                             </div>
 
-                            <div className="form-group">
-                                <label>Color:</label>
-                                <select
-                                    name="color"
-                                    value={colors.find(color => color.name === formData.color)?.id || ''}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="" disabled>Select a color</option>
-                                    {colors.map(color => (
-                                        <option key={color.id} value={color.id}>
-                                            {color.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Size:</label>
-                                <select
-                                    name="size"
-                                    value={sizes.find(size => size.name === formData.size)?.id || ''}
-                                    onChange={handleInputChange}
-                                    required
-                                >
-                                    <option value="" disabled>Select a size</option>
-                                    {sizes.map(size => (
-                                        <option key={size.id} value={size.id}>
-                                            {size.name}
-                                        </option>
-                                    ))}
-                                </select>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Color:</label>
+                                    <select name="color" value={formData.color} onChange={handleInputChange} required>
+                                        <option value="" disabled>Select a color</option>
+                                        {colors.map(color => (
+                                            <option key={color.id} value={color.id}>
+                                                {color.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Size:</label>
+                                    <select name="size" value={formData.size} onChange={handleInputChange} required>
+                                        <option value="" disabled>Select a size</option>
+                                        {sizes.map(size => (
+                                            <option key={size.id} value={size.id}>
+                                                {size.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
 
                             <div className="form-group">
@@ -534,14 +520,6 @@ function Requests() {
                                     value={formData.quantity}
                                     onChange={handleInputChange}
                                     required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Product Image:</label>
-                                <input
-                                    type="file"
-                                    name="product_image"
-                                    onChange={(e) => setFormData({ ...formData, product_image: e.target.files[0] })}
                                 />
                             </div>
                             <div className="form-group">
@@ -565,25 +543,14 @@ function Requests() {
                                     <option value="1">Yes</option>
                                 </select>
                             </div>
-                            <button type="submit" className="btn-submit">
-                                Submit
+                            <button
+                                className="button-in-dialog"
+                                variant="contained"
+                                style={{ float: "right" }}
+                            >
+                                SUBMIT
                             </button>
 
-                            {/* <div>
-                                <h2>Purchase Requests</h2>
-                                <ul>
-                                   
-                                    {requests.length > 0 ? (
-                                        requests.map((request) => (
-                                            <li key={request.id}>
-                                                <strong>{request.item_name}</strong> - {request.category} - {request.quantity} pcs
-                                            </li>
-                                        ))
-                                    ) : (
-                                        <p>No purchase requests available.</p>
-                                    )}
-                                </ul>
-                            </div> */}
                         </form>
                     </div>
                 </div>

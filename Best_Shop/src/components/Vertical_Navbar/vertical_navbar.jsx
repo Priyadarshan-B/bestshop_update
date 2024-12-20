@@ -10,6 +10,7 @@ import AddchartIcon from "@mui/icons-material/Addchart";
 import DatasetOutlinedIcon from "@mui/icons-material/DatasetOutlined";
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import LowPriorityIcon from '@mui/icons-material/LowPriority';
+import NextWeekSharpIcon from '@mui/icons-material/NextWeekSharp';
 
 const VerticalNavbar = () => {
   const username = Cookies.get("username");
@@ -152,7 +153,14 @@ const VerticalNavbar = () => {
           onClick={() => handleNavigate("/requests")}
         >
           <LowPriorityIcon className="navbar-icon" style={{ marginRight: "10px" }} />
-          <b>Requests</b>
+          <b>Create Requests</b>
+        </li>
+        <li
+          className={selectedField === "requests/all" ? "selected" : ""}
+          onClick={() => handleNavigate("/requests/all")}
+        >
+          <NextWeekSharpIcon className="navbar-icon" style={{ marginRight: "10px" }} />
+          <b>Purchase Requests</b>
         </li>
 
 
