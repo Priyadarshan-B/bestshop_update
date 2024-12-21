@@ -51,7 +51,9 @@ function ReceivedTable() {
             if (response.success) {
                 const formattedData = response.data.map(request => ({
                     ...request,
-                    requested_date: formatDate(request.requested_date)
+                    requested_date: formatDate(request.requested_date),
+                    ordered_date: formatDate(request.ordered_date),
+                    received_date: formatDate(request.received_date)
                 }));
                 setRequests(formattedData);
             }
@@ -129,8 +131,10 @@ function ReceivedTable() {
     return (
 
         <div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "20px", color: "var(--text)" }}>
-                <h2>Products Received</h2>
+            <div className='requestsearch-flex'>
+                <div>
+                    <h2>Products Received</h2>
+                </div>
                 <div style={{ marginBottom: '1rem' }}>
                     <div style={{ display: "flex" }}>
                         <InputBox
@@ -145,9 +149,10 @@ function ReceivedTable() {
                             value={searchText}
                             onChange={(e) => setSearchText(e.target.value)}
                             size="small"
+                            sx={{width:"290px"}}
                         />
                         <IconButton onClick={handleToggleView} sx={{ marginLeft: 2 }}>
-                            <ViewModuleIcon />
+                            <ViewModuleIcon sx={{ color: "var(--button)" }} />
                         </IconButton>
                     </div>
                 </div>
@@ -158,15 +163,15 @@ function ReceivedTable() {
                         <Table sx={{ backgroundColor: "var(--background-1)" }}>
                             <TableHead sx={{ zIndex: "1" }}>
                                 <TableRow>
-                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Shop Location</TableCell>
-                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Requested Person</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Location</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Staff</TableCell>
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Category</TableCell>
-                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Item name</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Item</TableCell>
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Quantity</TableCell>
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Emergency</TableCell>
-                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Requested Date</TableCell>
-                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Ordered on</TableCell>
-                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Received on</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Req Date</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Ordered</TableCell>
+                                    <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Received</TableCell>
                                     <TableCell sx={{ color: "var(--text)", fontWeight: "600" }}>Action</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -209,7 +214,7 @@ function ReceivedTable() {
                                                         onClick={() => handleOpenDialog(request)}
                                                         aria-label="view details"
                                                     >
-                                                        <VisibilityIcon />
+                                                        <VisibilityIcon sx={{ color: "var(--button)" }} />
                                                     </IconButton>
                                                     {/* <IconButton
                                                         onClick={() => handleOpenConfirmDialog(request.id)}
@@ -240,7 +245,7 @@ function ReceivedTable() {
                 </div>
 
             ) : (
-                <div style={{ height: "70vh", overflowY: "scroll", padding: "10px" }} className='grid-scroll'>
+                <div style={{ height: "60vh", overflowY: "scroll", padding: "10px" }} className='grid-scroll'>
                     <Grid container spacing={3}>
                         {filteredRequests.length === 0 ? (
                             <Grid item xs={12}>
@@ -276,11 +281,11 @@ function ReceivedTable() {
                                         <Divider />
                                         <div style={{ display: "flex", alignItems: "center", justifyContent: "end" }}>
                                             <IconButton onClick={() => handleOpenDialog(request)} color="primary" aria-label="view details">
-                                                <VisibilityIcon />
+                                                <VisibilityIcon sx={{ color: "var(--button)" }} />
                                             </IconButton>
-                                            <IconButton onClick={() => handleOpenConfirmDialog(request.id)} color="secondary" aria-label="place order" sx={{ marginLeft: "10px" }}>
+                                            {/* <IconButton onClick={() => handleOpenConfirmDialog(request.id)} color="secondary" aria-label="place order" sx={{ marginLeft: "10px" }}>
                                                 <RemoveShoppingCartRoundedIcon sx={{ color: "rgba(235, 36, 36, 0.71)" }} />
-                                            </IconButton>
+                                            </IconButton> */}
                                         </div>
                                     </div>
                                 </Grid>
@@ -314,76 +319,90 @@ function ReceivedTable() {
 
             {selectedRequest && (
                 <Dialog fullWidth open={openDialog} onClose={handleCloseDialog}>
-                    <DialogTitle>
-                        Order Details
-                    </DialogTitle>
-                    <Divider />
-                    <DialogContent className="dialogContent">
-                        {selectedRequest.emergency === "1" && (
-                            <div
-                                style={{
-                                    backgroundColor: '#ffd4d4',
-                                    padding: '10px',
-                                    marginBottom: '15px',
-                                    borderRadius: '5px'
-                                }}
-                            >
-                                <Typography style={{ fontWeight: 'bold', color: '#d32f2f' }}>
-                                    Emergency Request
-                                </Typography>
+                    <div className='popup-color'>
+                        <DialogTitle>
+                            Product Details
+                        </DialogTitle>
+                        <Divider />
+                        <DialogContent className="dialogContent">
+                            {selectedRequest.emergency === "1" && (
+                                <div
+                                    style={{
+                                        backgroundColor: '#ffd4d4',
+                                        padding: '10px',
+                                        marginBottom: '15px',
+                                        borderRadius: '5px'
+                                    }}
+                                >
+                                    <Typography style={{ fontWeight: 'bold', color: '#d32f2f' }}>
+                                        Emergency Request
+                                    </Typography>
+                                </div>
+                            )}
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Shop Location</Typography>
+                                <Typography className="dialogValue">{selectedRequest.shop_location}</Typography>
                             </div>
-                        )}
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Shop Location:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.shop_location}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Master User:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.master_user}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Category:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.category}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Item Name:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.item_name}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Sub Category:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.sub_category}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Brand:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.brand}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Model:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.model}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Color:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.color}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Size:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.size}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Quantity:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.quantity}</Typography>
-                        </div>
-                        <div className="dialogItem">
-                            <Typography className="dialogLabel">Supplier:</Typography>
-                            <Typography className="dialogValue">{selectedRequest.supplier}</Typography>
-                        </div>
-                    </DialogContent>
-                    <Divider />
-                    <DialogActions>
-                        <Button onClick={handleCloseDialog} color="primary">
-                            Close
-                        </Button>
-                    </DialogActions>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Staff name</Typography>
+                                <Typography className="dialogValue">{selectedRequest.master_user}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Requested date</Typography>
+                                <Typography className="dialogValue">{selectedRequest.requested_date}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Ordered date</Typography>
+                                <Typography className="dialogValue">{selectedRequest.ordered_date}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Received date</Typography>
+                                <Typography className="dialogValue">{selectedRequest.received_date}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Category</Typography>
+                                <Typography className="dialogValue">{selectedRequest.category}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Item Name</Typography>
+                                <Typography className="dialogValue">{selectedRequest.item_name}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Sub Category</Typography>
+                                <Typography className="dialogValue">{selectedRequest.sub_category}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Brand</Typography>
+                                <Typography className="dialogValue">{selectedRequest.brand}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Model</Typography>
+                                <Typography className="dialogValue">{selectedRequest.model}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Color</Typography>
+                                <Typography className="dialogValue">{selectedRequest.color}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Size</Typography>
+                                <Typography className="dialogValue">{selectedRequest.size}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Quantity</Typography>
+                                <Typography className="dialogValue">{selectedRequest.quantity}</Typography>
+                            </div>
+                            <div className="dialogItem">
+                                <Typography className="dialogLabel">Supplier</Typography>
+                                <Typography className="dialogValue">{selectedRequest.supplier}</Typography>
+                            </div>
+                        </DialogContent>
+                        <Divider />
+                        <DialogActions>
+                            <Button onClick={handleCloseDialog} color="primary">
+                                Close
+                            </Button>
+                        </DialogActions>
+                    </div>
                 </Dialog>
             )}
         </div>

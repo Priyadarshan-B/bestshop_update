@@ -86,15 +86,31 @@ h2 {
     justify-content: space-between;
 }
 
+@media (max-width: 999px) {
+    .form-row {
+        flex-direction: column;
+    }
+
+    .request_page {
+        width: 80vw;
+        padding: 20px;
+        height: 80vh;
+    }
+
+    .requestsearch-flex {
+        flex-direction: column;
+    }
+}
+
 .request-form .form-row .form-group {
     flex: 1;
     /* Equal width for both fields */
 }
 
 /* Optional: Add margin-right to ensure spacing in specific cases */
-.request-form .form-row .form-group:not(:last-child) {
+/* .request-form .form-row .form-group:not(:last-child) {
     margin-right: 15px;
-}
+} */
 
 /* Submit button styling */
 .submit-button {
@@ -214,9 +230,10 @@ h2 {
     padding: 10px 20px;
     margin-right: 10px;
     border: none;
-    background-color: #f0f0f0;
+    background-color: var(--background-1);
     cursor: pointer;
     border-radius: 5px;
+    color: var(--text);
     font-size: medium;
     flex: 1;
 }
@@ -227,6 +244,21 @@ h2 {
 }
 
 .btn:hover {
-    background-color: var(--button);
+    background-color:rgba(10, 130, 130, 0.486);
     color: white;
+}
+
+
+.requestsearch-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.popup-color {
+    background-color: var(--background-1);
+    color: var(--text);
 }

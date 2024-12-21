@@ -7,6 +7,7 @@ import requestApi from '../../utils/axios';
 import apiHost from '../../utils/api';
 // import Select from 'react-select';
 import SelectInput from './SelectInput';
+import { Divider } from '@mui/material';
 
 
 function Requests() {
@@ -377,6 +378,8 @@ function Requests() {
                 <div className="dashboard-body">
                     <div className="request_page">
                         <h2>Submit Purchase Request</h2>
+                        <Divider/>
+                        <br />
                         <form onSubmit={handleSubmit} className="request-form">
                             <div className="form-row">
                                 <div className="form-group">
@@ -391,7 +394,7 @@ function Requests() {
                                     </select>
                                 </div>
                                 <div className="form-group">
-                                    <label>Master User:</label>
+                                    <label>Request person name:</label>
                                     <select name="master_user" value={formData.master_user} onChange={handleInputChange} required>
                                         <option value="" disabled>Select a master user</option>
                                         {masterUsers.map(user => (
@@ -523,7 +526,7 @@ function Requests() {
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Supplier:</label>
+                                <label>Supplier name:</label>
                                 <input
                                     type="text"
                                     name="supplier"
@@ -543,13 +546,17 @@ function Requests() {
                                     <option value="1">Yes</option>
                                 </select>
                             </div>
-                            <button
-                                className="button-in-dialog"
-                                variant="contained"
-                                style={{ float: "right" }}
-                            >
-                                SUBMIT
-                            </button>
+                            <Divider/>
+                            <br />
+                            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                <button
+                                    className="button-in-dialog"
+                                    variant="contained"
+
+                                >
+                                    SUBMIT
+                                </button>
+                            </div>
 
                         </form>
                     </div>

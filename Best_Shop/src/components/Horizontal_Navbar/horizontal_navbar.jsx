@@ -14,6 +14,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import CustomizedSwitches from "./toggleTheme";
 import { BiSolidShoppingBags } from "react-icons/bi";
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+import LowPriorityIcon from '@mui/icons-material/LowPriority';
+import NextWeekSharpIcon from '@mui/icons-material/NextWeekSharp';
 
 const HorizontalNavbar = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -152,6 +154,20 @@ const HorizontalNavbar = () => {
                 <EqualizerIcon style={{ marginRight: "10px", color: "#178a84" }} />
                 <b>Stocks</b>
               </li>
+              <li
+                className={selectedField === "requests" ? "selected" : ""}
+                onClick={() => handleNavigate("/requests")}
+              >
+                <LowPriorityIcon className="navbar-icon" style={{ marginRight: "10px" }} />
+                <b>Create Requests</b>
+              </li>
+              <li
+                className={selectedField === "requests/all" ? "selected" : ""}
+                onClick={() => handleNavigate("/requests/all")}
+              >
+                <NextWeekSharpIcon className="navbar-icon" style={{ marginRight: "10px" }} />
+                <b>Purchase Requests</b>
+              </li>
             </ul>
           </div>
         )}
@@ -161,7 +177,7 @@ const HorizontalNavbar = () => {
       </div>
 
       <div className="icons">
-        
+
         <CustomizedSwitches />
         <Popup
           className="popup-container"
