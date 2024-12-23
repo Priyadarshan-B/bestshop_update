@@ -18,18 +18,13 @@ import {
     Divider,
     Grid
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import requestApi from '../../utils/axios';
-import HorizontalNavbar from "../Horizontal_Navbar/horizontal_navbar";
-import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import RemoveShoppingCartRoundedIcon from '@mui/icons-material/RemoveShoppingCartRounded';
 import './Purchase_req.css';
 import InputBox from '../InputBox/inputbox';
 import SearchSharpIcon from '@mui/icons-material/SearchSharp';
 import ViewModuleIcon from '@mui/icons-material/ViewModule'; // Import the grid view icon
-import DeleteForeverSharpIcon from '@mui/icons-material/DeleteForeverSharp';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 

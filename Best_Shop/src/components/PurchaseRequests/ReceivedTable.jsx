@@ -18,18 +18,12 @@ import {
     Divider,
     Grid
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import requestApi from '../../utils/axios';
-import HorizontalNavbar from "../Horizontal_Navbar/horizontal_navbar";
-import VerticalNavbar from "../Vertical_Navbar/vertical_navbar";
-import { toast, ToastContainer } from "react-toastify";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import RemoveShoppingCartRoundedIcon from '@mui/icons-material/RemoveShoppingCartRounded';
 import './Purchase_req.css';
 import InputBox from '../InputBox/inputbox';
 import SearchSharpIcon from '@mui/icons-material/SearchSharp';
 import ViewModuleIcon from '@mui/icons-material/ViewModule'; // Import the grid view icon
-import DeleteForeverSharpIcon from '@mui/icons-material/DeleteForeverSharp';
 
 
 function ReceivedTable() {
@@ -91,24 +85,6 @@ function ReceivedTable() {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    // const handleOrderReceived = async (id) => {
-    //     console.log(id);
-    //     try {
-    //         const response = await requestApi("PUT", `/api/requests/orders`, { id });
-    //         if (response.success) {
-    //             toast.success("Order received successfully!");
-    //             fetchRequests()
-    //         } else {
-    //             toast.error("Failed to place the order.");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error receiving order:", error);
-    //         toast.error("An error occurred while receiving the order.");
-    //     } finally {
-    //         setOpenConfirmDialog(false); // Close the dialog after the operation
-    //     }
-    // };
 
     const handleOpenConfirmDialog = (id) => {
         setSelectedId(id);
@@ -179,7 +155,7 @@ function ReceivedTable() {
                                 {filteredRequests.length === 0 ? (
                                     <TableRow>
                                         <TableCell colSpan={7} sx={{ textAlign: "center", color: "var(--text)" }}>
-                                            No Purchase Requests
+                                            No products received
                                         </TableCell>
                                     </TableRow>
                                 ) : (
@@ -216,14 +192,7 @@ function ReceivedTable() {
                                                     >
                                                         <VisibilityIcon sx={{ color: "var(--button)" }} />
                                                     </IconButton>
-                                                    {/* <IconButton
-                                                        onClick={() => handleOpenConfirmDialog(request.id)}
-                                                        color="secondary"
-                                                        aria-label="place order"
-                                                        sx={{ marginLeft: "10px" }}
-                                                    >
-                                                        <RemoveShoppingCartRoundedIcon sx={{ color: "rgba(235, 36, 36, 0.71)" }} />
-                                                    </IconButton> */}
+                                                   
                                                 </TableCell>
                                             </TableRow>
                                         ))
@@ -283,9 +252,7 @@ function ReceivedTable() {
                                             <IconButton onClick={() => handleOpenDialog(request)} color="primary" aria-label="view details">
                                                 <VisibilityIcon sx={{ color: "var(--button)" }} />
                                             </IconButton>
-                                            {/* <IconButton onClick={() => handleOpenConfirmDialog(request.id)} color="secondary" aria-label="place order" sx={{ marginLeft: "10px" }}>
-                                                <RemoveShoppingCartRoundedIcon sx={{ color: "rgba(235, 36, 36, 0.71)" }} />
-                                            </IconButton> */}
+                                           
                                         </div>
                                     </div>
                                 </Grid>
@@ -294,28 +261,6 @@ function ReceivedTable() {
                     </Grid>
                 </div>
             )}
-            {/* <Dialog fullWidth open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
-                <DialogTitle>Confirm Order</DialogTitle>
-                <Divider />
-                <DialogContent>
-                    <Typography>
-                        Order received?
-                    </Typography>
-                </DialogContent>
-                <Divider />
-                <DialogActions>
-                    <Button onClick={handleCloseConfirmDialog}>
-                        Cancel
-                    </Button>
-                    <Button
-                        onClick={() => handleOrderReceived(selectedId)}
-                        color="primary"
-                        variant="contained"
-                    >
-                        Confirm
-                    </Button>
-                </DialogActions>
-            </Dialog> */}
 
             {selectedRequest && (
                 <Dialog fullWidth open={openDialog} onClose={handleCloseDialog}>

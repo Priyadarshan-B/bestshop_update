@@ -352,23 +352,6 @@ function Requests() {
     };
 
 
-    // useEffect(() => {
-    //     const fetchRequests = async () => {
-    //         try {
-    //             const response = await requestApi("GET", "/api/requests/requests", {});
-    //             if (response.success) {
-    //                 setRequests(response.data);
-    //                 console.log(requests)
-    //             }
-    //         } catch (error) {
-    //             console.error("Error fetching requests:", error);
-    //         }
-    //     };
-    //     fetchRequests();
-    // }, []);
-
-
-
     return (
         <div className="dashboard-container">
             <HorizontalNavbar />
